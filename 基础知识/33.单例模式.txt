@@ -1,0 +1,76 @@
+			单例模式
+			
+	单例模式的意思就是只有一个实例。
+	
+	单例模式确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。这个类称为单例类。
+	
+		1）一个类只有一个实例       这是最基本的
+
+		2）它必须自行创建这个实例
+
+		3）它必须自行向整个系统提供这个实例
+		
+		
+		
+	1  懒汉模式（类加载时不初始化）
+	
+		//懒汉式单例模式
+		
+		//比较懒，在类加载时，不创建实例，因此类加载速度快，但运行时获取对象的速度慢  
+    
+		private static LazySingleton intance = null;//静态私用成员，没有初始化
+    
+		private LazySingleton(){
+        
+		//私有构造函数
+		
+		}
+    
+		public static synchronized LazySingleton getInstance(){    //静态，同步，公开访问点
+			if(intance == null){
+           
+				intance = new LazySingleton();
+        
+			}
+			return intance;
+		}
+
+		关键点：
+
+		1）构造函数定义为私有----不能在别的类中来获取该类的对象，只能在类自身中得到自己的对象
+
+		2）成员变量为static的，没有初始化----类加载快，但访问类的唯一实例慢，static保证在自身类中获取自身对象
+
+		3）公开访问点getInstance： public和synchronized的-----public保证对外公开，同步保证多线程时的正确性（因为类变量不是在加载时初始化的）
+
+
+
+
+	2  饿汉式单例模式（在类加载时就完成了初始化，所以类加载较慢，但获取对象的速度快）
+
+		//饿汉单例模式
+    
+		//在类加载时就完成了初始化，所以类加载较慢，但获取对象的速度//在类加载时就完成了初始化，所以类加载较慢，但获取对象的速度快
+    
+		private static EagerSingleton instance = new EagerSingleton();//静态私有成员，已初始化
+		
+		private EagerSingleton() {
+      
+		//私有构造函数
+		}
+    
+		public static EagerSingleton getInstance(){    //静态，不用同步（类加载时已初始化，不会有多线程的问题）
+    
+			return instance;
+		}
+    
+
+	关键点：
+
+	1）私有构造函数
+
+	2）静态私有成员--在类加载时已初始化
+
+	3）公开访问点getInstance-----不需要同步，因为在类加载时已经初始化完毕，也不需要判断null，直接返回
+
+	

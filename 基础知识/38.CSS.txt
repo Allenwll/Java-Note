@@ -1,0 +1,279 @@
+﻿								CSS 样式
+			CSS(cascading style sheet) 
+			
+				称为层叠样式表单	 
+				
+				美化网页结构		
+				
+			
+		CSS选择器：
+				
+			ID选择器：#header {}
+					
+				在css中,id可以重复使用，但是不推荐使用
+					
+				因为在js中会有冲突
+						
+			类选择器：.header {}
+				
+				可以重复使用
+					
+			元素选择器：div {}
+				
+			
+			子选择器：ul > li {}
+						
+				div下的li会改变 只有下一级会改变
+			
+			包含、后代选择器：div p {}
+					
+				div 下的 所有p 都会改变
+			
+			复合选择器: 选择器1,选择器2
+						
+			伪类选择器：a:hover {}
+			
+			属性选择器：input[type="text"] {}
+			
+			
+		id优先级高于类class； 后面的样式覆盖前面的;  指定的高于继承；
+					
+		引用方式	
+					
+			外部样式表（存放.css文件中）
+			
+			不需要style标签
+				
+				<link rel=“stylesheet” href=“” />
+
+			嵌入式样式表
+				
+				<style type=“text/css”>
+				
+					p{color:red;}
+				
+				</style>
+
+			内联样式
+				
+				属性名为style
+				
+					<p style=“color:red;”></p>
+
+
+			<!-- 导入外部样式：在内部样式表的<style></style>标记之间导入一个外部样式表，导入时用@import。 -->  
+			
+				导入外部样式  当多个页面同时使用时 ，会先加载html结构，最后再加载css文件，用户体验不好
+				
+				外部引用  当多个页面同时使用时，会先加载css样式  ，但是速度会下降。
+			
+			<style type="text/css">  
+				@import "CssStyle.css";  
+			</style>	
+					
+					
+	盒子模型
+	
+		网页的元素：
+			内容(content) 	填充、内间距(padding)	边框(border)	边界、外边距(margin)， CSS盒子模式都具备这些属性。
+			
+		这些属性我们可以把它转移到我们日常生活中的盒子（箱子）上来理解，
+		
+		日常生活中所见的盒子也就是能装东西的一种箱子，也具有这些属性，所以叫它盒子模式。
+		
+		
+		css margin 边界属性:
+			
+			margin:10px 5px 15px 20px;		上  10  右 5   下 15  左 20
+			
+			margin:10px 5px 15px;     上 10   左右 5   下 15
+			
+			margin:10px 5px;     上下 10   左右 5
+			
+			margin: 10px;     上下左右 10 
+
+			margin：0px  auto ;//自动居中
+		
+			border边框属性
+				
+				border-color  
+					
+					border-color:red;
+					
+					border-top-color:blue;
+				
+				border-width  
+					
+					border-width: 1px;
+					
+					border-left-width: 3px;
+				
+				border-style
+					
+					border-style: solid
+					
+					border-bottom-style: solid；
+
+				统一设置
+					
+					border: 1px solid red;’
+					
+					border-right: 5px dotted blue;
+	
+		css a 标签
+		
+			未访问状态（a:link ） 
+
+			已访问状态（a:visited ）
+			
+			鼠标移上状态（a:hover ）
+			
+			激活选定状态（a:active ）
+
+			鼠标经过的“未访问链接”同时拥有a:link、a:hover两种属性，后面的属性会覆盖前面的属性定义；
+
+			鼠标经过的“已访问链接”同时拥有a:visited、a:hover两种属性，后面的属性会覆盖前面的属性定义；
+
+			所以说，a:hover定义一定要放在a:link、a:visited的后面，，，
+
+鼠标形状
+	
+	cursor:
+	
+		hand是手型
+		
+		pointer也是手型，这里推荐使用这种，因为这可以在多种浏览器下使用。
+		
+		crosshair是十字型
+		
+		text是移动到文本上的那种效果
+		
+		wait是等待的那种效果
+		
+		default是默认效果
+		
+		help是问号
+		
+		e-resize是向右的箭头
+		
+		ne-resize是向右上的箭头
+		
+		n-resize是向上的箭头
+		
+		nw-resize是向左上的箭头
+		
+		w-resize是向左的箭头
+		
+		sw-resize是左下的箭头
+		
+		s-resize是向下的箭头
+		
+		se-resize是向右下的箭头
+		
+		auto是由系统自动给出效果
+			
+字体属性
+			
+	font-family 	字体名称	
+	
+	font-size 	字体大小	例：24px
+	
+	font-style 	字体风格	normal(缺省)，italic, oblique
+	
+	font-weight 	字体粗细	normal(缺省)，bold或数值。
+	
+	color	字体颜色	
+	
+	line-height	行高	normal | length
+	
+	letter-spacing 	字符间距	normal | length
+	
+	text-decoration	字体装饰	none || underline || blink || overline || line-through
+	
+	text-overflow	文本溢出处理	clip | ellipsis
+	
+	text-align	文本对齐属性	left (居左，缺省值) 
+	
+	right (居右) center (居中) 
+
+长度单位			
+	
+	绝对长度：cm,mm 用于打印输出设备
+	
+	相对长度：px 用于屏幕显示）
+	
+颜色单位
+	
+	color:rgb(128,0,128);  
+	
+	color:red;
+	
+URL单位（url()）
+
+	p{background-image:url(img/logo.gif);}
+	
+背景属性
+	
+	background-color 	背景颜色 	 颜色单词或者数值
+	
+	background-image 	背景图片	url();
+	
+	background-repeat   背景重复	默认: 同时向x,y方向重复			
+									
+									repeat-x 背景图片横向重复	
+										
+									repeat-y 背景图片竖向重复
+										
+									no-repeat 背景图片不重复
+									
+	background-attachment	背景附着	scroll（缺省），fixed 
+
+定位属性
+	
+	position:   relative | absolute
+	
+	left,top，right,bottom
+	
+	z-index:auto | number 
+			
+			number越大层次级别越高（可以设置负值） 设置元素的堆叠顺序  与position 配套使用
+
+布局属性
+											
+		float     漂浮			none|left|right
+			
+		clear	  是否允许漂浮  none|left|right|both
+		
+		display   能否显示		none|block
+		
+		visibility 可见性		inherit|visible|hidden
+		
+		
+		display none  和 visibility hidden  都能实现隐藏的效果 但是 hidden 隐藏不了所占位置
+		
+列表属性
+
+list-style-type	
+
+				列表样式   类型属性	
+				
+				disc (缺省值，黑圆点) 
+				
+				circle (空心圆点)   square (小黑方块) 
+			
+				decimal (数字排序)  lower-roman  upper-roman 罗马数字
+			
+				lower-alpha upper-alpha  英文字母  none (无列表项标记) 
+				
+list-style-position
+				
+				列表样式位置属性	
+				
+				outside (以列表项内容为准对齐) 
+				
+				inside (以列表项标记为准对齐)
+				
+list-style-image	列表样式图片属性		
+		
+
+	

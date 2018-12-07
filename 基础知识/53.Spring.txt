@@ -1,0 +1,281 @@
+						55.Spring
+						
+1.Spring由Rod johnson 创建，为了简化企业级系统的开发
+	
+	目的：解决企业应用开发的复杂性
+	
+	功能: 使用基本的JavaBean代替EJB，并提供了更多的企业应用功能
+	
+	范围: 任何Java应用
+
+2.Spring是一个轻量级的控制反转(IOC)和面向切面(AOP)的容器框架
+
+3.轻量级与重量级
+	
+	重量级容器是一种入侵式的。比如继承一个接口,声明一个成员变量。这样就把你代码绑定在EJB技术上了，而EJB需要JBOSS这样的容器支持，所以称之为"重量级"
+	
+	轻量级是非侵入式的，不需要依赖Spring中的类，不需要容器支持，而且Spring大小和运行开发都很微量
+	
+4.Spring起到框架之间的纽带和桥梁的作用
+
+5.Spring优点
+	
+	a)低侵入式设计,代码污染极低
+	
+	b)独立于各种应用服务器,可以真正实现Write Once,Run Anywhere
+	
+	c)Spring的DI机制降低了业务对象替换的复杂性
+	
+	d)开发者可自由选用Spring框架的部分或全部
+	
+6.Spring框架模块
+
+
+
+
+7.IOC
+	
+	Inversion of Control 反向控制(逆向控制)  
+	
+		相对于EJB来讲，EJB使用JNDI来查找需要的对象,是主动的
+			
+			
+			调用EJB的两种方法
+				
+				1.直接用jndi名,lookup("abcd");
+				
+				2.用reference name 即lookup("java/comp/env/ejb/Speaker");
+						
+		Spring是把依赖的对象注入给相应的类，是被动的，所以称之为反向	
+	
+	a) 在传统的开发中，对象的创建是由程序员根据程序逻辑来创建的，使用了Spring后,对象的创建交给Spring容器来完成
+	
+		容器创建好对象后,会自动将对象设置到指定的位置。创建对象的控制权限由程序员变为了Spring容器
+	
+		这种控制权限的转移，称之为控制反转。由传统的主动式编程变成被动式编程
+	
+	b)对象由容器创建,对象的设置由容器来完成
+	
+	
+8.DI  dependency injection 依赖注入
+		
+		和IOC是一件事不同的说法，对象的创建时依赖于容器的，对象属性的设置也是依赖于容器的。
+		
+		程序中被动接收对象，对象的属性值也是被动被设置的这个过程在spring称为注入，所以IOC又叫依赖注入-----有容器创建和管理对象
+	
+
+9.AOP  动态代理的框架
+		
+	Aspect-Oriented Programming 面向方面的编程或者面向切面的编程
+	
+		减少模块之间的耦合度  
+		
+		在不改变原有代码的情况下,增加代码新的功能
+	
+	切面 Aspect
+	
+		一个关注的的模块化
+		
+		把系统不同部分的公共行为抽取出来形成一个独立的模块,并且在适当的地方(切入点)把这些被抽取出来的功能再插入系统的不同部分
+	
+	
+	连接点 JoinPoint 
+	
+		在程序执行过程中某个特定的点, 一个连接点总是表示一个方法的执行
+		
+	通知 Advice
+	
+		在切面的某个特定的连接点上执行的动作
+		
+	切入点 Pointcut
+		
+		匹配连接点的断言
+	
+	引入 Introduction
+		
+		用来给一个类型声明额外的方法或属性
+		
+	目标对象 Terget Object
+	
+		被一个或多个切面所通知的对象
+		
+	AOP 代理  
+		
+		AOP框架创建的对象，用来实现切面契约
+		
+	织入 Weaving 
+		
+		把切面连接到其他的应用程序类型或者对象上,并创建一个被通知到对象
+	
+	a)纵向的编程 是自上而下的
+	
+	b)面向切面的编程是横向的编程.不改变原有的调用顺序,直接在代码上增加新的功能，并且不改变原有的代码
+		
+	
+	两方面应用:
+		
+		声明式事务
+		
+		自定义AOP
+	
+	
+10.依赖注入分为两类 
+	
+		
+		构造器注入
+		
+			
+		Setter注入
+
+11.不同类型注入
+
+	基本类型
+	
+		字符串和基本类型的数据可以直接通过value注入 
+	
+	数组或者list集合用array或者list
+		
+		<property>
+			<array>  <!--<list> -->
+				<value></value>
+			<array>
+		</property>
+	
+	Set 
+		
+		<property>
+			<set>  
+				<value></value>
+			<set>
+		</property>
+		
+		
+	map
+	
+		<property>
+			<map>
+				<entry key="65158254632456" value="农业银行"></entry>
+			
+			</map>
+		
+		</property>
+	
+	propertie注入
+	
+		<property>
+			<props>
+				<prop key="height">180cm</prop>
+			</props>
+			
+		</property>
+	
+	自定义类型注入
+	
+		<property name="role" class="xxxx"> </property>
+		
+		<bean id="xxxx">
+		
+			<property ></property>
+	
+		</bean>
+
+	null 注入
+		
+		<property name="name"><null/></property>
+	
+	<使用p命名空间注入 	
+	
+	<bean id="r1" class="c.allen.Role" p:id="1" p:name="管理员"></bean>
+	
+	
+	<!-- 使用c命名空间注入，其本质是构造器注入 -->
+		
+		<bean id="r2" class="cn.allen.Role" c:id="1" c:name="管理员">
+	
+12.Bean的作用域
+	
+	Bean对象的生命周期: 一个作用域,一个创建流程来分
+	
+		作用域:
+			
+			singleton:(默认）单例，在一个容器中唯一
+	
+			prototype: 原型,也叫多例,每次从容器中获取时,重新创建新的对象 注意Action对象是prototype
+			
+			request: 在一个请求范围内有效
+			
+			session 在一次会话范围内有效
+			
+			global session： 只在porlet中有效
+
+			application	在一个应用范围内均有效,相当于ServletContext
+
+13.autowire 自动装配
+				
+	default  不使用自动装配
+	
+	byName： 根据属性名到容器中查找是否存在和属性名相同的bean,如果找到那么自动装配
+	
+	byType： 根据属性的类型到容器中查找相同类型的bean，如果找到那么直接装配,如果有两个相同类型的对象将会报错
+	
+	constructor: 根据构造方法参数的类型自动注入
+	
+	可以设置全局的自动装配类型 default-autowire="byName"
+
+14.静态代理
+		
+	代理: 中介  通过程序来实现租房功能  
+	
+		a)房东
+		
+		b)中介
+		
+		c)租客
+	
+		中介代理房东进行租房的功能。所有中介和房东具有相同的功能(实现相同的接口)
+		
+		d)抽象的角色
+		
+	有4个角色组成 
+		
+		抽象角色
+		
+		真实角色
+		
+		代理角色
+		
+		调用接口
+		
+	优点： 
+		
+		将公共业务和真实业务分离，实现解耦动作
+		
+		方便了分工，做公共业务的人，专门处理公共业务，做领域业务的人做领域业务
+		
+		利于维护
+	
+	缺点:
+		
+		代码增加,业务更加复杂
+	
+15.动态代理
+
+	实现方式
+	
+		代理接口
+		
+			使用JDK的动态代理即可
+		
+		代理抽象类
+			
+			使用cglib
+			
+	
+	JDK动态代理
+	
+		InvocationHandler 是代理实例的调用处理程序实现的接口
+		
+		
+		Proxy 提供用于创建动态代理类和实例的静态方法,它还是由这些方法创建的所有动态代理类的超类
+		
+			

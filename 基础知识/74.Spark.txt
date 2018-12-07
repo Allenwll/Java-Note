@@ -1,0 +1,413 @@
+				Spark
+					
+1.定义
+
+	是基于内存计算的大数据并行计算框架,可用于构建大型的、低延迟的数据分析应用程序
+	
+2.特点
+
+	1)运行速度快
+		
+		采用DAG执行引擎和内存计算
+		
+			DAG(Directed Acyclic Graph):如果一个有向图无法从任意顶点出发经过若干条边回到该点，则这个图是一个有向无环图（DAG图）。
+			
+	2)容易使用
+	
+		支持包括Scala、Java、Python和R语言在内的多种语言进行编程
+		
+	3)与HDFS等存储层兼容
+		
+		可以独立运行,也可以运行在YARN等集群管理系统之上
+		
+		它可以运行在任何的Hadoop数据源上,例如HDFS和HBase
+		
+	4)通用性
+	
+		类似Hadoop,Spark提供了完整而强大的技术栈,包括SQL查询、流式计算、机器学习和图算法等组件
+		
+3.Scala
+
+	Scala是一门现代的多范式编程语言,它平滑地集成了面向对象式和函数式语言的特性
+	
+	Scala运行于Java平台,所有的Scala代码,都需要经过编译为字节码,然后交由Java虚拟机来运行
+	
+	因此,Scala和Java是可以无缝操作的
+	
+	Scala是Spark的主要编程语言,但Spark也支持Java、Python、R作为编程语言
+	
+4.Hadoop的局限性
+
+	1)表达能力有限
+		
+		计算都要转化成Map和Reduce操作，难以描述复杂的数据处理过程
+		
+	2)磁盘IO开销大
+	
+		每次执行都需从磁盘读数据,计算过程中,需要将时间结果写入磁盘
+		
+	3)延迟高
+	
+		一次计算分解成一些列按顺序执行的MR任务,任务间衔接涉及IO开销,产生较高延迟
+		
+		且一个任务完成前,其他任务无法开始
+		
+5.Spark与Hadoop相比
+
+	A.其计算模式也属于MR,但不局限于此,还提供多种RDD(Resilient Distributed DateSet)操作,编程模型更加灵活
+	
+	B.Spark提供内存计算,中间结果放在内存中、IO开销小、延迟低、拥有更高的迭代运算效率
+	
+	C.基于DAG任务调度执行机制,优于MR迭代执行机制
+	
+	D.使用Hadoop需要编写不少相对底层的代码,而Spark提供高层次,简洁的API
+	
+	E.Spark主要替代Hadoop中的MR,而不能完全代替Hadoop,它很好地融入了Hadoop生态圈,可借助于YARN实现资源调度管理,借助HDFS实现分布式存储
+	
+	F.Hadoop可使用廉价、异构的机器实现分布式存储和计算,而Spark对硬件要求稍高
+	
+
+6.大数据处理主要类型
+
+	1.复杂的批量数据处理
+	
+		通常时间跨度在数十分钟到数小时之间
+		
+	2.基于历史数据的交互式查询
+	
+		通常时间跨度在数十秒到数分钟之间
+		
+	3.基于实时数据流的数据处理
+	
+		通常时间跨度在数百毫秒到数秒之间
+		
+7.Spark生态系统
+
+	遵循"一个软件栈满足不同应用场景"的理念形成了BDAS(Berkeley Data Analytics Stack)伯克利数据分析栈
+	
+	以Spark为核心的BDAS既能够提供内存计算框架,也可以支持SQL查询、实时流式计算、图计算和机器学习等
+	
+	Spark可以部署在Hadoop2.0的资源管理器YARN之上融入Hadoop生态系统
+	
+	主要包含了Spark Core、Spark SQL、Spark Streaming、MLLib和GraphX等组件
+	
+8.应用场景
+
+			应用场景				   时间跨度		 	   其他框架				 Spark组件
+	
+		复杂的批量数据处理			 	小时级			MapReduce、Hive			  Spark
+		
+		基于历史数据的交互式查询   	分钟级、秒级		Impala、Dremel、Drill	 Spark SQL
+		
+		基于实时数据流的数据处理	毫秒、秒级			Storm、S4				 Spark Streaming
+		
+		基于历史数据的数据挖掘		 -					Mahout					 MLLib
+		
+		图结构数据的处理			 - 					Pregel、Hama			 GraphX
+		
+9.RDD(Resilient Distributed Dataset) 弹性分布式数据集
+
+	是Spark中对数据和计算的抽象,是Spark中最核心的概念
+		
+		一个RDD就是一个分布式对象集合,本质上是一个只读的分区记录集合
+		
+		每个RDD可分成多个分区,每个分区就是一个数据集片段,并且一个RDD的不同分区可以被保存到集群的不同节点上
+		
+		从而可以在集群中的不同节点上进行并行计算
+		
+	RDD提供了一种高度受限的共享内存模型,即RDD是只读的记录分区的集合,不能直接修改
+	
+	只能基于稳定的物理存储中的数据集创建RDD,或者通过其他已有的RDD上执行确定的转换操作(mao、join、group by) 而创建得到新的RDD
+	
+	RDD提供了一组丰富的操作以支持常见的数据运算,分为动作(Action)和转换(Transformation)两种类型
+	
+		Transformation操作是通过转换从一个或多个RDD生成新的RDD
+		
+		Action操作是从RDD生成最后的计算结果
+			
+			EG: Map是一个转换,将RDD中的每一个元素,都经过一个函数进行计算后,返回一个新的RDD作为结果
+			
+				Reduce是一个动作,将RDD中的所有元素用某个函数进行聚合后返回最终结果
+		
+		Spark中的转换都是惰性的,它只是记住应用到RDD上的这些转换,只会在有一个动作发生,要求返回结果给驱动应用时,才真正进行计算
+		
+10.RDD概念
+	
+	基于RDD运行一个Spark Job 过程:
+		
+		1.读入外部数据源创建RDD
+		
+		2.RDD经过一系列的转换操作，每一次都会产生不同的RDD,供给下一个转换操作使用
+		
+		3.最后一个RDD经过动作操作,并将结果输出到外部数据源
+		
+			上述过程中,每个RDD记录父RDD转换的方法,这种调用链表称之为血缘(Lineage)
+			
+			上述过程中,RDD之间的依赖关系构成了一个有向无环图DAG,称为RDD Graph
+		
+11.RDD优势
+
+	1.内存计算
+		
+		中间结果持久化到内存,数据在内存中的多个RDD操作之间进行传递,避免了不必要的读写磁盘开销
+		
+	2.高效容错
+		
+		当分区丢失时,通过RDD的血缘关系重新计算丢失分区,因此无需回滚系统
+		
+		此外,重算过程在不同节点之间并行,恢复速度快
+		
+	3.基于DAG的调度
+	
+		根据RDD Graph调度任务,支持流水线优化,避免同步等等
+		
+12.RDD依赖关系
+
+	窄依赖 Narrow Dependencies
+		
+		表现为一个父RDD的分区对应一个子RDD的分区或多个父RDD的分区对应于一个RDD的分区
+		
+	宽依赖 Wide Dependencies
+		
+		也称Shuffle依赖,表现为存在一个父RDD的分区对应一个子RDD的多个分区
+		
+13.Stage的划分
+	
+	Spark应用的Job提交发生在RDD的Action操作, Transformation只是记录下RDD生成轨迹
+	
+	Spark在计算发生前绘制一张关于计算路径的有向无环图,得到DAG后,Spark会根据RDD的宽依赖关系将计算划分成多个任务集TaskSet,也就是Stage
+	
+	Stage的类型分为两种：SuffleMapStage和ResultStage
+	
+		ShuffleMapStage:
+			
+			不是最终的Stage,在它之后还有其他Stage,所以它的输出一定需要经过Shuffle过程,并作为后续Stage的输入
+			
+			这种Stage是以Shuffle为输出边界,其输出边界可以是从外部获取数据,也还可以是；另一个ShuffleMapStage的输出,其输出可以是另一个Stage的开始
+			
+			在一个Job里可能有该类型的Stage,也可能没有
+			
+		ResultStage：
+			
+			最终的Stage,直接产生结果或存储,这种Stage是直接输出结果,其输入边界可以是从外部获取数据,也可以是另一个ShuffleMapStage的输出
+			
+			在一个Job里必定有该类型Stage
+			
+	因此,一个Job含有一个或多个Stage,其中至少含有一个ResultStage
+	
+14. Spark运行架构
+
+	基本概念
+		
+		用户编写的Spark程序称为Application	
+		
+		每个Spark Application都由一个驱动器程序Driver Program来发起集群上的各种并行操作
+		
+		Driver Program通过创建一个SparkContext对象与Spark集群进行交互,例如：连接Spark集群,创建RDD等
+		
+		一个Spark Application可以由多个Job组成,每个Job又由多个Stage组成,每个Stage中包含了一组Task,这组Task也叫TaskSet
+		
+	运行架构
+		
+		Spark Application的运行架构由两部分组成:Driver Program和若干个Executors
+		
+		集群资源管理器Cluster Manager可以是Spark自带的或Mesos或YARN
+		
+	运行流程
+		
+		1.Spark为应用程序创建RDD,经过一系列的Transformation操作后碰到Action操作
+		
+		2.Action操作会触发SparkContext的RunJob方法提交Job,在构建完DAG后交给DAG Scheduler处理
+		
+		3.DAG Scheduler通过分析RDD之间的宽、窄依赖关系将DAG划分成多个Stage,并将Stage(TaskSet)交给TaskScheduler处理
+		
+		4.Task Scheduler通过集群资源管理器在若干Worker Node的Executor进程的线程池中运行Task
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

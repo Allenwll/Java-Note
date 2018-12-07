@@ -1,0 +1,43 @@
+﻿						Maven
+	
+1.Maven：行内,专家
+	
+	a)基于java的项目构建功能
+	
+	b)依赖管理
+	
+	c)项目信息管理
+	
+	是一个项目构建工具
+	
+2.构建:指日常开发中经常完成的除了编码一些动作 
+	
+		eg:
+			
+			清理 编译  测试  运行  报告  部署等动作
+			
+3.构建工具；
+		
+	构建的动作如果靠人为手动完成，花费的时间比较多,所有出现了一些工具来自动化完成这些动作	
+		
+	Make  C语言的构建工具
+	
+	Ant  Another Nit Tool java的构建工具---Apache    build.xml
+	
+	Maven java的构建工具-----Apache  pom.xml 
+	
+	Gradle java的构建工具   build.gradle   Groovy动态语言
+	
+4.优势:
+		
+	a)跨平台
+	
+	b)标准化
+	
+	c)用于构建
+	
+	d)依赖管理
+	
+	e)封装构建过程
+	
+	f)项目规范化等

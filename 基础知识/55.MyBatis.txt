@@ -1,0 +1,69 @@
+﻿							57.MyBatis
+							
+1.MyBatis前身是IBatis, 最早在Apache开源,后来在google开源,改名为MyBatis现在在GitHub下开源
+
+2.MyBatis是一款一流的支持自定义SQL、存储过程和高级映射的持久化框架,是一个半自动的ORM的框架、
+
+3.映射文件CURD操作
+	
+	<mapper namespace="cn.sxt.mapper.RoleMapper">
+		<!-- 根据id查询 -->
+		<select id="findById" parameterType="int" resultType="cn.sxt.vo.Role">
+			select * from t_role where id = #{id}
+		</select>
+		<!-- 添加  添加成功，将返回受影响行数 
+			占位符中 是自定义类型的属性名  自定义要提供get方法
+			useGeneratedKeys 设置为true,表示主键自增
+		-->
+		<insert id="save" useGeneratedKeys="true" parameterType="cn.sxt.vo.Role">
+			insert into t_role(name) values(#{name})
+		</insert>
+		<!-- 删除数据 -->
+		<delete id="delete" parameterType="int">
+			delete from t_role where id=#{id}
+		</delete>
+		<!-- 更新 -->
+		<update id="update" parameterType="cn.sxt.vo.Role">
+			update t_role set name=#{name} where id=#{id}
+		</update>
+		<!-- 查询所有 -->
+		<select id="findAll" resultType="cn.sxt.vo.Role">
+			select * from t_role
+		</select>
+	</mapper>
+	
+5.工具类
+	
+	public class MybatisUtil {
+		private static SqlSessionFactory sessionFactory=null;
+		private static ThreadLocal<SqlSession> session = new ThreadLocal<SqlSession>();
+		static{
+			try {
+				Reader reader = Resources.getResourceAsReader("mybatis.cfg.xml");
+				sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		/**
+		* 获取SQLSession
+		* @return
+		*/
+		public static SqlSession getSqlSession(){
+			if(session.get()==null){
+				//如果设置true，那么获得session时，告知 自动提交事务
+				session.set(sessionFactory.openSession(true));
+			}
+			return session.get();
+		}
+		/**
+		* 释放资源
+		*/
+		public static void close(){
+			if(session.get()!=null){
+				session.get().close();
+				session.set(null);
+			}
+		}
+	}
+	

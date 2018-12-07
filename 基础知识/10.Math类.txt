@@ -1,0 +1,14 @@
+Math数学类
+	Math.floor(10.0/3) 结果为取整数 3 小的值
+	Math.floor(10.7) 10.0
+	Math.ceil(10.7) 11.0
+	Math.abs(-10) 绝对值 10
+	Math.pow(3,4) 3的4次方 81.0
+	Math.sqrt(120) 120的平方根10.954
+	Math.round(3.75*10)/10.0 保留3.75小数点后第一位  
+	Math.max or min  返回大的值或小的值
+	Math.random() 随机数
+	Math.rint(10.1);    //10.0  rint 四舍五入，返回double值 注意.5的时候会取偶数 
+	Math.round(10.1);   //10.0  round 四舍五入，float时返回int值，double时返回long值
+	BigInteger实现了任意精度的整数运算。
+	BigDecimal实现了任意精度的浮点运算。 

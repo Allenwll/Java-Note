@@ -1,0 +1,317 @@
+﻿							JQuery
+							
+							
+	JQuery 	 JavaScript框架    轻量级的js库  WRITE LESS,DO MORE ,开源
+							
+		jQuery是一个快速的，简洁的javaScript库，使用户能更方便地处理HTML documents、events、实现动画效果，并且方便地为网站提供AJAX交互。		
+		
+		有许多成熟的插件和前端框架技术JqueryUI和EasyUI以及MinIUI  	
+	
+	JavaScript 库封装了很多预定义的对象和实用函数。能帮助使用者建立有高难度交互的 Web2.0 特性的富客户端页面, 并且兼容各大浏览器
+
+	
+	当前流行的 JavaScript 库有: 
+		
+		JQueryQuery
+		
+		EXTJS
+		
+		Prototype
+		
+		Dojo 
+		
+		MooTools
+		
+		Angular JS
+				
+		Node.js
+		
+		Bootstrap
+	
+	JQuery选择器
+		
+		基本选择器 
+						
+			$("a"); //这个选择器匹配所有超链接元素
+			
+			$("#specialID"); //这个选择器匹配id为specialID的元素
+			
+			$(".specialClass"); //这个选择器匹配拥有CSS类specialClass的元素
+			
+			$("a#specialID.specialClass "); //匹配id为specialID、拥有CSS类specialClass的超链接元素
+		
+			$("p a.specialClass"); //这个选择器匹配拥有CSS类specialClass、在<p>元素中声明的超链接元素。	
+				
+		子选择器 
+		
+			$("ul>a"); <ul>标记下的“link1”超链接
+		
+		特征选择器 
+		
+			$("a[href^='http://']"); "http://"开头的超链接
+
+			$('a[href$=.com]'); //匹配所有以“.com”作为href属性结尾的超链接。
+		
+			$(‘a[href*=sina]’); //匹配所有href属性包含“sina”字符串的超链接
+			
+			$(‘form[method]’);//获取所有包含method属性的表单
+			
+			$(‘input[type=text]’);//获取所有文本框
+			
+			
+			
+		  选择器			 描述
+			
+			*			匹配任何元素
+			
+			E			匹配标签名称为E的所有元素
+			
+			E F			匹配标签名为F、作为E后代节点的所有元素
+			
+			E>F			匹配标签名为F、作为E的直接子节点的所有元素
+			
+			E+F			匹配前面是邻近兄弟节点E的所有元素F（E 和 F紧挨着）
+			
+			E~F			匹配前面是任何兄弟节点E的所有元素F（E和F不需要紧挨着）
+		
+			E:has(F)	匹配标签名为E、至少有一个标签名称为F的后代节点的所有元素
+			
+			E.C		 	匹配待用类名C的所有元素E.。.C等效于*.C div.limouseover
+			
+			E#I			匹配id属性值为I的元素E。#I等效于*#I
+			
+			E[A]		匹配带有属性A的所有元素E（不关心属性值是什么）
+			
+			E[A=V]		匹配所有元素E，其A属性值必须等于V
+			
+			E[A^=V]		匹配所有元素E，其A属性值必须以V开头
+			
+			E[A$=V]		匹配所有元素E，其A属性值必须以V结尾
+				
+			E[A*=V]		匹配所有元素E，其A属性值必须包含V
+			
+		
+		位置选择器 
+				
+			$('a:first');
+			
+			$('p:odd'); //代表选择器匹配所有序数为奇数的段落元素
+			
+			$('p:even'); //代表选择器匹配所有序数为偶数的段落元素
+			
+			$('li:last-child'); //选择li父节点的最后一个子元素
+	
+			
+			 选择器		 		描述
+			
+			:first		 	匹配指定的第一个元素
+		
+			:last			匹配指定的最后一个元素
+		
+			:first-child	匹配指定元素的父元素的第一子元素
+			
+			:last-child		匹配指定元素的父元素的最后一个子元素
+			
+			:only-child		返回没有兄弟节点的所有元素
+		
+			:nth-child(n)	第n个子节点(n从1开始)。li:nth-child(2)返回每个列表的第二个<li>元素
+			
+			:nth-child(even|odd)	奇数或偶数的子节点。li:nth-child(even)返回每个序列的偶数子结点
+			
+			:nth-child(Xn+Y)	根据传入的公式计算第n个子节点。如果Y为0，则忽略Y，n从0开始，且X不等于0。
+			
+			li:nth-child(3n)返回位置在3的整数倍数的元素，而li:nth-child(5n+1)返回5的倍数的元素的下一项
+			
+			:even或 :odd	页面范围内偶数或奇数的匹配元素。li:even返回全部偶数<li>项
+			
+			:eq(n)	第n个匹配元素(n从0开始)      equals
+			
+			:gt(n)	匹配从第n(不包括n)个元素之后的所有元素 greater than
+			
+			:lt(n)	匹配从第n(不包括n)个元素之前的所有元素  less than
+			
+		利用元素关系获取元素集合
+		
+			
+				方法				描述
+			
+			children()		返回指定包装集每个元素的所有子节点的包装集。
+			
+			content()		查找匹配元素内部所有的子节点（包括文本节点）。如果元素是一个iframe，则查找文档内容。
+			
+			next()			返回包装集中每个元素紧邻的后面的同辈元素的包装集。
+		
+			nextAll()		返回当前元素之后所有的同辈元素。
+			
+			parent()		取得一个包含着所有匹配元素的唯一父元素的包装集。
+			
+			parents()		取得一个包含着所有匹配元素的祖先元素的包装集（不包含根元素）。
+			
+			prev()			取得一个包含匹配的元素集合中每一个元素紧邻的前一个同辈元素的包装集。
+			
+			prevAll()		查找当前元素之前所有的同辈元素。
+			
+			siblings()		取得一个包含匹配的元素集合中每一个元素的所有唯一同辈元素的元素集合。
+			
+		
+		find()方法用于搜索所有与指定表达式匹配的元素	
+	
+			find(selector)
+				
+				参数：selector ，有效的选择器表达式
+				
+				返回：元素集合
+				
+方法
+		
+	文档就绪程序
+
+		$(document).ready(fn)是指当所有页面元素准备就绪后执行指定的方法  用于替代 onload
+		
+			简写 $(fn);
+		
+	设置元素属性
+	
+		attr()方法可以从元素集合中第一个元素获取指定属性值，或将属性值设置到元素集合中每一个元素上。
+		
+		$('#myImage').attr('alt'); //返回字符串”An image”
+		
+		$('img').attr('alt’,’An new image');//则可以将所有当前页所有img标记的alt属性设置为”An new image” 
+		
+		$('#myImage').removeAttr('alt') //代表移除id=myImage对象的alt属性 
+
+	修改元素样式类
+		
+		$(‘img’).addClass(‘css_class1’) 为当前页面所有图像新增CSS类“css_class1”。
+		
+		$(‘img’).addClass(‘css_class1 css_class2’) 为当前页面所有图像新增CSS类“css_class1”与“css_class2”，多个类名之间用空格隔开。
+		
+		$(‘img’).removeClass(‘css_class1 css_class2’) 为当前页面所有图像删除CSS类“css_class1”与“css_class2”。 
+		
+		$(‘img’).hasClass(‘class1’) ; 验证当前页面是否有图像包含CSS类“class1”，有则返回true，没有则返回false。	
+	
+	获取或设置样式 
+
+		//为当前页所有图像新增一个宽度为1个像素的黑色实心边框
+			
+			$('img').css('border','1px solid #000') ;
+			
+			$('img').css(
+				
+				{'border':'1px solid #000' , 'width':'32px' ,'height':'32px'}
+			); 
+	
+	设置元素内容
+		
+		方法：html()，获取元素集合中第一个元素的HTML内容。
+			
+		方法：html(text)，把传入的HTML片段写入元素集合每个元素。
+		
+		方法：text()，把元素集合中每个元素的文本内容连接起来后做为方法的返回值。
+		
+		方法：text(content)，把元素集合每个元素的文本内容设置为指定值。
+
+	
+jQuery事件模型
+		
+		bind(eventType , listener)
+			
+			bind()在指定事件上绑定处理程序
+			
+			参数：
+				
+				eventType ，为将要建立的处理程序指定事件名
+				
+				listener ， 事件处理方法
+		
+		
+		unbind(eventType)
+			
+			unbind()方法用来删除事件处理程序
+			
+			参数：
+					
+				eventType ， 如果提供，则说明只删除指定事件的处理程序，否则删除元素集合中所有元素的所有事件处理程序。
+				
+		blur	focus	mousedown	resize
+		
+		change	keydown	mousemove	scroll
+		
+		click	keypress	mouseout	select
+		
+		dbclick	keyup	mouseover	submit
+		
+		error	load	mouseup	unload
+		
+显示和隐藏
+	
+		show([speed][,callback])
+			
+			使元素集合的元素显示。当元素使用jQuery效果处于隐藏状态时，如果不带参数调用show()，就通过把元素的display样式属性的值还原为之前的设置（如block或inline）使操作突然发生；
+			
+			如果元素没有通过jQuery效果隐藏，display样式属性的值默认为block。
+		
+		参数：
+			
+			speed，把效果的持续时间（可选）指定为毫秒或者预定义的字符串之一slow、normal或fast。如果省略，就不产生动画并立即在显示器上显示元素。
+			
+			callback，动画结束时，jQuery自动调用的方法(回调方法)。
+			
+		hide([speed][,callback])
+		
+			使元素集合的元素变为隐藏状态。如果不带参数，就通过元素的display样式属性的值设为none使元素忽然隐藏；
+		
+			如果提供speed参数，就通过逐渐减小元素的尺寸和把透明度逐渐调整到0，使元素在短时间内隐藏，完全隐藏之后再把元素的display样式属性的值设置为none，以便从显示器上隐藏元素。
+		
+		参数：
+			
+			speed，把效果的持续时间（可选）指定为毫秒或者预定义的字符串之一：slow、normal或fast。如果省略，就不产生动画并立即在显示器上隐藏元素。
+			
+			callback，动画结束时，jQuery自动调用的方法(回调方法)。
+
+元素淡入与淡出
+		
+		淡入与淡出效果不改变元素大小，只是逐渐调整元素透明度达到显示与隐藏的效果。 
+		
+		方法：fadeIn(speed,callback) 元素淡入
+		
+		方法：fadeOut(speed , callback) 元素淡出
+			
+			两个方法的参数用法与show()/hide()方法完全相同
+
+元素滑上与滑下
+					
+		与显示/隐藏不同的是，滑上与滑下效果只改变元素大小，让元素显示时像拉窗帘似的从顶部滑下来或者拉上去。
+		
+		方法：slideDown(speed,callback) 元素滑下
+		
+		方法：slideUp(speed , callback) 元素滑上
+		
+		两个方法的参数用法与show()/hide()方法完全相同
+
+发起Ajax请求
+	
+	jQuery提供了$.ajax()方法,利用此方法我们可以轻松发起Ajax请求，并且可以根据需要设置AJAX的每一个细节，语法 如下：
+
+	$.ajax(options)
+	
+		利用已传递的选项（控制如何生成请求以及如何通知回调函数）来发起Ajax请求。
+	
+	参数：
+			
+		options，JSON对象，其属性定义这个操作的参数。
+		
+		返回：XMLHttpRequest对象
+		
+加载
+	load(url[,parameter][,callback])	
+	
+	参数：
+		
+		url: 字符串，请求的URL
+		
+		parameter:对象，序列化后的参数。如果指定，就用POST方法发送请求，否则就用GET方法发送。
+		
+		callback：回调函数，在响应数据被填充至指定元素后调用，回调函数的参数依次为响应文本、状态码以及XMLHttpRequest对象。
+		
+		返回：jQuery元素集合

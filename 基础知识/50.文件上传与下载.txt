@@ -1,0 +1,133 @@
+﻿						52.文件上传与下载
+	
+1.文件上传有二种方式
+	
+	第一种:	
+		
+		以流的方式提交，到服务器后自己解析HTTP协议获取上传的内容
+	
+	第二种:
+		
+		使用第三方提供的插件来完成文件上传： smartfileupload, commons-fileupload
+		
+2.使用commons-fileupload实现上传的步骤:
+	
+	a) 导入commons-fileupload和commons-io 两个包
+	
+	b)编写jsp页面 action="upload" enctype="multipart/form-data" method="post"
+		
+	c) 编写servlet	
+	
+3.在struts2中，已经将文件上传功能集成到了fileload拦截器中,该拦截器默认被引用，所以可以直接开发软件
+		
+		1)编写jsp页面 
+			
+			<form action="upload.action" enctype="multipart/form-data" method="post">
+				文件上传:<input type="file" name="file" /><input type="submit" value="上传" />
+			</form>
+			
+		2)编写action 
+		
+			// file文件的名称和表单域名相同
+			private File file;
+
+			// 文件名是由表单域名+FileName组成
+			private String fileFileName;
+
+			// 文件类型是由表单域名+ContentType组成
+			private String fileContentType;
+
+			/**
+				* 上传
+				* 
+				* @return
+				* @throws IOException
+			*/
+			public String upload() throws IOException {
+				HttpServletRequest req = ServletActionContext.getRequest();
+				String path = req.getRealPath("/upload");
+				// 自己可以通过io流实现
+				FileUtils.copyFile(file, new File(path, fileFileName));
+				return "success";
+			}
+				
+		3)配置struts.xml  
+		
+			<struts>
+				<!--设置总文件大小 大于等于maximumSize -->
+				<constant name="struts.multipart.maxSize" value="209715200"></constant>
+				<package name="default" namespace="/" extends="struts-default">
+					<action name="upload" class="cn.allen.action.UploadAction"
+						method="upload">
+						<interceptor-ref name="fileUpload">
+						<!--设置上传文件大小 单个 -->
+							<param name="maximumSize">209715200</param>
+						</interceptor-ref>
+						<!-- 引用默认拦截器 -->
+						<interceptor-ref name="basicStack"></interceptor-ref>
+						<result>/index.jsp</result>
+					</action>
+				</package>
+			</struts>
+		
+4.文件下载： 可以直接通过超链接进行直接下载 
+		
+	超链接下载缺点:
+		
+		a)如果浏览器支持读取文件，将会在浏览器中直接打开
+		b)通过超链接下载没有好的方式来控制用户是否有权限下载
+		
+	通过流的方式解决超链接的不足
+		
+		步骤；
+			
+			1.编写action
+				
+				private static final long serialVersionUID = 1L;
+	
+					private String fileName;
+
+					public String getFileName() {
+					
+						return fileName;
+					}
+	
+					public void setFileName(String fileName) {
+					
+						this.fileName = fileName;
+					}
+
+				/**
+				 * 获取文件流
+				 * 
+				 * @return
+				 * @throws FileNotFoundException
+				*/
+					public InputStream getInputStream() throws FileNotFoundException {
+		
+					System.out.println("1234564");
+					@SuppressWarnings("deprecation")
+					String path = ServletActionContext.getRequest()
+						.getRealPath("/download");
+					return new FileInputStream(new File(path, fileName));
+				}	
+				
+			2.配置action
+		
+				<struts>
+					<constant name="struts.devMode" value="true" />
+					<constant name="struts.i18n.encoding" value="UTF-8" />
+					<package name="default" namespace="/" extends="struts-default">
+						<action name="download" class="cn.allen.action.DownloadAction">
+							<result type="stream">
+							<!--乱码处理  -->
+							<param name="contentType">application/octet-stream;charset=utf-8 </param>
+							<param name="inputName">inputStream</param>
+							<!--attachment 弹出框 -->
+							<param name="contentDisposition">attachment;filename=${fileName}</param>
+							</result>
+						</action>
+					</package>
+				</struts>
+	
+			

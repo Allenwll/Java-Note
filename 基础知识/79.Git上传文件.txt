@@ -1,0 +1,37 @@
+准备工作:
+  1.创建GitHub账号
+  2.创建库
+  3.得到库地址 address
+  4.安装Git软件
+  
+1.
+	打开git-bash.exe
+2. 
+    进入项目所在文件夹
+
+3. 
+	执行git init 创建.git
+
+4. 
+	执行git add .  //.代表所有文件 
+	
+5. 
+	执行 git commit -m "first commit"   //提交的注释  （可能需要输入git用户名和密码）
+	
+6.
+    git remote add origin 库地址  // 本地仓库关联github上
+	
+7. git push -u origin master 
+
+
+查看文件状态 
+	
+	git status
+	
+查看历史提交记录
+
+	git log
+	
+强制推送
+	
+	git push -f

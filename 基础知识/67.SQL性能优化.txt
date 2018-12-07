@@ -1,0 +1,94 @@
+					
+					SQL性能优化
+					
+1.查询的模糊匹配
+
+	尽量避免在一个复杂查询里面使用 LIKE '%parm1%'—— 红色标识位置的百分号会导致相关列的索引无法使用,最好不要用
+	
+	解决方法:
+	
+	
+		A)修改前台程序
+			
+			把查询条件的供应商名称一栏由原来的文本输入改为下拉列表,用户模糊输入供应商名称时,直接在前台就帮忙定位到具体的供应商
+			
+			这样在调用后台程序时,这列就可以直接用等于来关联了
+			
+		B)直接修改后台
+		
+			根据输入条件,先查出符合条件的供应商,并把相关记录保存在一个临时表里头,然后再用临时表去做复杂关联
+
+2.索引问题
+
+	避免对索引字段进行计算操作
+
+	避免在索引字段上使用not,<>,!=
+
+	避免在索引列上使用IS NULL和IS NOT NULL
+
+	避免在索引列上出现数据类型转换
+
+	避免在索引字段上使用函数
+
+	避免建立索引的列中使用空值
+	
+3.复杂操作
+
+	部分UPDATE、SELECT 语句 写得很复杂(经常嵌套多级子查询)可以考虑适当拆成几步,先生成一些临时数据表,再进行关联操作
+	
+4.update 
+	
+	同一个表的修改在一个过程里出现好几十次
+	
+	可以整合在一个UPDATE语句来完成
+	
+5.在可以使用UNION ALL的语句里,使用了UNION
+
+	UNION 并集 排序 去重
+	
+	UNION ALL  并集
+	
+	UNION 因为会将各查询子集的记录做比较,故比起UNION ALL ,通常速度都会慢上许多
+	
+	如果使用UNION ALL能满足要求的话,务必使用UNION ALL
+	
+6.在WHERE 语句中,尽量避免对索引字段进行计算操作
+
+	eg：
+		
+		1)where trunc(create_date)=trunc(:date1) 索引用不上
+	
+			where create_date>=trunc(:date1) and create_date<trunc(:date1)+1< pre="">
+		
+			where create_date between trunc(:date1) and trunc(:date1)+1-1/(24*60*60)
+
+7.对Where 语句的法则
+
+	7.1 避免在WHERE子句中使用in,not  in,or 或者having
+	
+		可以使用 exist 和not exist代替 in和not in
+	
+		可以使用表连接代替 exist
+	
+		Having可以用where代替,如果无法代替可以分两步处理
+	
+	7.2 不要以字符格式声明数字,要以数字格式声明字符值
+	
+		(日期同样)否则会使索引无效,产生全表扫描
+		
+8.对Select语句的法则
+
+	限制使用select * from table
+	
+	
+9. 排序
+
+	避免使用耗费资源的操作
+			
+	带有DISTINCT,UNION,MINUS,INTERSECT,ORDER BY的SQL语句会启动SQL引擎执行,耗费资源的排序(SORT)功能
+
+	DISTINCT需要一次排序操作, 而其他的至少需要执行两次排序
+
+10.临时表
+
+	慎重使用临时表可以极大的提高系统性能

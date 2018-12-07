@@ -1,0 +1,246 @@
+									WebService
+
+1.什么是WebService
+	
+	WebService是一个平台独立的,低耦合的,自包含的、基于可编程的web的应用程序
+	
+	可使用开放的XML(标准通用标记语言下的一个子集)标准来描述、发布、发现、协调和配置这些应用程序,用于开发分布式的互操作的应用程序
+
+	WebService(WEB服务)能够快捷和方便地综合结合各种系统、商务和任何应用平台
+	
+	利用最新的Web Service 标准能够使任何软件系统和系统之间的应用互通互联,方便,而且更加廉价
+
+2.WebService的应用场合
+	
+	1)跨越防火墙通信
+		
+		客户端和服务器端之间通信都会有防火墙或者代理服务器
+		
+		传统的实现互相通信的方法是在分布式对象,如DCOM、CORBA之间进行相互的远程过程调用(TCP/IP)
+		
+		但在这种场合下HTTP协议的特性没有得到应用,因此在Internet环境下的远程过程调用不是一件容易的事情
+		
+		同时在Internet上使用远程过程调用还存在安全问题,防火墙和代理服务器还有可能阻挡这种类型的数据传输
+		
+		HTTP是在Internet上发送消息的标准协议
+		
+		Web服务使用基于XML消息处理作为基本的数据通信方式,应用程序可以使用HTTP和XML消息等标准在基于Web的应用程序之间交换信息,从而跨越防火墙
+		
+	2)应用程序集成
+		
+		企业里经常要把不同语言写成的在不同平台上运行的各种程序集成起来
+		
+		大型公司常常有很多部门,每个部门都使用最适合自己特定需要的应用程序和平台
+		
+		为了能够让公司各部门之间进行通信,首先应该将公司内部的应用程序和商业过程集成在一起
+		
+		Web服务的开放标准使组织创建可重用的应用程序接口
+		
+		当被包装成一个或一组Web服务之后,任何应用程序理论上都可以通过SOAP消息与任何其他应用程序进行通信
+		
+	3)软件复用
+	
+		 软件复用是在软件开发中避免重复劳动的解决方案
+		 
+		 Web服务实现了业务级别的软件复用 例如在B2B的集成中,各企业之间通过互相调用Web服务,实现了Web服务的共享
+		 
+		 Web服务的使用企业不需要再重新开发其他企业中已经存在的服务
+		 
+3.WebService和Socket的对比
+	
+	(1)
+		Socket是基于TCP/IP的传输层协议 
+		
+		Webservice是基于HTTP协议传输数据,http是基于TCP的应用层协议
+		
+		Webservice采用了基于http的soap协议传输数据
+
+
+	(2)
+		Socket接口通过流传输,不支持面向对象
+		
+		Webservice 接口支持面向对象,最终webservice将对象进行序列化后通过流传输 
+		
+		Webservice采用SOAP协议进行通信,不需专门针对数据流的发送和接收进行处理,是一种跨平台的面向对象远程调用技术
+	
+	(3)
+		
+		Socket适用于高性能大数据的传输,传输的数据需要手动处理,SOCKET通信的接口协议需要自定义
+		
+			比如：自定义一种字符串拼接的格式,比如自定义的xml数据,自定义麻烦之处在接口调用方和接口服务端需要互相讨论确定接口的协议内容,不方便
+
+			缺点
+
+				程序员需要自己去解析输入、输出流,解析发送和接收的数据.数据传输的格式不固定,需要程序员开发socket接口时自定义接口协议
+
+			优点
+			
+				如果要传输大数据量,socket可以满足,如果存在大并发使用socket也可以实现,程序用socket灵活性更大,比如可以socket的高并发框架mina开发
+			
+		WebServcie由于是遵循标准的SOAP协议,SOAP协议的内容格式固定,SOAP协议传递的内容是XML数据,由于WebServcie是基于HTTP的,所以简单理解为SOAP=HTTP+XML
+			
+			适用于没有性能要求情况下且数据传输量小,推荐在公开接口上使用WebServcie,因为SOAP协议是标准的
+				
+			优点
+				
+				JAX-WS可以通过面向对象开发WebService,程序员不需要解析输入、输出流 
+				
+				由于WebService传输数据使用标准的SOAP协议(基于http传输xml),SOAP协议已经被W3C管理了
+			
+			缺点
+				
+				如果传输大数据量,WebService不适用.如果WebService开发大并发的应用,WebService依靠Web容器提高并发数
+
+4.WebService三要素
+	
+	SOAP、WSDL(WebServicesDescriptionLanguage)、UDDI(Universal Description Discovery and Integration)
+
+		SOAP: 基于HTTP协议,采用XML格式,用来描述传递信息的格式
+
+		WSDL: 用来描述如何访问具体的服务.
+
+		UDDI: 用户自己可以按UDDI标准搭建UDDI服务器,用来管理,分发,查询WebService .其他用户可以自己注册发布WebService调用
+		
+5.SOAP
+		
+	Simple Object Accross Protocol 简单对象访问协议是在分散或分布式的环境中交换信息的简单的协议,是一个基于XML的协议
+	
+	它包括四个部分:
+		
+		(1)SOAP封装(envelop)：封装定义了一个描述消息中的内容是什么,是谁发送的,谁应当接受并处理它,以及如何处理它们的框架
+
+		(2)SOAP编码规则：用于表示应用程序需要使用的数据类型的实例
+
+		(2)SOAP RPC ：表示远程过程调用和应答的协定
+
+		(4)SOAP绑定(binding)：使用底层协议交换信息	
+		
+		【SOAP可以和现存的许多因特网协议和格式结合使用,包括超文本传输协议(HTTP),简单邮件传输协议(SMTP),多用途网际邮件扩充协议(MIME)】
+
+6.WSDL 
+
+	 WSDL(Web Service Description Language)是一个用来描述Web服务和说明如何与Web服务通信的XML语言
+	 
+	 因为是基于XML的,所以WSDL既是机器可阅读的,又是人可阅读的,这将是一个很大的好处
+
+		 元素							说明
+		
+		Service				用于聚合一组服务访问点构成一个Web Services的定义
+		
+		Port				为Binding(绑定)制定一个地址,从而定义一个服务访问点
+		
+		Binding				为特定ProtType(端口类型)定义的操作和信息指派具体的传输协议和数据格式规范
+		
+		PortType			一个或多个端点支持的抽象集合,每个操作一般会引用一条输入消息和一条输出消息
+		
+		Message				代表所传输数据的抽象定义,消息由一些逻辑片段构成,每个逻辑片段分别与某个类型系统中的类型定义相关联
+		
+		Type				提供用于描述所交换消息的数据类型定义(String,int)
+		
+	WSDL的阅读方法
+		
+			【从下往上读】
+	
+			【每个WSDL有且只有一个Service节点】
+	
+		1.先找Service节点
+	
+		2.Service节点中找Port节点
+		
+		3.Port节点对应一Bindling节点.每个Binding节点对应一个PortType
+	
+		4.PortType中有operation节点就是服务的方法
+		
+		5.Operation中有Input参数和Output返回值
+	
+		6.Input和Output对应Message节点
+	
+		7.Message对应Element节点,Element节点对应ComplexType节点描述了参数及返回值的数据类型
+	
+	使用注解规范WSDL
+		
+		@WebService: 定义服务,在public class上边
+
+			targetNamespace:指定命名空间
+
+			name:portType的名称
+
+			portName:port的名称
+
+			serviceName:服务名称
+			
+			
+		@WebResult:定义返回值
+
+			name:返回结果值的名称
+ 
+ 
+		@WebParam:定义参数
+
+			name:指定参数的名称
+		
+		
+		@WebMethod
+		
+			exclude:排除指定的方法
+			
+			默认情况下,SEI实现类中所以的public方法会发布成服务方法
+			
+			如果不想把public方法发布成服务方法,需要使用@WebMethod注解,把此方法排除.在实现类中至少有一个方法发布为服务方法
+			
+	作用: 通过注解,可以更加形像的描述Web服务.对自动生成的wsdl文档进行修改,为使用者提供一个更加清晰的wsdl文档
+
+		当修改了WebService注解之后,会影响客户端生成的代码.调用的方法名和参数名也发生了变化
+	
+7.UDDI
+	
+	UDDI是一种目录服务 通过它,企业可注册并搜索 Web services
+	
+	企业将自己提供的Web Service注册在UDDI,也可以使用别的企业在UDDI注册的web service服务,从而达到资源共享.
+
+    UDDI旨在将全球的webservcie资源进行共享,促进全球经济合作
+
+    但是使用webservice并不是必须使用UDDI,因为用户通过WSDL知道了web service的地址,可以直接通过WSDL调用webservice
+			
+8.Java中WebService规范
+	
+	JAX-WS、JAX-RS、JAXM&SAAJ(废弃)
+	
+	JAX-WS规范
+		
+		全称为Java API for XML-Based WebServices
+		
+		早期的基于SOAP 的JAVA 的Web 服务规范JAX-RPC(Java API For XML-Remote Procedure Call)目前已经被JAX-WS 规范取代
+		
+		从JDK5开始支持JAX-WS2.0版本,JDK1.6.0_13以后的版本支持2.1版本,JDK1.7支持2.2版本
+		
+		采用标准SOAP(Simple Object Access Protocol) 协议传输,SOAP属于W3C标准 SOAP协议是基于HTTP的应用层协议,SOAP协议传输是XML数据
+		
+		采用WSDL作为描述语言即WebService使用说明书,WSDL属W3C标准
+		
+		XML是WebService的跨平台的基础,XML主要的优点在于它既与平台无关,又与厂商无关
+		 
+		XSD
+			
+			W3C为WebService制定了一套传输数据类型,使用xml进行描述
+			
+			即XSD(XML Schema Datatypes),任何编程语言写的WebService接口在发送数据时都要转换成WebService标准的XSD发送
+
+	JAX-RS规范
+		
+		 JAX-RS 是JAVA 针对REST(Representation State Transfer 表征状态转移)风格制定的一套Web服务规范
+		 
+		 由于推出的较晚,该规范(JSR 311,目前JAX-RS 的版本为1.0)并未随JDK1.6 一起发行
+		 
+		 支持JAX-RS服务规范的框架有：
+			
+			 CXF——XFire和Celtix的合并(一个由IONA赞助的开源ESB,最初寄存在ObjectWeb上)
+			 
+			 Jersey——Sun公司的JAX-RS参考实现
+			 
+			 RESTEasy——JBoss的JAX-RS项目
+
+			 Restlet——也许是最早的REST框架了,它JAX-RS之前就有了
+			 
+		【注：REST 是一种软件架构模式,只是一种风格,rest服务采用HTTP 做传输协议】
+	

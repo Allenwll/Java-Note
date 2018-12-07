@@ -1,0 +1,186 @@
+﻿						Ajax
+						
+		Asynchronous JavaScript and XML的缩写
+		
+		允许浏览器与服务器通信而无须刷新当前页面的技术都被叫做Ajax.
+		
+Ajax是什么:
+	
+	一种不用刷新整个页面便可与服务器通讯的办法
+	
+	数据在客户端与服务器之间独立传输。服务器不再返回整个页面
+	
+	通常把 Ajax 当成 XMLHttpRequest 对象的代名词 
+	
+AJax 是各种功能集合在一起的技术
+	
+	服务器端语言：服务器需要具备向浏览器发送特定信息的能力。Ajax与服务器端语言无关。
+	
+	XML (eXtensible Markup Language，可扩展标记语言) 是一种描述数据的格式。Aajx 程序需要某种格式化的格式来在服务器和客户端之间传递信息，XML 是其中的一种选择
+	
+	XHTML（eXtended Hypertext Markup Language,使用扩展超媒体标记语言）和 CSS（Cascading Style Sheet,级联样式单）标准化呈现；
+	
+	DOM（Document Object Model,文档对象模型）实现动态显示和交互；
+	
+	使用XMLHTTP组件XMLHttpRequest对象进行异步数据读取
+	
+	使用JavaScript绑定和处理所有数据
+
+Ajax缺点
+
+	由 Javascript 和 AJAX 引擎导致的浏览器的兼容
+	
+	页面局部刷新，导致后退等功能失效。
+	
+	对流媒体的支持没有FLASH、Java Applet好。
+	
+	一些手持设备（如手机、PDA等）支持性差。
+
+XMLHttpRequest概述
+
+	XMLHttpRequest 最早是在IE5中以ActiveX组件的形式实现的。非 W3C 标准.
+	
+	创建XMLHttpRequest对象（由于非标准所以实现方法不统一）
+	
+	Internet Explorer把XMLHttpRequest实现为一个ActiveX对象
+	
+	其他浏览器（Firefox、Safari、Opera…）把它实现为一个本地的JavaScript对象。
+	
+	XMLHttpRequest在不同浏览器上的实现是兼容的，所以可以用同样的方式访问XMLHttpRequest实例的属性和方法，而不论这个实例创建的方法是什么。
+
+
+同步:
+	
+	顺序
+	
+异步：
+		
+	抢CPU来执行程序
+
+	创建原生XMLHttpRequest:
+			
+			
+		//1.创建XMLHttpRequest对象
+
+		var xhr = null;
+
+		if (window.XMLHttpRequest) {
+			alert("Mordern");
+			xhr = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			alert("Old");
+			xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+				
+		//2.创建一个连接
+			
+		xhr.open("GET", this.href
+			
+		//3.发送请求
+		
+		xhr.send(null);//为了防止火狐出错
+			
+		//4.监听请求过程，每次请求状态值的改变都会触发此事件,是由服务器触发的
+			xhr.onreadystatechange = function() {
+				alert("状态");
+				alert(xhr.readyState);		
+				if (xhr.readyState == 4) {//与服务器交互完成
+					alert(xhr.status);
+					if (xhr.status == 200 || xhr.status == 304) {//ok
+						var result = xhr.responseText;
+						alert(result);//服务器相应内容
+
+						//进行需求操作
+						document.getElementById("main").innerHTML = result;
+					}
+				}
+
+			}
+		
+方法
+	
+	abort()   停止当前请求
+	
+	getAllResponseHeaders()  把HTTP请求的所有响应首部作为key-value返回
+	
+	getResponseHeader()   返回指定首部的串值
+	
+	open("method","url") 建立对服务器的调用
+	
+	send(content)  向服务器发送请求
+	
+	SetRequestHeader() 把指定首部设置为所提供的值。在设置任何首部之前必须先调用open()
+	
+属性
+
+	onreadystatechange 	每个状态改变都会触发该事件处理器,通常会调用一个JS函数
+	
+	readyState	请求的状态,有5个取值 0是未初始化 1是正在加载 2是已经加载 3是交互中 4是完成
+	
+	responseText  服务器的响应，表示为一个串
+	
+	responseXML 服务器端响应,表示为XML。这个对象可以解释为DOM对象
+	
+	status	服务器的HTTP状态码 200表示OK 404表示NotFound 等
+	
+			404 没找到页面(not found)
+			
+			403 禁止访问(forbidden)
+			
+			500 内部服务器出错(internal service error)
+			
+			200 一切正常(ok)
+		
+			304 没有被修改(not modified)
+
+	
+	statusText HTTP的状态码文本 OK NotFound等
+	
+	
+Ajax常用的数据交互格式
+	
+	HTML  
+	
+		使用简单
+		
+		返回的html(片段)可直接使用,仅适合更新部分区域,但是分解使用困难
+		
+		用responseText接收
+		
+	XML
+		
+		笨重,但是通用
+		
+		不可直接使用，可以将其当做Dom对象，进行解析,但是解析困难
+		
+		用 responseXML接收
+		
+		var website=getElementsByTagName("xxx")[0].firstChild.nodeValue;
+		
+		创建节点构件 结构
+		
+		eg:  var aNode=document.createElement("a");
+			
+			aNode.href=website;
+			
+			aNode.appendChild(xxx);
+		
+	JSON
+	
+		小巧,且有面向对象的特点,还有第三方jar包帮我们生成json格式的字符串,使用方便
+		
+		JSON JavaScript 对象表示法
+		
+		
+		需要 eavl("("+ xxx+")");来解析
+		
+			eg：
+			
+				var str="{'sxt':'BeiJing'}";
+				
+			var Json=eavl("("+str+")");
+			
+			alert(Json.sxt);
+				
+	
+		

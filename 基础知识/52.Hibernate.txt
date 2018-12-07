@@ -1,0 +1,798 @@
+				Hibernate
+				
+1.Hibernate是以个主流的轻量级持久化框架，在JDBC基础上进行封装，只需要少量代码就可以完成持久化工作
+	
+	是一个优秀的ORM(对象-关系映射)机制，通过映射文件保存映射信息,在业务层以面向对象的方式编程，开发人员不用考虑数据的保存形式，可以支持多种数据库
+	
+2.持久化
+	
+	在系统运行时,有两种状态，一种是瞬时状态，一种是持久状态
+	
+		瞬时状态：是指保存在内存中的程序数据，程序退出后，数据就消失了，称为瞬时状态
+		
+		持久状态: 是指保存在磁盘上的程序数据，程序退出后依然存在，称为程序数据的持久状态
+		
+	持久化: 将程序数据在瞬时状态和持久状态之间转换的机制
+	
+3.Hibernate是没有侵入性的框架，解决了阻抗不匹配的问题   
+
+4.ORM 对象-关系映射
+	
+	完成对象数据到关系型数据映射的机制称为对象-关系映射，简称ORM   O数据  R关系型数据库  M Mapping
+		
+	O  	指 POJO 实体Bean(有属性，get set 方法)   全称有两个 Plain Ordinary Java Object  和 Plain Old Java Object  普通Java类
+			
+			
+	阻抗不匹配
+
+		在使用hibernate前操作数据库，需要通过sql语句来操作，使用hibernate后可以用面向对象的方式来操作数据库，
+		
+		解决了对象和关系之间不匹配的问题
+			
+	ORM 映射框架: Hibernate, Mybatis  EJB2.0 3.0 Toplink  Jdo, Jpa...		
+		
+5.JDBC和Hibernate的比较
+
+	相同:
+		
+		a)两者都是Java的数据库操作中间件
+		
+		b)两者对于数据库进行直接操作的对象都不是线程安全的，都需要及时关闭
+	
+		c)两者都可以对数据库的更新操作进行显式的事务处理
+		
+	不同:
+		
+		a)使用SQL语言不同
+			
+			JDBC使用的是基于关系型数据库的标准SQL语言
+			
+			Hibernate使用的是HQL(Hibernate query language)语言
+			
+		b)操作的对象不同
+			
+			JDBC 操作的是数据，将数据通过SQL语句直接传送到数据库中执行
+			
+			Hibernate操作的是持久化对象，由Hibernate的底层负责将持久化对象的数据更新到数据库中
+			
+		c)数据状态不同
+			
+			JDBC操作的数据是“瞬时的”,变量的值无法与数据库中的值保持一致
+			
+			Hibernate的数据是可持久的，级持久化对象的数据属性的值是可以跟数据库中的值保持一致的
+			
+6.hibernate流行的原因： 开源,轻量级,极大提高开发效率
+	
+7.hibernate核心
+
+	application 应用
+	
+	Persistent Object 持久化对象
+	
+	hibernate.cfg.xml 核心配置文件
+
+		配置了数据库的连接信息，映射文件信息,通用信息
+		
+	xxx.hbm.xml 映射文件
+		
+		将pojo对象和关系型数据库表映射起来
+			
+		映射规则:
+			
+			1.类名和表名映射
+			
+			2.属性名和字段名映射
+			
+			3.对象和表中的数据记录映射
+			
+			4.属性的类型和字段的类型映射
+		
+8.Hibernate做了很多事情，提高了开发效率，但是呢，执行效率比较JDBC要低很多		
+
+9.软件分层优点
+
+	伸缩性
+	
+	可维护性
+	
+	可扩展性
+	
+	可重用性
+	
+	可管理性
+		
+10.hibernate  执行流程
+	
+	1.读取配置文件 
+
+		Configuration 读取配置信息和映射信息
+	
+	2.注册对象
+	
+	3.注册工程对象
+	
+		SessionFactory 根据数据库的连接信息创建该对象，SessionFactory用于创建Session的工厂  线程安全
+		
+	4.创建Session对象 用来操作实体对象
+		
+		实现对数据库的CRUD操作，根据session的不同方法，生成不同的Sql语句，生成不同的sql语句。并且执行该语句，返回的结果又被封装为指定的对象。
+		
+11.什么是JPA，他跟hibernate是什么关系？
+	
+	JPA(Java Persistence API)是Sun官方提出的Java持久化规范。它为Java开发人员提供了一种对象/关系映射工具来管理Java应用中的关系数据
+	
+	Hibernate是它的一种实现。除了Hibernate，还有EclipseLink(曾经的toplink)，OpenJPA等可供选择
+	
+	所以使用Jpa的一个好处是，可以更换实现而不必改动太多代码。
+
+	Hibernate作为JPA的一种实现,jpa的注解已经是hibernate的核心，hibernate只提供了一些补充，而不是两套注解。hibernate对jpa的支持够足量，在使用hibernate注解建议使用jpa。
+	
+12.将对象给hibernateAPI后，对象会发生如下状态
+ 
+	1.瞬时状态 : new , get, load,find,iterate
+	
+	2.持久状态 ：save ,update, saveOrUpdate
+	
+	3.游离状态 close  clear  
+	
+	
+	对象生命周期:
+			
+		第一条路线		
+			
+			瞬时--->持久----->游离
+			
+			new--->save------>close
+		
+		第二条路线
+			
+			瞬时--->游离---->持久------>瞬时
+			
+			get---->clear----->update------->delete
+		
+	瞬时状态: 内存中有数据,session中没有,数据库中没有
+	
+	持久状态：内存中有数据，session中有,数据库中有数据
+	
+	游离状态: 内存中有数据,session中没有,数据库中有数据
+		
+13.是否可以使用session直接对瞬时状态的数据进行删除或更新操作
+	
+		可以，但是不安全  建议按对象生命周期状态来执行相关操作
+
+
+14.关联映射		
+	
+	1.Hibernate是将操作数据库变为了操作对象。Hibernate进行了orm映射
+	
+		所以hibernate可以从数据库表生成对应的pojo类和映射文件，也可以从pojo类和映射文件生成对应的数据库信息。
+	
+		根据对象信息将对应的关系信息生成：
+			
+			@Test
+		public void testCreateDB(){
+			Configuration cfg = new Configuration().configure();
+			SchemaExport export = new SchemaExport(cfg);
+			//第一个参数  是否打印  数据库脚本
+			//第二个参数 是否将脚本导入数据库执行
+			export.create(true, true);
+		}	
+		
+		或者也可以添加通用配置信息实现该功能：
+		<!-- 
+			hbm2ddl.auto
+			create:(如果表存在先删表) 再创建 
+			create-drop:先删表 再创建 
+			update:如果表存在 则直接操作，如果不存在先创建 在执行操作
+			validate：不会自动创建表--默认
+		-->
+		<property name="hbm2ddl.auto">update</property>
+	
+	2. 常见的有4种关系：1:N，1:1，N:1，N:M
+		
+		
+	3.双向关联和单向关联，有什么区别?
+		
+		单向关联是你在A类里面，可以访问到B类数据，借此就访问到B表的数据，
+		
+		但是在B类里面无法访问A类的数据，也就是访问不到A表的数据。双向是在B类里也可以访问A的数据。
+
+	4关联映射采用xml与注解两种方式，各有什么优缺点？
+		
+		写实体要维护XML。注解:,自动扫描,减少了XML的维护,比较方便。
+	
+	5.怎样实现单向一对一关联？
+		
+		a)一种基于主键
+			
+			在被关联的映射文件中添加 
+					
+					<generator class="assigned"></generator>
+			
+			在关联的映射文件中添加
+					
+					<generator class="foreign">
+						
+						<param name="property">idCard</param>
+					
+					</generator>
+				
+				<one-to-one name="idCard" constrained="true"/>
+		
+		b)一种基于外键
+			
+			在被关联的映射文件中添加 
+				
+				<generator class="assigned"></generator>
+			
+			在关联的映射文件中添加
+			
+				<many-to-one name="idCard" column="idCardId" unique="true"/>
+	
+	6.怎样实现双向一对一关联？
+			
+		a)基于外键
+			
+			在被关联的映射文件中添加 
+			
+				<one-to-one name="person" property-ref="idCard"/>
+			
+			在关联的映射文件中添加
+			
+				<many-to-one name="idCard" column="idCardId" unique="true"/>
+
+		b)基于主键
+			
+			在被关联的映射文件中添加
+			
+				<one-to-one name="person"/>
+			
+			在关联的映射文件中添加
+				
+				<generator class="foreign">
+					
+					<param name="property">idCard</param>
+				
+				</generator>
+			
+			<one-to-one name="idCard" constrained="true"/>
+
+
+
+	
+	7.怎样实现单向多对一关联？
+			
+			在关联的映射文件中添加
+				
+			<many-to-one name="teacher" column="tid"/>
+	
+	8.怎样实现双向多对一关联？
+			
+			在多的一端的映射文件中添加
+				
+				<many-to-one name="teacher" column="tid"/>
+			
+			在一这一端添加
+			
+			<set name="students" inverse="true">
+				
+				<key column="tid"></key>
+				
+				<one-to-many class="cn.sxt.vo.Student"/>
+			</set>
+
+	
+	9.怎样实现单向多对多关联？
+			
+			在关联的映射文件中添加
+			<!-- table表示 关联表  这张表由hibernate来创建和维护-->
+				
+				<set name="permissions" table="t_role_permission">
+					
+					<!-- 当前类在关联表中的外键 -->
+				
+					<key column="rid"></key>
+			
+			<!-- 表示当前类的关联类在关联表中的外键 -->
+				
+					<many-to-many column="pid" class="Permission"/>
+			
+				</set>
+
+
+	10.怎样实现双向多对多关联？
+
+		在关联的映射文件中添加
+
+		<set name="permissions" table="t_role_permission">
+			
+			<!-- 当前类在关联表中的外键 -->
+			
+			<key column="rid"></key>
+			
+			<!-- 表示当前类的关联类在关联表中的外键 -->
+		
+			<many-to-many column="pid" class="Permission"/>
+		
+		</set>
+
+		在被关联的文件中添加
+		
+		<set name="roles" table="t_role_permission" inverse="true">
+			
+			<key column="pid"></key>
+			
+			<many-to-many column="rid" class="cn.sxt.vo.Role"></many-to-many>
+		
+		</set>	
+	
+	11. 组件映射
+	
+		1.在hibernate的关联映射中，有可能一张表映射为多个类，也可能一个类映射为多张表。其中的组件映射就是一张表映射多个类。
+		
+		2.组件指一个类某一部分信息可以单独作为一个类而存在，并且开发更方便，比如：人的联系方式。
+		
+			<component name="link" class="cn.sxt.vo.Link">
+			
+				<property name="qq"/>
+				
+				<property name="phone"/>
+				
+				<property name="email"/>
+			
+			</component>
+	
+	12.复合主键映射
+			
+		a)一个类	
+			<composite-id>
+					<key-property name="stuId"/>
+				<key-property name="subId"/>
+			</composite-id>
+		
+		b)二个类
+		
+			<composite-id name="pk" class="cn.sxt.vo.ResultPk">
+				<key-property name="stuId"/>
+				<key-property name="subId"/>
+			</composite-id>
+			
+	13. 集合映射中list映射
+	
+			<list name="students">
+				<!-- key配置一的一端在多的一端的外键 -->
+				<key column="tid"></key>
+				<!-- 配置有序集合的有序列  默认从0开始
+				<index column="idx"></index>-->
+				<!-- list-index可以指明 排序从哪里开始 -->
+				<list-index base="1" column="idx"></list-index>
+				<one-to-many class="Student"/>
+		</list>
+
+15.Cascade和inverse
+
+	1.cascade级联
+		
+		a)many-to-one中使用级联  	推荐使用save-update
+			
+			a)none:  不使用级联  默认
+				
+			b)save-update: 当保存和更新的级联操作关联对象
+					
+				先保存一的一端的数据，再保存多的一端的数据
+				
+			c)delete: 级联删除关联对象
+					
+				删除多的一端的数据时，会级联删除一的一端的数据
+					
+				如果一的一端数据没有被其他记录引用时可以被删除
+					
+				如果被其他记录引用，那么删除失败 因此不推荐使用
+					
+			d) all 当执行CUD时都会级联操作关联对象
+			
+		b_=  one-to-many中使用cascade  
+		
+			a)none: 不使用级联  默认
+			
+			b)save-update 当保存和更新的级联操作关联对象  不推荐
+			
+				当为一的一端设置关联对象时,保存一的一端的数据会级联保存多的一端的数据，但是会多出N条更新语句,效率较低
+				
+			c)delete：级联删除关联对象 推荐
+			
+				当删除一的一端数据时,会级联将一所对应的多的一端的数据删除
+			
+			d)all 当执行CUD时都会级联操作关联对象
+			
+	2.inverse 反转  
+	
+		用来控制在关联映射中，有集合时,由哪一端来控制(管理)关系(外键) 
+		
+		inverse=true 表示由另外一端来控制关系
+		
+		inverse=false 表示当前端可以控制关系
+
+16.加载策略 lazy
+	
+	加载策略:在hibernate中，为了查询效率，提供了两种加载策略
+	
+		即时加载:即查询数据时，立即从数据库中将数据查询出来
+			
+			get  list
+			
+		延迟加载
+			
+			不会立即到数据库查询数据，只有真正使用数据库时，才会使用数据库查询
+			
+			load
+			
+		懒加载
+		
+			Class 默认是 lazy=true的
+			
+			property 默认是 lazy=false的
+			
+			many-to-one 默认是lazy=proxy的	
+			
+						lazy=false 即时加载
+			
+						lazy=proxy 使用代理进行懒加载
+			
+						lazy=no-proxy 不使用代理进行懒加载
+			
+			one-to-many 默认是lazy=true的	
+				
+				set  
+					
+					lazy=true 懒加载
+					
+					lazy=extra 机智的懒加载 检查是否真正需要数据
+					
+					lazy=false  即时加载
+			
+				
+17.抓取策略 fetch
+
+	指hibernate采用何种方式从数据库中获取数据 大的方面有两类select和join
+	
+	select 抓取 指通过select语句来获取关联数据
+	
+	join抓取  指通过join语句来获取关联数据
+	
+	当采用join抓取数据时，懒加载不起作用
+		
+		
+18.Hibernate查询
+	
+	常见的有 HQL查询,本地SQL查询,Criteria查询
+	
+	HQL: hibernate query language hibernate查询语言，是一种面向对象的语言,关键字不区分大小写,  类名和属性名区分
+	
+		eg:  
+			
+			查询所有
+			
+				String hql="from Student s"; 等同于 select * from t_student s;
+		
+				使用； session.createQuery(hql).list;
+				
+			条件查询  
+
+
+				可以在hql中添加查询的条件
+				
+				在hql中添加别名的方式和sql一样 可以使用空格或者as
+				
+				String hql="from student s where s.age<40";
+				
+				session.createQuery(hql).list();
+				
+				
+			使用占位符
+				
+				String hql="from Student s where s.age<?";
+				
+				session.createQuery(hql).setInteger(0,40).list(); //为占位符设置参数  下标从零开始 
+			
+			使用指定名称   使用名称来代表参数时，需要在名称前加冒号':'
+						
+				String hql="from Student s where s.age<:age";
+				
+				session.createQuery(hql).setInteger("age",40).list(); //为指定名称设置参数 
+			
+				
+			查询指定列
+				
+				String hql="select s.name,s.sex from Student s";
+				
+				List<Object[]> list =session.createQuery(hql).list();
+			
+			查询指定列 返回所需要的对象
+			
+				//需要有该类的对应的构造方法
+				
+				String hql = "select new Student(s.name,s.sex) from Student s";
+				
+				List<Student> list =session.createQuery(hql).list();
+			
+			分页查询
+			
+				List<Student> list=session.createQuery(hql).setFirstResult(0).//(currentPage-1)*PageSize
+				setMaxResults(2)//PageSize
+				.list();
+					
+						
+			//当结果唯一时使用uniqueResult返回一条对象   返回多条 报错
+						
+				String hql="from Student where id=1";
+			
+				Student stu=(Student) session.createQuery(hql).uniqueResult();
+			
+			多条件查询
+			
+				String hql="from Student s where s.age<:age and s.sex=:sex";
+				
+				Map<String,Object> map = new HashMap<String,Object>();
+				
+					map.put("age", 40);
+					
+					map.put("sex", "女");
+				
+				List<Student> list = session.createQuery(hql)
+						.setProperties(map)
+						.list();
+			
+			模糊查询
+				
+				String hql="from Student where name like :name";
+				
+				List<Student> list = session.createQuery(hql)
+					.setString("name", ("h"+"%"))
+					.list();
+			
+			关联查询
+			
+				String hql = "from Student s where s.teacher.name=:name";
+				
+				List<Student> list = session.createQuery(hql)
+					.setString("name", "Mr.Wang").list();
+					
+			外联
+			
+				String hql = "select new Student(s.id,s.name,s.sex) from Student s left join s.teacher";
+				
+				List<Student> list = session.createQuery(hql).list();
+				
+			命名查询
+				
+				List<Student> list = session.getNamedQuery("findStudent").list();
+				
+				<!--整个名称在应用中唯一 如果有参数建议使用CDATA -->
+				<query name="findStudent">
+					<!--from Student where id &lt;3  -->
+					<![CDATA[
+						from Student where id<3
+					]]>
+				</query>
+				
+	本地SQL查询
+		
+		hql语句是hibernate提供查询语言，hibernate可以跨数据库平台，但是hibernate不能使用某个特定数据库的特定功能。使用本地sql查询可以解决这个问题。
+	
+		 查询所有
+		 
+			String sql = "select * from t_student";
+			
+			List<Object[]> list = session.createSQLQuery(sql).list();
+			
+		查询后封装对象
+		
+			String sql = "select * from t_student";
+			
+			List<Student> list = session.createSQLQuery(sql)
+				.addEntity(Student.class).list();
+		
+		查询指定列 ---- 返回数组 不能封装对象
+		
+				String sql = "select name,sex from t_student";
+				
+				List<Object[]> list = session.createSQLQuery(sql).list();
+		
+		条件查询
+		
+				String sql = "select * from t_student where sex=:sex";
+					
+				List<Student> list = session.createSQLQuery(sql)
+				.addEntity(Student.class).setString("sex", "男").list()
+					
+		其他类似
+		
+		命名查询 用到的是 <sql-query></sql-query>
+	
+	Criteria查询
+		
+		完全面向对象
+		
+		查询所有
+			
+			List<Student> list = session.createCriteria(Student.class).list();
+			
+		条件查询	
+		
+			List<Student> list = session.createCriteria(Student.class)
+				.add(Restrictions.lt("id", 3)).add(Restrictions.eq("sex", "女")).list();
+				
+		或查询
+			
+			List<Student> list = session
+				.createCriteria(Student.class)
+				.add(Restrictions.or(Restrictions.lt("id", 3),
+						Restrictions.eq("sex", "女"))).list();
+						
+		模糊查询
+			
+			List<Student> list = session.createCriteria(Student.class)
+				.add(Restrictions.like("name", "r", MatchMode.ANYWHERE)).list();
+				
+		排序
+		
+			List<Student> list = session.createCriteria(Student.class)
+				.addOrder(Order.asc("name")).list();
+		
+		聚合查询
+		
+			Long result=(Long)session.createCriteria(Student.class)
+				.setProjection(Projections.count("id")).uniqueResult();
+				
+		关联查询	
+					
+				List<Student> list=session.createCriteria(Student.class)
+					.createAlias("t_teacher", "t")
+					.add(Restrictions.eq("t.id", 1)).list();	
+
+19.缓存
+	
+	提高效率,缓存就是一块内存空间。
+	
+	在Hibernate中.由于数据每次都到数据库中查询，效率较低,hibernate提供了缓存，来解决这个问题
+	
+	经常使用到的数据可以存在缓存中，这样下一次取数据时从缓存获取,不从数据库中获取，效率得到提高
+		
+			
+	get方法获取数据时
+				
+			首先检查缓存中是否存在，如果存在从缓存中获取数据，如果缓存张没有则从数据库中获取，并且写入缓存，如果数据不存在时返回null
+			
+	load方法获取数据时
+			
+			和get方法大致一致,只是数据不存在时抛出异常ObjectNotFoundException
+				
+	uniqueResult方法获取数据时
+		
+			直接去数据库中获取数据，但是获取的数据会写入缓存
+				
+	list方法获取数据时
+			
+		直接从数据库中获取数据，但是获取的数据会写入缓存
+					
+	iterate方法获取数据时
+				
+		先将数据的主键查询出来，当真正使用数据时，再根据主键到数据库中获取数据，获取数据时会先检查缓存中是否存在
+				
+		如果缓存中存在则从缓存中获取数据，如果缓存中不存在，则从数据库中查询数据，获取的数据会写入缓存
+	
+	1和N+1的问题
+	
+		指list查询数据只需要发出1条sql语句，iterate获取数据需要n+1条sql语句  当数据不需要一次查询是建议使用iterate方法来提高效率
+		
+		
+	Session管理: 
+	
+		
+		clear 清空缓存
+		
+		close 关闭缓存
+		
+		evict 清除指定对象
+		
+		flush 刷新
+			
+			
+		
+20.Hibernate提供了3种缓存
+	
+	a)一级缓存
+	
+		又称session缓存,数据被缓存在session中，声明周期是线程的级别  
+			
+	b)二级缓存	
+		
+		又称为SessionFactory缓存。是进程级别的缓存，可以在集群中使用
+
+		由于生命比较长,所以需要缓存清理算法 LRU,FIFO等
+		
+		二级缓存使用步骤
+			
+			新建项目
+			
+			导入jar包
+			
+			添加ehcache.xml配置文件,在src下添加
+			
+			在hibernate.cfg.xml中开启二级缓存
+			
+			在映射文件中添加<cache/>配置
+
+	c)查询缓存
+		
+		查询缓存，在一级缓存和二级缓存的过程中，查询数据时不会使用缓存。
+		
+		要实现查询的时候使用缓存，那么需要开启查询缓存。查询缓存在二级缓存的基础上实现的。
+	
+21.Hibernate注解
+			
+	@Entity 
+
+		注释声明该类为持久类。将一个Javabean类声明为一个实体的数据库表映射类,最好实现序列化.
+	
+		此时默认情况下,所有的类属性都为映射到数据表的持久性字段.若在类中,添加另外属性,而非映射来数据库的, 要用下面的Transient来注解.
+
+	@Table(name="promotion_info")      			
+			
+		持久性映射的表(表名="promotion_info) @Table是类一级的注解
+			
+		定义在@Entity下,为实体bean映射表,目录和schema的名字,默认为实体bean的类名,不带包名.
+
+	@Id
+
+		注释可以表明哪种属性是该类中的独特标识符(即相当于数据表的主键)。
+	
+	@GeneratedValue  
+		
+		定义自动增长的主键的生成策略.
+		
+	@Transient
+		
+		将忽略这些字段和属性,不用持久化到数据库
+		
+		适用于在当前的持久类中某些属性不是用于映射到数据表,而是用于其它的业务逻辑需要
+			
+		这时须将这些属性进行transient的注解.否则系统会因映射不到数据表相应字段而出错.
+	
+	@Temporal(TemporalType.TIMESTAMP)
+		
+		声明时间格式
+	
+	@Enumerated   
+	
+		声明枚举
+	
+	@Version
+		
+		声明添加对乐观锁定的支持
+	
+	@OneToOne      
+		
+		可以建立实体bean之间的一对一的关联
+		
+	@OneToMany      
+		
+		可以建立实体bean之间的一对多的关联
+	
+	@ManyToOne     
+		
+		可以建立实体bean之间的多对一的关联
+	
+	@ManyToMany    
+		
+		可以建立实体bean之间的多对多的关联
+	
+	@Formula     
+		
+		一个SQL表达式，这种属性是只读的,不在数据库生成属性(可以使用sum、average、max等)
+	
+	@OrderBy         
+		
+		Many端某个字段排序(List)
+	

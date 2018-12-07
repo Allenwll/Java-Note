@@ -1,0 +1,184 @@
+			反射机制
+			
+		JAVA反射机制  Reflection
+				
+			java 在运行状态中，对于任意的一个类，都能够知道这个类的所有属性和方法。
+
+			对于任意一个对象，都能够调用道它任意的方法和属性
+			
+			这种动态获取的信息和动态调用方法的功能，称为java的反射机制
+				
+			
+			本地没有该类，但是能够通过某些途径得到该类所对应的Class对象的字节码数据。
+			
+			知道所在的包和类名 ，通过反射的机制就可以生成一个该类对象
+			
+		静态加载   
+			
+				在编译期就要求某个类必须存在的现象	
+		
+		动态加载
+				
+				在运行期，才会动态的判断需要加载某个类的过程
+				
+				
+		类的加载：
+		
+				JVM提供了一个ClassLoader 类加载器  有3种
+				
+			使用类加载器ClassLoader将class文件加载到方法区会生成一个Class对象
+			
+			每个被加载到内存中的类所对应的Class类型都是唯一的
+		
+			
+		优点 
+			
+			可以降低代码的耦合度  增强代码的灵活性
+			
+			
+		缺点：
+			
+			降低了性能  。是程序的逻辑比较混乱   和直接调用方法相比 差距还是较大
+			
+			
+		开闭原则
+				
+			对添加开放
+			
+			对修改关闭
+		
+		
+		线程监视器
+		
+			因为类的Class对象是唯一的 只能被加载一次  可以当做线程的监视器使用
+			
+		
+		得到一个类的Class对象
+		
+			1.Class.forName(全路径名)  全路径名保证该类的唯一性 
+				
+			2.类名.class
+			
+			3.对象名.getClass()
+			
+		
+		Class  反射机制的起源和入口。保存了类的相关详细信息
+		
+		Filed 代表类的成员字段  属性
+		
+		Method 代表类的成员方法
+		
+		Constructor 代表类的构造方法
+		
+		Array 提供了动态的创建数组以及访问数组元素的方法  java.lang.reflect
+		
+		
+		属性
+							
+		getFields  所有通过.引用符 引用的都可以拿到   (公共的)
+		
+		getDeclaredFields 得到本类所有的访问权限修饰符
+
+
+		
+		得到直接父类私有 的成员
+		
+		getSuperClass().getDeclaredFields()  
+		
+		
+	System.out.println("int是否是基本类型:" + int.class.isPrimitive());
+
+		System.out.println("boolean是否是基本类型:" + boolean.class.isPrimitive());
+
+		System.out.println("int[]是否是基本类型:" + int[].class.isPrimitive());
+
+		System.out.println("void是否是基本类型：" + void.class.isPrimitive());
+
+		System.out.println(Integer.TYPE == int.class);
+
+		Class c = Student.class;
+
+		/***************************** 访问Class的属性 **********************************/
+
+		Field[] fields = c.getFields();
+
+		// 得到公共的被.引用符引用的字段
+		for (Field field : fields) {
+			System.out.println(field);
+		}
+		System.out.println("------------------------");
+
+		fields = c.getDeclaredFields();
+
+		// 得到本类的所有成员
+		for (Field field : fields) {
+			System.out.println(field);
+		}
+
+		System.out.println("------------------------");
+
+		// 得到当前类的直接父类的所有成员
+		fields = c.getSuperclass().getDeclaredFields();
+
+		for (Field field : fields) {
+			System.out.println(field);
+		}
+
+		/*******************************
+		 * 修改Class 的属性
+		 **********************************/
+
+		Field svalue = c.getField("svalue");
+		// 静态的传null
+		svalue.setInt(null, 100);
+
+		System.out.println(svalue.getInt(null));
+
+		Field age = c.getField("age");
+		Student stu = new Student();
+		age.setInt(stu, 10);
+		System.out.println(age.getInt(stu));
+		// 不要尝试修改成员的访问权限，会出现一系列bug
+		Field sGender = c.getDeclaredField("sgender");
+		// sGender.setAccessible(true);
+		sGender.setChar(stu, '女');
+		System.out.println(sGender.getChar(stu));
+
+		/**************************
+		 * 访问类的成员方法 使用Method类
+		 ********************************/
+		System.out.println("----------------方法----------------");
+		Method[] methods = c.getMethods();
+
+		// 得到所有的公有的 包括继承的
+		for (Method method : methods) {
+			System.out.println(method);
+		}
+
+		methods = c.getDeclaredMethods();
+		for (Method method : methods) {
+			System.out.println(method);
+		}
+		Method m;
+		// 调用方法，如果无参，传null
+		// Method m = c.getMethod("show", null);
+		// m.invoke(null, null);
+
+		// 调用非静态方法n
+		m = c.getDeclaredMethod("test", int.class);
+		m.setAccessible(true);
+		m.invoke(stu, 100);
+
+		System.out.println("----------------构造方法----------------");
+		/****************************** 构造方法 *************************************/
+		
+		Constructor[] ct=c.getConstructors();
+		for (Constructor constructor : ct) {
+			System.out.println(constructor);
+		}
+		
+		
+		/*
+		 * Constructor con = c.getConstructor(int.class); Person p = (Person)
+		 * con.newInstance(12); System.out.println(p);
+		 */

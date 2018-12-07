@@ -1,0 +1,145 @@
+						JDBC  java数据库连接
+				
+				Java DataBase Connectity
+	
+		提供者 sun公司  java.sql 和 javax.sql
+	
+	
+	DriverManager 类 ：管理各种不同的JDBC驱动
+
+			根据数据库不同，管理JDBC驱动
+		
+	Connection 接口   连接
+	
+	
+		连接数据库并传送数据
+	
+	Statement 接口   表单，描述
+		
+		由Connection 产生、负责发送执行SQL语句
+		
+	ResultSet 接口  结果集
+		
+		负责保存Statement执行后所产生的查询结果
+		
+	
+	JDBC：
+		
+		与数据库建立连接
+		
+		发送操作数据库的语句
+		
+		处理结果
+		
+	发送器
+	
+		1.Statement  
+		
+		2.PreparedStatement  始终用其 不用 Statement
+		
+			PreparedStatement 实例包含已编译的 SQL 语句，所以其执行速度要快于 Statement 对象。
+			
+					代码的可读性和可维护性.
+					
+					尽最大可能提高性能.
+					
+					极大地提高了安全性
+		
+		3.CallableStatement
+		
+	步骤
+	
+		1. 加载驱动
+		
+		2.创建连接
+		
+		3.创建SQL 命令发送器 Statement
+		
+		4.通过Statement 执行SQL语句 并返回结果
+		
+		5.处理结果 ResultSet
+		
+		6.关闭连接
+	
+	格式：
+		
+		// driver路径
+		String driver = "oracle.jdbc.driver.OracleDriver";
+
+		// url路径
+		String url = "jdbc:oracle:thin@localhost:1521:orcl";
+
+		// 连接
+		Connection conn = null;
+
+		// 状态
+		Statement state = null;
+
+		// 用户名
+		String name = "scott";
+
+		// 密码
+		String pwd = "tiger";
+
+		// 结果集 用于Query 查询 返回结果集
+		ResultSet rs = null;
+
+		// 插入
+		String insertSql = "insert into dept values(50,'市场部','北京')";
+
+		// 加载驱动
+		Class.forName(driver);
+
+		// 建立连接 统一资源定位符,名字,密码
+		conn = DriverManager.getConnection(url, name, pwd);
+
+		// 执行SQL语句
+		state = conn.createStatement();
+
+  		// 返回结果集  //executeUpdate（） 增删改   
+		int result = state.executeUpdate(insertSql);
+			
+		//rs=executeQuery() 查  返回 结果集
+		
+		// 处理结果
+		if (result < 0)
+			System.err.println("插入失败");
+		else
+			System.out.println("插入成功！");
+		
+		
+		//  while(rs.next){
+				
+			//	rs.getInt(1);
+				
+			//rs.getInt("xxx");
+		//s}
+		
+		// 关闭连接
+		rs.close();
+
+		state.close();
+
+		conn.close();
+
+	查询
+
+		System.err.println("部门编号\t\t部门名称\t\t\t部门地点\n");
+
+		// 处理结果
+		while (rs.next()) {
+
+		// 取出各列数据
+		int id = rs.getInt("deptno");
+
+		// 部门名称
+		String dname = rs.getString(2);
+
+		// 部门地点
+		String loc = rs.getString(3);
+
+		// 打印
+		System.out.println(id + "\t\t" + dname + "    \t\t" + loc);
+
+		}
+	

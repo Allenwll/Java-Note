@@ -1,0 +1,271 @@
+﻿				XML
+		
+		XMl   eXtensible Markup Language 可扩展标记语言
+	
+		<!-- 注释 -->  可以跨行  不能出现两个连续的 --
+	
+		<?xmlversion="1.0" encoding="UTF-8" standalone="yes" ?>  可以省略(头文件)
+	
+		version 版本号 1998 年 1.0
+	
+		encoding:指明文档document的编码格式
+	
+		standalone：当前的xml文档是否引用了外部文档  DTD
+
+	SGML（Standard Generalized Markup Language）
+		
+	GML 1969 通用标记语言
+	
+	SGML 1985 标准通用标记语言
+	
+	HTML 1993 超文本标记语言
+	
+	XML 1998 可扩展标记语言
+	
+	XHTML 可扩展超文本标记语言
+	
+	SVG 可缩放矢量图形语言
+	
+	SMIL 同步多媒体综合语言
+	
+	HDML 手持设备标记语言
+	
+	OEB 开放电子结构规范
+	
+	特点：
+		
+		1)良好的可读性
+	
+		2)方便的可扩展性
+		
+		3)数据内容与其形式的分离
+	
+		4)便于信息的检索
+	
+		5)可以轻松地跨平台应用
+	
+		6)支持不同文字不同语种间的信息交互
+	
+		7)大大改善网页的超链接性能
+	
+		8)能够实现数据粒状地更新
+	
+	
+XML VS HTML
+
+比较内容				HTML								XML
+
+可扩展性			不具有扩展性				是元标记语言，可用于定义新的标记语言
+
+侧重点				如何显示数据				什么是数据，如何存放数据
+
+语法要求		不要求标记的嵌套、配对等  	 严格要求嵌套、配对，并遵循DTD的树形结构
+				不要求标记之间具有一定的顺序	
+				
+可读性及可维护性	难于阅读、维护	结构清晰		便于阅读、维护
+
+数据和显示的关系	内容描述与显示方式整合为一体	内容描述与显示方式相分离
+
+编辑及浏览工具		已有大量的编辑、浏览工具		编辑、浏览工具尚不成熟	
+	
+	
+	
+	
+	DTD即文档类型定义--Document Type Definition 
+		
+		使每个XML文件可以携带一个自身格式的描述
+		
+		一个DTD文档可能包含如下内容：	
+		
+			元素的定义规则
+
+			元素之间的关系规则
+	
+			属性的定义规则
+
+
+	
+		文档类型
+					
+			元素与小括号间有一英文空格  
+				
+			写在XML中的叫内部验证
+				
+			<!DOCTYOE poem SYSTEM "poem.dtd"
+					
+				<!ELEMENT poem (子标签) >
+				<!ELEMENT 子标签 （#PCDATA）>
+										
+			>
+		
+		使用DTD验证描述诗集的XML文档
+		
+		<?xml version="1.0"?>
+		<!DOCTYPE poem [
+			<!ELEMENT poem (author,title,content) >
+			<!ELEMENT author (#PCDATA)>
+			<!ELEMENT title (#PCDATA)>
+			<!ELEMENT content (#PCDATA)>
+		]>
+		<poem>
+			<author>王维</author>
+			<title>鹿柴</title>
+			<content>
+				空山不见人,但闻人语声。返景入深林,复照青苔上。     
+			</content>
+		</poem>
+
+		#PCDATA－可以包含任何字符数据，但是不能在其中包含任何子元素。如：<!ELEMENT title (#PCDATA)>
+		
+		纯元素类型－只包含子元素，并且这些子元素外没有文本。如：<!ELEMENT poems (poem*)>
+
+		
+		
+		写在外面  外部引用
+				
+	
+	
+	
+	4种操作XML方式
+			
+		1.DOM  documentt object model    文档对象模型
+			
+			特点： 将整个XML文档一次性载入内存
+			
+			缺点：非常占用内存，效率比较低
+			
+			优点: 操作起来很方便，都已经载入内存
+			
+			
+			基于XML树结构
+			
+			比较耗资源
+			
+			适用于多次访问XML
+			
+			
+		2.SAX  使用事件处理机制处理XML文档
+		
+			优点：
+			
+			没有延迟，直接处理需要访问的数据
+			
+			没有多余的对象生成 内存消耗可控
+			
+			缺点：不能全局掌控
+				
+			基于事件
+			
+			消耗资源小
+			
+			适用于数据量较大的XML	
+				
+				
+		
+		3.JDOM	
+
+			比DOM更快
+			
+			JDOM仅使用具体类而不使用接口
+
+
+		4.DOM4J
+			
+			常优秀的Java XML API
+		
+			性能优异、功能强大
+			
+			开放源代码
+			
+			
+			Document：定义XML文档
+			
+			Element：定义XML元素
+			
+			Text：定义XML文本节点
+			
+			Attribute：定义了XML 的属性
+			
+			
+使用DOM4J解析XML的步骤
+				
+1.导入jar包
+
+	import org.dom4j.Attribute;
+	import org.dom4j.Document;
+	import org.dom4j.DocumentException;
+	import org.dom4j.Element;
+	import org.dom4j.io.SAXReader;
+
+2.指定要解析的文件
+				
+	File  f=new  File(fileName);
+
+3.把文件转换成Document 获得document 对象
+		
+	SAXReader saxReader=new SAXReader();
+	
+	Document document=saxReader.read(f);
+
+4. 获得属性或文本
+	
+	String text=memberElm.getText();
+	
+	String text=attribute.getText();
+
+操作XML文档节点
+Element rootElm=document.getRootElement();//获得根节点
+
+Element memberElm=root.element(“member”); //获得子节点
+
+String text=memberElm.getText();//获得节点文本
+
+Element ageElm=newMemberElm.addElement(“age”);//添加子节点
+
+ageElm.setText(“29”);//设置节点文本
+
+parentElm.remove(childElm);//）删除某节点
+
+将文档写入XML 文件
+
+OutputFormat format=OutputFormat.createPrettyPrint();
+
+format.setEncoding("GBK"); //指定XML编码
+
+XMLWriter writer=new XMLWriter(new FileWriter("output.xml"),format);
+
+writer.write(document);
+
+writer.close();
+
+
+使用DOM读取XML的步骤：
+		
+	1.创建解析器工厂对象
+	
+	2.由解析器工厂对象创建解析器对象
+
+	3.由解析器对象对指定XML文件进行解析，构建相应DOM树，创建Document对象
+
+	4.以Document对象为起点对DOM树的节点进行增删改查操作使用
+
+
+//【1】得到转换器工厂对象
+TransformerFactory transfactory=TransformerFactory.newInstance();
+//【2】得到转换器对象
+Transformer trans=transfactory.newTransformer();
+//【3】dom源对象
+DOMSource source=new DOMSource(document);
+//【4】设置输出格式
+trans.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+trans.setOutputProperty(OutputKeys.INDENT, "yes");
+//【5】流结果对象
+StreamResult result=new StreamResult(new FileOutputStream("scores.xml"));
+//【6】转换成xml文件
+trans.transform(source, result);
+	
+	
+
+
+
+	

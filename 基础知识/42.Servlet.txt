@@ -1,0 +1,629 @@
+﻿						Servlet
+		
+		是一种服务器端的Java应用程序,具有独立于平台和协议的特性,可以生成动态的Web页面
+		
+		担当客户请求(Web浏览器或其他HTTP客户程序)与服务器响应(HTTP服务器上的数据库或应用程序)的中间层
+		
+		Servlet是位于Web服务器内部的服务器端的Java应用程序，与传统的从命令行启动的Java应用程序不同
+		
+		Servlet由Web服务器进行加载，该Web服务器必须包含支持Servlet的Java虚拟机
+		
+		是web服务器编程技术，是一种特殊的接口
+		
+		Servlet=Server+Applet 是指Servlet为服务器端的小程序
+		
+		公共网关接口 GGI  Common Gateway Interface
+		
+Servlet特点
+	
+	方便
+	
+	功能强大
+	
+	可移植性好
+	
+	节省投资
+	
+	
+Servlet生命周期 
+
+	初始化阶段: 装载Servlet
+		
+		在以下时刻Servlet容器装载Servlet: 	
+		
+			在web.XML文件中的<Servlet></Servlet>中添加 <loadon-startup>1</loadon-startup>
+		
+			在Servlet容器启动后，客户首次向Servlet发送请求
+		
+			Servlet文件被更新后，重新装载Servlet
+		
+		Servlet被装载后，Servlet容器创建一个Servlet实例并且调用Servlet的init()方法进行初始化。在整个生命周期内，init()方法只被调用一次
+		
+	响应请求阶段:创建ServletRequest和ServletResponse对象
+	
+		对于用户到达Servlet的请求，Servlet容器会创建特定于这个请求的ServletRequest对象和ServletResponse对象，然后调用Servlet的service方法
+		
+		service方法从ServletRequest对象获得客户请求信息，处理该请求，并通过ServletResponse对象向客户返回响应信息。 Tomcat 将传递的参数放在一个Hashtable中
+		
+	Servlet终止阶段
+		
+		当Web应用被终止，或Servlet容器终止运行，或Servlet容器重新装载Servlet新实例时，Servlet容器会先调用Servlet的destroy()方法
+		
+		在destroy()方法中可以释放掉Servlet所占用的资源
+	
+	Servlet被服务器实例化后，容器运行其init方法，请求到达时运行其service方法，service方法自动派遣运行与请求对应的doXXX方法(doGet、doPost等)
+	
+	当服务器决定将实例销毁的时候调用其destroy方法
+	
+与CGI的区别在于Servlet处于服务器进程中，它通过多线程方法运行其service方法，一个实例可以服务于多个请求，并且其实例一般不会销毁
+
+而CGI对每个请求都产生新的进程，服务完成后就销毁，所以效率上低于Servlet
+
+
+Servlet配置
+
+	1.配置Servlet的名字、类和其他杂项
+		
+		首先必须指定Servlet的名字和Servlet的类(如果是JSP，必须指定JSP文件的位置)。可以选择性地给Servlet增加一定的描述，并且指定它在部署时显示的名字，部署时显示的icon
+		
+		<description>Study Servlet Config</description>  Servlet的描述
+		<display-name>HelloWorld Config</display-name> 显示的名字名称
+		<servlet-name>HelloWorld</servlet-name>引入Servlet类名称
+		<servlet-class>com.cn.javaweb.servlet.ch3.HelloWorldServlet</servlet-class> 引入Servlet类
+		
+	2.初始化参数
+		
+		初始化参数配置后，在Servlet中可以取得
+		
+		<init-param> 初始化参数
+			<param-name>jdbcDriver</param-name> 初始化参数连接驱动名称
+			<param-value>com.mysql.jdbc.Driver</param-value>初始化参数值(驱动名称)
+		</init-param>
+		
+		<init-param>
+			<param-name>url</param-name> 初始化参数url
+			<param-value>127.1.1.1</param-value> 初始化参数url名称
+		</init-param>
+		
+	3.	启动装入的优先级
+		
+			通过<loadon-startup></loadon-startup>配置
+			
+			当启动Web容器时，用load-on-startup 元素自动将Servlet加入内存。
+			
+			内容小于零时，第一次访问时创建    内容大于零时，按从小到大的顺序，依次加载servlet
+			
+			内容可以为空或者是一个整数  这个值表示有Web容器载入内存的顺序。 元素值小的Servlet先被加载
+			
+	4.Servlet的映射
+		
+		可以给一个Servlet做多个映射，这样可以通过不同的方式来访问这个Servlet
+		
+		<servlet-mapping>	
+			<servlet-name>HelloWorld</servlet-name> 配置servlet名称
+			<url-pattern>/hellp</url-pattern> 配置访问路径,输入*/hello 访问
+		</servlet-mapping>
+			
+		<servlet-mapping>
+			<servlet-name>HelloWorld</servlet-name> 配置servlet名称
+			<url-pattern>/count/*</url-pattern> 配置访问路径,输入*/hello访问
+		</servlet-mapping>
+
+Servlet的类接口
+
+	Servlet实现相关: 定义了用于实现Servlet相关的类和方法
+		
+		1.Servlet声明：
+			
+			public interface Servlet 是所有Servlet必须直接或间接实现的接口。内有如下方法
+				
+				init(ServletConfig config): 用于初始化Servlet
+				
+				destroy():销毁Servlet
+				
+				getServletInfo:获得Servlet的信息
+				
+				getServletConfig: 获得Servlet配置相关信息
+				
+				Service(ServletRequest req,ServletResponse res)：运行应用程序逻辑的入口点，它接收两个参数，一个是客户端请求信息，一个是对客户端的响应
+				
+		2.GenericServlet:
+			
+			public abstract class GenericServlet implements Servlet,ServletConfig,java.io.Serializable
+			
+				提供了对Servlet接口的基本实现。它是一个抽象类，它的service()方法是一个抽象方法，GenericServlet的派生类必须直接或间接实现这个方法
+		
+		3.HttpServlet 
+		
+			public abstract class HttpServlet extends GenericServlet implements java.io.Serializable
+			
+				HttpServlet类是针对使用Http协议的Web服务器的Servlet类。HttpServlet类通过执行Servlet接口，能够提供Http协议的功能
+				
+				HttpServlet 的子类必须实现以下方法中的一个
+				
+					doGet： 支持Http Get 请求
+					
+					doPost: 支持Http Post 请求
+					
+					doPut: 支持Http Put 请求
+					
+					doDelete:支持Http Delete请求
+					
+					init和destroy: 管理Servlet占用的资源
+					
+					getServletInfo: 获得Servlet自身的信息
+	
+	
+	Servlet配置相关: 主要包括ServletConfig接口
+	
+			javax.servlet.ServletConfig接口代表了Servlet的配置,Servlet的配置包括Servlet的名字、Servlet的初始化参数和Servlet上下文
+			
+			声明: public interface ServletConfig 
+			
+				主要方法:
+					
+					getInitParameter(String name)： 返回特定名字的初始化参数
+					
+						eg: getInitParameter("encoding") 返回UTF-8字符串
+						
+					getInitParameterNames(): 返回所有的初始化参数的名字
+					
+					getServletContext(): 返回Servlet的上下文对象的引用
+			
+	Servlet异常相关: Servlet API 有两个异常————ServletException和UnavailableException
+	
+			ServletException 
+				
+				public class ServletException extends Exception 
+				
+				包含几个构造方法和一个获得异常原因的方法.获得异常原因的方法是 getRootCause();
+				
+			UnavailableException 
+				
+				public class UnavailableException
+					
+					当Servlet或者Filter暂时或永久不可用时，抛出该异常
+					
+	
+	请求和响应相关：用于接收客户端的请求，并且做出对应的响应
+		
+			相关接口
+				
+				ServletRequest: 代表了Servlet的请求，它是一个高层接口，它的子接口是HttpServletRequest
+				
+				ServletResponse： 代表了Servlet的响应，它是一个高层接口，它的子接口是HttpServletResponse
+				
+				ServletInputStream: Servlet的输入流
+				
+				ServletOutputStream: Servlet的输出流
+				
+				ServletRequestWrapper: 是ServletRequest的实现
+				
+				ServletResponseWrapper: 是ServletResponse的实现
+				
+				HttpServletRequest: 代表了Http的请求，继承了ServletRequest接口
+				
+					最常用的方法是获取请求中的参数，这个参数是客户端表单中的数据
+					
+					此接口可以获取客户端传送的参数名称，也可以获取客户端正在使用的通信协议，可以获取远端主机名和其IP地址等
+					
+					主要方法：
+						
+						getCookies(): 获得客户端发送的Cookie
+						
+						getSession(): 返回和客户端关联的Session，如果没有给客户端分配Session，则返回null
+						
+						getSession(boolean create): 不同的是，如果没有给客户端范培，则创建一个新的Session并返回
+						
+						getParameter(String name): 获得请求中名为name的参数的值，如果没有该参数，则返回null
+						
+						getParameterValues(String name): 获得请求中名为name的参数的值，这个值往往是checkbox或select控件提交的，获得的值是一个String数组
+					
+				HttpServletResponse: 代表了Http的响应，继承了ServletResopnse接口
+					
+					声明:
+						
+						public interface HttpServlet Response extends ServletResponse
+						
+						代表了对客户端请求的响应。
+					
+					主要方法:
+						
+						addCookie(Cookie cookie): 在响应中增加一个Cookie
+						
+						encodeURL(String url): 使用url和一个SessionId重写这个URl
+						
+						sendRedirect(String location): 把响应发送到另一个页面或者Servlet进行处理
+						
+							重定向整个过程一共发出了2个请求，都是由客户端发送的
+							
+							重定向之后，所有的请求参数全部消失  如果需要其参数 需要手动设置
+							
+							重定向之后，地址发生改变
+							
+							重定向之后的代码也会执行，存在风险，所以一般加return
+							
+							可以访问外网
+						
+						setContentType(String type): 设置响应的MIME类型
+						
+						setCharacterEncoding(String charset): 设置响应的字符编码类型
+						
+				HttpServletRequestWrapper: 是HttpServletRequest的实现
+				
+				HttpServletResponseWrapper: 是HttpServletResponse的实现
+	
+	会话跟踪: 用于跟踪和客户端的会话
+	
+		声明:
+			
+			public interface HttpSession
+			
+			被引擎用来实现Http客户端和Http会话之间的关联
+			
+			这种关联可能在多出连接和请求中持续一段给定的时间。
+			
+			Session用来在无状态的Http协议下越过多个请求页面来维持状态和识别用户
+			
+			一个Session可以通过Cookie或重写URl来维持
+			
+		常用方法:
+			
+			getCreationTime(): 返回创建Session的时间
+			
+			getId(): 返回分配给这个Session的标识符。 一个Http Session 的标识符是一个由服务器来建立和维持的唯一的字符串
+			
+			getLastAccessedTime(): 返回客户端最后一次发出与这个Session相关的请求的时间，如果这个Session是新建立的就返回-1
+			
+			getMaxInactiveInterval(): 返回一个描述，这个秒数表示客户端在不发出请求时，Session被Servlet引擎维持的最长时间
+						
+				在这个时间之后，Session可能被Servlet引擎终止，如果这个Session不会被终止，则返回-1
+						
+			getValue(String name): 返回一个以给定名字绑定到Session上的对象，如果不存在这样的绑定，返回空值
+			
+			getValueNames(): 以一个数组返回绑定到Session上的所有数据的名称
+			
+			invalidate(): 这个方法会终止这个Session  所有绑定在Session上的数据都会被清除
+			
+			inNew(): 返回一个布尔值以判断这个Session是不是新的。
+				
+				如果一个Session已经被服务器建立但还没有收到相应的客户端的请求，这个Session将被认为是新的
+				
+				这个客户端还没有加入会话或没有被会话公认。在它发出下一个请求时还不能返回适当的Session认证信息。
+				
+				当Session无效后，再调用这个方法会抛出一个IllegalStateException异常
+			
+			putValue(String name,Object value): 已给定的名字绑定给定的对象到Session中
+					
+				已存在的同名的绑定会被重置，这时会调用HttpSessionBindingListerer接口的valueBound方法
+	
+			removeValue(String name): 取消绑定  
+				
+				如果未找到给定名字的绑定则什么也不做。这时会调用HttpSessionBindingListerer接口的valueBound方法
+			
+			setMaxInactiveInterval(int interval)： 设置一个秒数，表示客户端在不发出请求时，Session被Servlet引擎维持的最长时间
+
+	Servlet上下文: 通过这个接口可以在多个Web应用程序中共享数据
+			
+		相关的接口ServletContext
+
+		注意：
+				
+			在服务器上使用Session对象来维持单个客户的相关状态，而当为多个用户的Web应用维持一个状态时，则应使用Servlet环境(Context)
+			
+		ServletContext对象表示一组Servlet共享的资源，在Servlet API的1.0和2.0中，该对象仅仅提供了访问有关Servlet环境信息的方法。
+		
+		例如提供了访问服务器名称、MIME类型映射等方法和可以将信息写入服务器日志文件的log()方法
+		
+			访问有关Servlet环境信息常用方法：
+				
+				getAttribute(String name):获得ServletContext中名称为name的属性
+				
+				getAttribute(String uripath): 返回给定的uripath的应用的Servlet上下文
+				
+				removeAttribute(String name): 删除ServletContext中名称为name的属性
+				
+				setAttribute(String name,Object obj): 在ServletContext中设置一个属性，名称为name，值为obj
+			
+	Servlet协作: 主要是RequestDispatcher接口，用于进行视图派发
+		
+		主要是RequestDispatcher接口，它可以把一个请求转发到另一个Servlet
+		
+		声明：
+			
+			public interface RequestDispatcher
+			
+		包含方法:
+			
+			forward(ServletRequest req,ServletResponse res): 把请求转发到服务器上的另一个资源(Servlet、JSP和HTML)
+				
+				整个请求转发的过程中用一个发出了一次请求
+				
+				请求转发后请求参数依然可以有效
+				
+				请求转发过程中请求地址没有改变
+				
+				请求转发后的代码也会执行，但是会有风险，一般加return
+		
+				同一个项目来说，能使用请求转发和重定向访问项目里的所有资源，但是推荐使用请求转发  因为请求转发效率更高
+				
+				不能访问外网
+				
+			include(ServletRequest req,ServletResponse res): 把服务器上的另一个资源(Servlet、JSP和HTML)包含到响应中
+		
+	过滤: Cookie和HttpUtils类
+		
+		通过过滤，可以对请求进行统一编码，对请求进行认证等 每个Filter可能只担任很少的任务，多个Filter可以互相协作，以完成一个复杂的功能
+			
+		Filter 
+			
+			
+			服务器启动时初始化
+				
+				
+				不关心启动顺序,只关心访问顺序
+				
+				过滤条件：根据配置文件中和用户的请求地址,做一个关联
+				
+				可以过滤所有文件 /*
+				
+				能对访问前进行过滤,也能对访问后进行过滤
+				
+				访问顺序是 根据web.xml的 从上到下依次访问
+				
+				
+			
+			public interface Filter 
+				
+			   init(FilterConfig fc): 这个方法初始化Filter
+			   
+				doFilter(ServletRequest req,ServletResponse res,FilterChain chain)：Filter 的业务方法就在这里实现
+				
+				destroy(): 释放Filter占用的资源
+				
+		FilterChain 
+			
+			public interface FilterChain
+
+				是代码的过滤链，通过这个接口把过滤的任务在不同的Filter之间转移，
+					
+					doFilter(ServletRequest req,ServletResponse res) 通过这个方法来调用下一个Filter，如果没有下一个Filter,那么将调用目标的资源
+					
+		FilterConfig
+			
+			public interface FilterConfig
+			
+				代表了Filter的配置
+				
+				方法
+					
+					getFilterName(): 返回Filter的名字
+					
+					getInitParameter(String name): 获得名字为name的初始化参数
+					
+					getServletContext(): 返回这个Filter所在的Servlet上下文对象
+					
+					getInitParameterNames(): 获得Filter配置中的所有初始化参数的名字
+			
+		
+		
+	
+乱码问题
+		
+	请求端:
+		
+		post方式乱码处理
+		
+			req.setCharacterEncoding("utf-8");
+
+		
+		 get 方式乱码处理
+
+			1.req.setCharacterEncoding("utf-8");
+		 
+			2.在tomcat服务器下的config下server.xml的Connector标签下加入
+					
+				useBodyEncodingForURI="true"
+		 
+	响应端:
+		
+		
+		第一种
+			
+			resp.setHeader("content-type", "text/html;charset=utf-8");
+			
+		第二种
+			
+			resp.setContentType("text/html;charset=utf-8");
+		
+Cookie 和Session 
+			
+	Cookie 由Servlet创建并将少量信息返回给客户端保存
+		
+		1.	未设置存活时间，保存在浏览器内存中，浏览器一关闭就消亡
+			
+			// 创建Cookie
+			Cookie comCookie = new Cookie("computer", "ACER");
+
+			// 添加到响应端
+			resp.addCookie(comCookie);
+		
+		2.   设置存活时间,保存在硬盘上，时间一到就销毁
+			//创建Cookie
+			Cookie mouseCookie=new Cookie("mouse", "RazerMantis")
+		
+			//保存三天  传入的是秒数
+			mouseCookie.setMaxAge(60*60*24*3);
+		
+			//添加到响应端
+			resp.addCookie(mouseCookie);
+		
+		3.查看Cookie的生存周期 
+
+				看调试工具的Expires属性值
+          
+        4.查看Cookie的访问路径  
+				
+				看调试工具的Path属性值
+				
+		5.动态设置Cookie访问路径
+			
+				keyBoardCookie.setPath(req.getContextPath() + "/car");
+		
+		6.Cookie和服务器无关
+				
+			获取Cookie信息
+				
+				获取Cookie信息
+				
+					Cookie[] cookies = req.getCookies();
+					
+	Session	
+		
+		HttpSession(I)
+		
+			会话，服务器端和客户端的交互
+			
+			客户第一次访问项目的时候创建一个JSessionId
+			
+			第二次时直接使用前面的JSessionId
+			
+			
+		可不可以取消Cookie
+  		
+  			不可以，一旦浏览器关闭，JSessionId丢失，会话就结束了
+  				
+  			Session跟踪机制与Cookie关联
+  				
+  
+  	加入浏览器管理，会话是否还会销毁
+			
+			1.设置不活动周期   负数 为永不销毁
+					
+				session.setMaxInactiveInterval(秒);
+			
+			2.全局 默认限制 30分钟
+ 				
+				在服务器tomcat——>conf——>web.xml进行不活动周期的配置
+ 			
+  				<session-config>
+ 											
+ 					<session-timeout>分钟</session-timeout>					
+  
+  				</session-config>			
+				
+			3.在本项目的web.xml下进行配置
+			
+			
+			4.在指定的Servlet中设置不活动周期，相当于重写了整个web项目的会话时间
+			
+			
+			
+Session-会话
+ * 		
+ * 		开始
+ * 				
+ * 			客户端向服务器发送请求的时候
+ * 		
+ * 		结束
+ * 			
+ * 			客户端
+ * 				
+ * 				丢失JSessionId时，即浏览器关闭
+ * 
+ * 			服务器端		
+ * 				
+ * 				关闭服务器
+ * 				
+ * 				超过不活动周期，会话自动销毁
+ 
+	注销方式
+			
+			session.invalidate();
+			
+作用域
+ * 			
+ * 	值的传递，保存数据
+ * 			
+ * 	要使用值的传递，必须先了解作用域对应的生命周期和使用范围
+ * 
+ *	
+ *  生命周期
+ * 		
+ * 		request：只限于一次请求
+ * 
+ * 		session: 一次会话
+ * 		
+ * 				开始:
+					
+					客户端发送请求
+ * 
+ * 				结束：
+ * 						
+ * 					服务端:
+ * 							
+ * 						关闭服务器
+ * 						
+ * 						超过会话时间，自动销毁
+ *					
+ *					客户端
+ *							
+ *						关闭浏览器
+ *						
+ *     application: 项目加载到卸载
+ 
+ * 使用范围
+ * 		
+ * 		request:所有被请求转发的Servlet
+ * 
+ * 		session:所有Servlet
+ *      
+ *      application: 所有的Servlet(与session进行区分，换个浏览器观察)
+ 
+ 
+ *  如何选择作用域的使用:
+ *			
+ *		如果选择不对应，会造成什么后果
+ *			
+ *			浪费内存
+ *
+ * 		request:跟当前操作相关
+ * 		
+ * 		session:跟用户信息相关
+ * 		
+ * 		application:跟项目全局信息相关
+ * 
+ 
+Cookie与Session的区别与联系
+
+	1.cookie 是一种发送到客户浏览器的文本串句柄，并保存在客户机硬盘上，可以用来在某个WEB站点会话间持久的保持数据。
+	
+	2.session其实指的就是访问者从到达某个特定主页到离开为止的那段时间。 			
+	
+		Session其实是利用Cookie进行信息处理的，当用户首先进行了请求后，服务端就在用户浏览器上创建了一个Cookie
+	
+		当这个Session结束时，其实就是意味着这个Cookie就过期了。	
+		
+		注：为这个用户创建的Cookie的名称是aspsessionid。这个Cookie的唯一目的就是为每一个用户提供不同的身份认证。
+
+
+	3.cookie和session的共同之处在于：cookie和Session都是用来跟踪浏览器用户身份的会话方式。
+
+
+	4.cookie 和session的区别是：cookie数据保存在客户端，session数据保存在服务器端
+	
+	5.两个都可以用来存私密的东西，同样也都有有效期的说法
+		
+		区别在于session是放在服务器上的，过期与否取决于服务期的设定，cookie是存在客户端的，过去与否可以在cookie生成的时候设置进去。
+
+		(1)cookie数据存放在客户的浏览器上，session数据放在服务器上
+	
+		(2)cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗,如果主要考虑到安全应当使用session
+		
+		(3)session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，如果主要考虑到减轻服务器性能方面，应当使用COOKIE
+		
+		(4)单个cookie在客户端的限制是3K，就是说一个站点在客户端存放的COOKIE不能超过3K。
+		
+		(5)所以：将登陆信息等重要信息存放为SESSION;其他信息如果需要保留，可以放在COOKIE中	
+		
+		

@@ -1,0 +1,112 @@
+			String与StringBuffer
+	String 两种实例化方式
+	
+		String str="Hello"; 直接赋值
+		
+		String str=new String("Hello"); 实例化   new  开辟了2个地址
+	
+	字符串比较
+		
+		== 比较的是地址  false 
+		
+		equals(); 比较的是内容  true
+		
+	String 内容不能被更改
+		
+		String  str="Hello";
+			
+			String str1=str+"World";
+		
+		
+			str未被更改；  
+			
+					str="Hello"; 开辟一个堆内存空间  str指向Hello
+			
+					World 又开辟一个堆内存
+					
+					str+"World" 又开辟一个堆内存
+					
+					str1=str+"World"; 改变的是堆内存地址的指向
+	
+	字符串常用方法
+		
+		字符串长度 length()
+		
+		长度是否为空 isEmpty();
+		
+		字符串转换成数组 toCharArray();
+		
+		字符串中取出指定位置的字符 charAt();
+		
+		字符串与byte数组进行转换 getBytes();
+		
+		过滤字符串中存在的字符 indexOf();   可用来验证 邮箱 @符号  indexOf("@")
+		
+		去字符串前后空格 trim();
+		
+		格式化字符串 format();
+		
+		拆分字符串 split();
+
+		比较字符串compareTo();
+			
+		返回字符串 toString();
+		
+		各种格式转成字符串 valueOf();
+		
+		从字符串中取出子字符串 subString();
+		
+		忽略大小写  equalsIgnoreCast();			
+
+		大小写转换 toLowerCase()  toUpperCase();
+		
+		判断字符串的开头结尾字符 endWith() startWith();
+		
+		替换字符串中的一个字符  replace();
+
+		将指定字符串连接到此字符串的结尾 concat(); 类似 ＋连接符
+					
+		当前字符串是否包含指定的子字符串 contains();
+		
+		返回字符串对象的规范化表示形式。intern
+		
+	         
+				
+			
+	StringBuffer
+		
+		缓冲区，本身也是操作字符串，但是StringBuffer可以更改  底层是 char[]
+		
+		是一个操作类，需要实例化进行操作
+			
+			StringBuffer  sb=new StringBuffer();
+			
+				sb.append("Mars");//追加
+				
+				System.out.println(sb.toString());
+		
+		常用方法
+			
+			追加 append();
+		
+			插入 insert();		insert(0,"XXX"); 0代表插入 位置
+		
+			替换 replace();   replace(1,3,"XXX");1代表位置，3代表替换到第几个位置
+		
+			过滤 indexOf();
+	
+	StringBuilder 
+	
+		一个可变的字符序列，该类被设计作用StringBuffer的一个简易替换
+		
+		用在字符串缓冲区被单个线程使用的时候，速度比StringBuffer要快
+		
+		但如果涉及到线程安全方面，建议使用StringBuffer
+		
+		常用方法
+			
+			append();
+			
+			insert();
+
+				

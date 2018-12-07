@@ -1,0 +1,607 @@
+			JS之BOM和DOM
+			
+		ECMAScript  欧洲计算机制造者协会 （核心语法）
+		
+		DOM 文档对象模型  （用于操作浏览器内容节点)
+		
+		BOM  浏览器对象模型 (用于操作浏览器窗口)    
+		
+BOM brower object model  浏览器对象模型
+			
+		作用:操作浏览器对象
+	
+	Window对象:顶层对象
+		
+		Navigator对象:获取浏览器的信息
+	
+		Location对象:获取地址栏信息
+	
+		Screen对象：获取浏览器窗口大小
+	
+		History对象:获取历史信息
+
+		Opener对象:调用父页面的函数
+		
+		Document对象:操作body部分节点内容.(DOM  document object model)
+
+window对象
+	
+	是浏览器对象中其他大部分对象的共同的祖先，所以一般在JavaScript程序中可以省略window对象
+
+	常用window对象的方法
+	
+		open(URL,windowName,parameterList)：
+		
+			open方法创建一个新的浏览器窗口，并在新窗口中载入一个指定的URL地址
+	
+		close()：
+		
+				close方法关闭一个浏览器窗口
+	
+		alert()警示框
+		
+		confirm() 提示框 
+		
+		prompt()询问框 
+		
+		
+	对话框有三种
+
+		1：只是提醒，不能对脚本产生任何改变； alert();
+		
+		2：一般用于确认，返回 true 或者 false ，所以可以轻松用于 ifelse判断 confirm()
+
+		3： 一个带输入的对话框，可以返回用户填入的字符串，常见于某些留言本或者论坛输入内容那里的 插入UBB格式图片 prompt()
+	
+
+定时控制	
+	
+	setTimeout(code,time) 返回一个id 可用 var id 接收
+		
+		time后执行一次code 
+
+	setInterval(code,time)
+			
+		每隔time循环执行code 
+	
+	
+	clearTimeout(Id)
+		
+		清除定时器时间
+		
+	clearInterval(Id)
+		
+		清除定时器时间
+	
+
+	history含有以前访问过的网页的URL地址。
+	
+		上一页: history.back();
+        
+		下一页: history.forward(); 
+
+        history.go(-1); 
+        	
+			-1 代表返回上一个页面
+        	
+			-2代表返回上两个页面
+			
+			0代表刷新当前页面
+        	
+			1代表下一个页面...
+
+Navigator对象			
+			
+	获取浏览器信息。
+				
+		navigator.appName  获取浏览器名称
+	
+		navigator.appVersion 获取浏览器版本
+	
+		navigator.userAgent 获取浏览器类型
+	
+
+location对象
+		
+	当前网页的URL地址。我们可以使用Location对象来让浏览器打开某页
+	
+		window.location.href=“xxxx”
+		
+				这里的xxxx可以是一页也可以是一个网站的IP地址。
+	
+	获取主机名
+		
+		location.hostname 
+		
+	获取主机名和端口号
+		
+		location.host
+			
+	获取url 地址 或跳转一个新页面
+		
+		location.href
+
+screen对象
+	
+	获取窗口的宽高
+	
+		screen.width
+		
+		screen.height
+		
+opener对象
+		
+	可以调用父页面的方法
+	
+		window.opener.xxx();
+		
+	
+系统函数
+	
+	parseInt( )	字符串值转换成数字
+	
+	parseFloat( )	字符串值转换成浮点数
+	
+	isNaN( )	判断是否是数字：不是数字返回true
+	
+	eval()	执行js代码, 混合计算
+	
+			var str="var ss='abc'";
+			
+				eval(str);
+				
+				alert(ss);  abc
+				
+				alert(eval(1+2)); 3
+			
+	escape() 对 String 对象编码以便它们能在所有计算机上可读
+	
+	isFinite()  返回一个 Boolean 值,指明所提供的数字是否是有限的
+
+	
+如何调试JavaScript程序
+	
+	使用alert()方法调试程序
+	
+	使用控制台调试			
+			
+			console.log(num);
+	
+	使用浏览器的调试工具设置断点进行调试
+	
+	通过单步进入、单步跳过、单步退出方法进行调试，查看变量或表达式的值的方式
+
+Date对象
+	
+	日期对象
+	
+		setXxx	这些方法用于设置时间和日期值
+	
+		getXxx 	这些方法用于获取时间和日期值
+	
+	
+			Seconds 和 Minutes	0 至 59 
+		
+			Hours	0 至 23 
+		
+			Day	0 至 6（星期几） 
+		
+			Date	1 至 31（月份中的天数） 
+		
+			Month	0 至 11（一月至十二月）
+			
+			FullYear  年
+			
+
+Math 对象
+		
+		
+		random()   返回0-1的伪随机数 
+		
+			var num=parseInt(Math.random()*9000+1000);  1-10
+			
+			
+
+String对象
+		
+	字符串对象
+	
+		indexOf	返回 String 对象内第一次出现子字符串的字符位置。
+		
+		replace	返回根据正则表达式进行文字替换后的字符串的复制。
+		
+		match	使用正则表达式模式对字符串执行查找，并将包含查找的结果作为数组返回。
+		
+		str=new String('abcde');
+		
+		substr(start,length )   substr(1,2)  bc   起始索引，截取长度
+		
+		substring(indexA,indexB)  substring(2,4) cd  起始索引，结束索引  后不包含  
+		
+数组   类似集合 
+
+		可以存放任意类型的值
+		
+		length 可以获取数组长度 也可以截取数组长度
+		
+	
+	创建一维数组
+		
+		var fruits=new Array(5);
+		
+		var  fruits= new Array("apple", "orange", " peach","bananer");
+		
+		var  fruits = ["apple", "orange", " peach","bananer];
+		
+	创建二维数组
+	
+		var cityList = new Array();
+		
+		cityList['河北省'] = ['邯郸市','石家庄市'];
+	
+		cityList['河南省'] = ['郑州市','洛阳市'];
+	
+		cityList['湖北省'] = ['武汉市','宜昌市'];
+
+	可以使用字符串做数组下标
+	
+	for – in  遍历数组/对象
+	
+	
+自定义对象
+		
+	var obj=new Object();
+	
+	obj.uname='Mars';
+	
+	obj.pwd='112';
+	
+	obj.eat=function(){
+		
+		alert('我在吃饭.....');
+	};
+	
+	调用：
+		
+		alert(obj.uname);
+		
+		obj.eat();
+		
+	var obj={};
+	
+	obj.uname="Mark";
+	
+	obj2.run=function(){
+		
+		alert("在跑步.......");
+	};
+	
+	
+		DOM Document Object Model 文档对象模型
+		
+		
+		节点:
+			
+			元素节点 
+			
+			属性节点
+			
+			文本节点  
+		
+获取元素两种方式:
+
+	直接获取
+
+		getElementById()
+		
+			可以访问DOCUMENT中的某一特定元素，顾名思义，就是通过ID来取得元素，所以只能访问设置了ID的元素。
+
+		getElementsByName()
+		
+			如果一个文档中有两个以上的标签NAME相同，那么getElementsByName()就可以取得这些元素组成一个数组。
+		
+		getElementsByTagName()
+		
+			通过TAGNAME（标签名称）来获得元素，一个DOCUMENT中当然会有相同的标签，所以这个方法也是取得一个数组。
+	
+	间接方式
+		
+		1. 父子关系
+			
+			var showDiv = document.getElementById("showDiv");
+			
+			var cns = showDiv.childNodes; 
+			
+		2.子父关系
+		
+			var realname = document.getElementById("realname"); 
+			
+			var pn = realname.parentNode;
+			
+		3.获取上一个
+		
+			var ps = realname.previousSibling; 
+			
+		4.获取下一个
+			
+			var pn = realname.nextSibling; 
+		
+	操作元素属性
+		
+		获取元素属性   默认的 用 .  新增的用get/setAttribute();
+			
+			以.的方式获取系统自带属性值 且可以获取改变后的值
+		
+				alert(uname.type + "---" + uname.id + "---" + uname.value);
+		
+			以getAttribute获取(默认的)自定义属性值  
+			
+				alert(uname.getAttribute("abc"));
+			
+		设置元素属性
+				
+			设置属性值
+			
+				uname.value = "QQ";
+			
+			setAttribute设置自定义属性值
+			
+				uname.setAttribute("abc", "QQ");
+	
+	操作元素内容
+		
+		获取元素
+		
+		var showDiv=document.getElementById("showDiv");
+				
+		获取文本内容
+			
+			alert(showDiv.innerHTML);
+		
+		设置文本内容  可以改变文档结构
+		
+			showDiv.innerHTML="<h1>横笛和愁听,斜枝倚病看. 逆风如解意,容易莫摧残. </h1>";
+			
+		设置文本内容 不能改变文档结构
+				
+			showDiv.innerText="<h1>横笛和愁听,斜枝倚病看. 逆风如解意,容易莫摧残. </h1>";
+			
+	操作Css样式
+	
+		获取元素对象
+		
+			var showDiv = document.getElementById("showDiv");
+				
+		获取css属性值
+			
+			alert(showDiv.style.height);
+		
+		修改css属性值
+			
+			showDiv.style.height = "600px";
+			
+			showDiv.style.backgroundColor = "gold";
+		
+		添加一个class
+			
+			showDiv.className "show";
+		
+		移除class
+			
+			showDiv.removeAttribute("class");
+			
+	操作文档结构
+		
+		1.获取元素对象
+			
+			var showDiv = document.getElementById("showDiv");
+			
+		2.添加
+			
+			showDiv.innerHTML += '<div><input type="file" name="photo" /><input type="button" value="删除" onclick="delFile(this);" /><br /></div>';
+		
+		3.删除
+			
+			function delFile(btn) {
+				
+				//获取元素对象
+				var showDiv = document.getElementById("showDiv");
+				
+				//获取被删除的div
+				var div = btn.parentNode;
+				
+				//删除元素
+				showDiv.removeChild(div);
+				
+				//代码优化 btn.parentNode.parentNode.removeChild(btn.parentNode);
+			}
+			
+		4.优化
+		
+			function addFileWb() {
+				
+				//获取元素对象
+				var showDivWb = document.getElementById("showDivWb");
+				
+				//创建一个文件筐框
+				var photo = document.createElement("input");
+				photo.type = "file";
+				photo.name = "photo";
+				
+				//创建一个按钮
+				var bt = document.createElement("input");
+				bt.type = "button";
+				bt.value = "删除";
+				bt.onclick = function() {
+					showDivWb.removeChild(photo);
+					showDivWb.removeChild(bt);
+					showDivWb.removeChild(br);
+				}
+				
+				//创建一个换行符
+				var br = document.createElement("br");
+				
+				//添加到div中
+				showDivWb.appendChild(photo);
+				showDivWb.appendChild(bt);
+				showDivWb.appendChild(br);
+			}
+			
+	选项改变时获取下拉列表文本和值
+		
+		onchange="show();“
+	
+		
+		function getSelectedText(name) {
+				
+				var sel = document.getElementById(name);
+				
+				for (i = 0; i < sel.length; i++) {
+					if (sel[i].selected == true)
+						return sel[i].innerHTML;
+				}
+			}
+
+			function getSelectedValue(name) {
+				var obj = document.getElementById(name);
+				return obj.value; //直接用其对象的value属性便可获取到
+			}
+
+			function show() {
+				alert("所选文本:" + getSelectedText('sel'));
+				alert("所选值:" + getSelectedValue('sel'));
+			}
+			
+	表单验证
+			
+		获取表单元素
+				
+			1.var frm = document.getElementById("userForm");
+			
+			2.通过form名字 	var frm1 = document.Frm;
+			
+		获取表单域的个数
+				
+			frm.length;
+			
+			frm.elements.length;
+	
+	/**
+	 * .代表任意字符 split中不能使用 \d 数字： [0-9]
+	 * 
+	 * \D 非数字： [^0-9]
+	 * 
+	 * \s 空白字符： [ \t\n\x0B\f\r]
+	 * 
+	 * \S非空白字符： [^\s]
+	 * 
+	 * \w 单词字符： [a-zA-Z_0-9]
+	 * 
+	 * \W 非单词字符： [^\w]
+	 * 数量
+	 * 
+	 * X? X，一次或一次也没有 [0-1]
+	 * 
+	 *X* X，零次或多次 [0-n]
+	 * 
+	 *X+ X，一次或多次 [1-n]
+	 * 
+	 *X{n}，恰好 n 次 [n]
+	 * 
+	 *X{n,} X，至少 n 次 [n-]
+	 * 
+	 *X{n,m} X，至少 n 次，但是不超过 m 次 [n-m]
+	 * 
+	 *匹配中文字符的正则表达式：[\u4e00-\u9fa5]
+	 *
+	 *匹配空白行的正则表达式：\n\s*\r
+	 * 
+	 *匹配首尾空白字符的正则表达式：^\s*|\s*$
+	 * 
+	 *匹配Email地址的正则表达式：\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*
+	 * 
+	 *匹配网址URL的正则表达式：[a-zA-z]+://[^\s]*
+	 *
+	 *匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$
+	 * 
+	 *匹配国内电话号码：\d{3}-\d{8}|\d{4}-\d{7} 0511-4405222 或 021-87888822
+	 * 
+	 *匹配腾讯QQ号：[1-9][0-9]{4,} 腾讯QQ号从10000开始
+	 * 
+	 *匹配中国邮政编码：[1-9]\d{5}(?!\d) 中国邮政编码为6位数字
+	 *  
+	 *匹配身份证：\d{15}|\d{18} 中国的身份证为15位或18位
+	 * 
+	 *匹配ip地址：\d+\.\d+\.\d+\.\d+ 提取ip地址时有用
+	 * 
+	 *匹配特定数字：^[1-9]\d*$
+	 * 
+	 *匹配正整数^-[1-9]\d*$
+	 * 
+	 *匹配负整数： ^-?[1-9]\d*$
+	 * 
+	 *匹配整数：^[1-9]\d*|0$
+	 * 
+	 *匹配非负整数（正整数 + 0）^-[1-9]\d*|0$
+	 * 
+	 *匹配非正整数（负整数 + 0）^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$
+	 * 
+	 *匹配正浮点数^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$
+	 * 
+	 *匹配负浮点数^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$
+	 * 
+	 *匹配浮点数^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$
+	 * 
+	 *匹配非负浮点数（正浮点数 + 0）^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$
+	 * 
+	 *匹配非正浮点数（负浮点数 + 0）
+	 * 
+	 *匹配特定字符串：^[A-Za-z]+$
+	 * 
+	 *匹配由26个英文字母组成的字符串^[A-Z]+$
+	 * 
+	 *匹配由26个英文字母的大写组成的字符串^[a-z]+$
+	 * 
+	 *匹配由26个英文字母的小写组成的字符串^[A-Za-z0-9]+$
+	 * 
+	 *匹配由数字和26个英文字母组成的字符串 ^\w+$
+	 * 
+	 */
+^ 行的开头 
+	
+	$ 行的结尾 
+	
+	\b 单词边界 
+	
+	\B 非单词边界 
+	
+	\A 输入的开头 
+	
+	\G 上一个匹配的结尾 
+	
+	\Z 输入的结尾，仅用于最后的结束符（如果有的话） 
+	
+	\z 输入的结尾  
+		
+	X? + X，一次或一次也没有 
+	
+	X* + X，零次或多次 
+	
+	X+ + X，一次或多次 
+	
+	X{n} + X，恰好 n 次 
+	
+	X{n,} + X，至少 n 次 
+	
+	X{n,m} + X，至少 n 次，但是不超过 m 次 
+  
+			
+	/i (忽略大小写)
+	
+	/g (全文查找出现的所有匹配字符)
+	
+	/m (多行查找)
+	
+	/gi(全文查找、忽略大小写)
+	
+	/ig(全文查找、忽略大小写)

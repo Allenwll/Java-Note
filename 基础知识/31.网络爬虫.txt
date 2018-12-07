@@ -1,0 +1,38 @@
+URL uniform resource locator 统一资源定位符
+			
+		协议 、存放资源的主机域名、资源文件名和端口号
+	
+		常用方法 
+		
+			getHost
+			
+			getPath
+			
+			getPort
+			
+			getProtocol
+			
+			getQuery
+			
+			openStream
+			
+		乱码问题
+				
+				1.指定字符集
+				
+				2.配置run configuration
+		
+				
+		URL url = new URL("http://tieba.baidu.com/p/496274307");
+		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+		String len=br.readLine();
+		Pattern p = Pattern.compile("[\\w[.]]+@[\\w[.]]+\\.[\\w]+");
+		while (len!= null) {
+			Matcher m = p.matcher(len);
+			while(m.find()){
+				System.out.println(m.group());
+			}
+			len = br.readLine();
+		}
+		br.close();
+	}

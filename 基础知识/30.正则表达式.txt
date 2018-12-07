@@ -1,0 +1,400 @@
+					正则表达式
+	 
+			符合一定规范的表达式  又称 规范式
+		
+		用来操作字符串 查找，替换等
+		
+		Pattern  规范,模式 
+
+			所有的正则表达式都要符合Pattern类中规定的模式
+			
+			用来定义我们需要操作字符串的格式
+			
+		Matcher
+				
+			用来保存使用模式后的结果
+		
+		
+		Pattern.compile(String pattern) 
+		
+		p.matcher.(str);
+		
+		m.matches();
+
+		reset() 重置游标 再次匹配时从起始位置开始
+
+		find() 查找匹配的字符串  一旦找到立即返回 并记录游标的位置
+		
+		lookingAt() 每次 从头开始查找 
+
+		start  end  查找find 找到的第一个位置 和最后一个位置  前包含后不包含
+		
+		m.appendTail(); 追加末尾的
+
+		m.group()； 找到匹配的
+		
+// 奇数大写 偶数小写
+
+	String str1 = "Java JAva JAVa JAVA  I Love Android";
+	
+	Pattern p1 = Pattern.compile("java", Pattern.CASE_INSENSITIVE);
+		
+	Matcher m1 = p.matcher(str1);
+	
+	int index = 1;
+	
+	StringBuffer sb = new StringBuffer();
+	
+	while (m1.find()) {
+		
+		if (index % 2 == 1) {
+		
+		m1.appendReplacement(sb, "JAVA");
+		
+		} else {
+			
+			m1.appendReplacement(sb, "java");
+	
+		}
+		
+		index++;
+	}
+	m1.appendTail(sb);
+	
+	System.out.println(sb);
+		
+
+
+//符合匹配要求的
+	
+	String s="123aa-34345bb-234cc-00";
+		
+	Pattern p=Pattern.compile("\\d{3,5}[a-z]*");
+		
+	Matcher m=p.matcher(s);
+		
+	while(m.find()){
+			
+		System.out.println(m.group());
+	
+	}
+
+	
+// 符合匹配要求的整数  从1开始  组
+
+
+组： 在查找的字符串中，再次查找满足某些特定条件的子子串，可以使用分组  组号从1开始 
+		
+	s = "123aa-34345bb-234cc-00";
+		
+	p = Pattern.compile("(\\d{3,5})([a-z]*)");
+		
+	m = p.matcher(s);
+
+	while (m.find()) {
+			
+		System.out.println(m.group(1));
+	
+	}
+	
+常用表达式：
+
+
+	/**
+	 * .代表任意字符 split中不能使用 \d 数字： [0-9]
+	 * 
+	 * \D 非数字： [^0-9]
+	 * 
+	 * \s 空白字符： [ \t\n\x0B\f\r]
+	 * 
+	 * \S非空白字符： [^\s]
+	 * 
+	 * \w 单词字符： [a-zA-Z_0-9]
+	 * 
+	 * \W 非单词字符： [^\w]
+	 * 
+	 * 数量
+	 * 
+	 * X? X，一次或一次也没有 [0-1]
+	 * 
+	 *X* X，零次或多次 [0-n]
+	 * 
+	 *X+ X，一次或多次 [1-n]
+	 * 
+	 *X{n}，恰好 n 次 [n]
+	 * 
+	 *X{n,} X，至少 n 次 [n-]
+	 * 
+	 *X{n,m} X，至少 n 次，但是不超过 m 次 [n-m]
+	 * 
+	 *匹配中文字符的正则表达式：[\u4e00-\u9fa5]
+	 *
+	 *匹配空白行的正则表达式：\n\s*\r
+	 * 
+	 *匹配首尾空白字符的正则表达式：^\s*|\s*$
+	 * 
+	 *匹配Email地址的正则表达式：\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*
+	 * 
+	 *匹配网址URL的正则表达式：[a-zA-z]+://[^\s]*
+	 * 
+	 * 
+	 *匹配帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$
+	 * 
+	 *匹配国内电话号码：\d{3}-\d{8}|\d{4}-\d{7} 0511-4405222 或 021-87888822
+	 * 
+	 *匹配腾讯QQ号：[1-9][0-9]{4,} 腾讯QQ号从10000开始
+	 * 
+	 *匹配中国邮政编码：[1-9]\d{5}(?!\d) 中国邮政编码为6位数字
+	 *  
+	 *匹配身份证：\d{15}|\d{18} 中国的身份证为15位或18位
+	 * 
+	 *匹配ip地址：\d+\.\d+\.\d+\.\d+ 提取ip地址时有用
+	 * 
+	 *匹配特定数字：^[1-9]\d*$
+	 * 
+	 *匹配正整数^-[1-9]\d*$
+	 * 
+	 *匹配负整数： ^-?[1-9]\d*$
+	 * 
+	 *匹配整数：^[1-9]\d*|0$
+	 * 
+	 *匹配非负整数（正整数 + 0）^-[1-9]\d*|0$
+	 * 
+	 *匹配非正整数（负整数 + 0）^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$
+	 * 
+	 *匹配正浮点数^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$
+	 * 
+	 *匹配负浮点数^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$
+	 * 
+	 *匹配浮点数^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$
+	 * 
+	 *匹配非负浮点数（正浮点数 + 0）^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$
+	 * 
+	 *匹配非正浮点数（负浮点数 + 0）
+	 * 
+	 *匹配特定字符串：^[A-Za-z]+$
+	 * 
+	 *匹配由26个英文字母组成的字符串^[A-Z]+$
+	 * 
+	 *匹配由26个英文字母的大写组成的字符串^[a-z]+$
+	 * 
+	 *匹配由26个英文字母的小写组成的字符串^[A-Za-z0-9]+$
+	 * 
+	 *匹配由数字和26个英文字母组成的字符串 ^\w+$
+	 * 
+	 */
+
+
+所有规则：
+	    
+字符 
+	
+	x 字符 x 
+	
+	\\ 反斜线字符 
+	
+	\0n 带有八进制值 0 的字符 n (0 <= n <= 7) 
+	
+	\0nn 带有八进制值 0 的字符 nn (0 <= n <= 7) 
+	
+	\0mnn 带有八进制值 0 的字符 mnn（0 <= m <= 3、0 <= n <= 7） 
+	
+	\xhh 带有十六进制值 0x 的字符 hh 
+	
+	\uhhhh 带有十六进制值 0x 的字符 hhhh 
+	
+	\t 制表符 ('\u0009') 
+	
+	\n 新行（换行）符 ('\u000A') 
+	
+	\r 回车符 ('\u000D') 
+	
+	\f 换页符 ('\u000C') 
+	
+	\a 报警 (bell) 符 ('\u0007') 
+	
+	\e 转义符 ('\u001B') 
+	
+	\cx 对应于 x 的控制符 
+  
+字符类 
+	
+	[abc] a、b 或 c（简单类） 
+	
+	[^abc] 任何字符，除了 a、b 或 c（否定） 
+	
+	[a-zA-Z] a 到 z 或 A 到 Z，两头的字母包括在内（范围） 
+	
+	[a-d[m-p]] a 到 d 或 m 到 p：[a-dm-p]（并集） 
+	
+	[a-z&&[def]] d、e 或 f（交集） 
+	
+	[a-z&&[^bc]] a 到 z，除了 b 和 c：[ad-z]（减去） 
+	
+	[a-z&&[^m-p]] a 到 z，而非 m 到 p：[a-lq-z]（减去） 
+  
+预定义字符类 
+	
+	. 任何字符（与行结束符可能匹配也可能不匹配） 
+	
+	\d 数字：[0-9] 
+	
+	\D 非数字： [^0-9] 
+	
+	\s 空白字符：[ \t\n\x0B\f\r] 
+	
+	\S 非空白字符：[^\s] 
+	
+	\w 单词字符：[a-zA-Z_0-9] 
+	
+	\W 非单词字符：[^\w] 
+  
+POSIX 字符类（仅 US-ASCII） 
+
+	\p{Lower} 小写字母字符：[a-z] 
+
+	\p{Upper} 大写字母字符：[A-Z] 
+	
+	\p{ASCII} 所有 ASCII：[\x00-\x7F] 
+	
+	\p{Alpha} 字母字符：[\p{Lower}\p{Upper}] 
+	
+	\p{Digit} 十进制数字：[0-9] 
+	
+	\p{Alnum} 字母数字字符：[\p{Alpha}\p{Digit}] 
+	
+	\p{Punct} 标点符号：!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 
+	
+	\p{Graph} 可见字符：[\p{Alnum}\p{Punct}] 
+	
+	\p{Print} 可打印字符：[\p{Graph}\x20] 
+	
+	\p{Blank} 空格或制表符：[ \t] 
+	
+	\p{Cntrl} 控制字符：[\x00-\x1F\x7F] 
+	
+	\p{XDigit} 十六进制数字：[0-9a-fA-F] 
+	
+	\p{Space} 空白字符：[ \t\n\x0B\f\r] 
+  
+java.lang.Character 类（简单的 java 字符类型） 
+	
+	\p{javaLowerCase} 等效于 java.lang.Character.isLowerCase() 
+	
+	\p{javaUpperCase} 等效于 java.lang.Character.isUpperCase() 
+	
+	\p{javaWhitespace} 等效于 java.lang.Character.isWhitespace() 
+	
+	\p{javaMirrored} 等效于 java.lang.Character.isMirrored() 
+  
+Unicode 块和类别的类 
+	
+	\p{InGreek} Greek 块（简单块）中的字符 
+	
+	\p{Lu} 大写字母（简单类别） 
+	
+	\p{Sc} 货币符号 
+	
+	\P{InGreek} 所有字符，Greek 块中的除外（否定） 
+	
+	[\p{L}&&[^\p{Lu}]]  所有字母，大写字母除外（减去） 
+  
+边界匹配器 
+	
+	^ 行的开头 
+	
+	$ 行的结尾 
+	
+	\b 单词边界 
+	
+	\B 非单词边界 
+	
+	\A 输入的开头 
+	
+	\G 上一个匹配的结尾 
+	
+	\Z 输入的结尾，仅用于最后的结束符（如果有的话） 
+	
+	\z 输入的结尾 
+  
+Greedy 数量词 
+	
+	X? X，一次或一次也没有 
+	
+	X* X，零次或多次 
+	
+	X+ X，一次或多次 
+	
+	X{n} X，恰好 n 次 
+	
+	X{n,} X，至少 n 次 
+	
+	X{n,m} X，至少 n 次，但是不超过 m 次 
+  
+Reluctant 数量词 
+	
+	X?? X，一次或一次也没有 
+	
+	X*? X，零次或多次 
+	
+	X+? X，一次或多次 
+	
+	X{n}? X，恰好 n 次 
+	
+	X{n,}? X，至少 n 次 
+	
+	X{n,m}? X，至少 n 次，但是不超过 m 次 
+  
+Possessive 数量词 
+	
+	X?+ X，一次或一次也没有 
+	
+	X*+ X，零次或多次 
+	
+	X++ X，一次或多次 
+	
+	X{n}+ X，恰好 n 次 
+	
+	X{n,}+ X，至少 n 次 
+	
+	X{n,m}+ X，至少 n 次，但是不超过 m 次 
+  
+Logical 运算符 
+	
+	XY X 后跟 Y 
+	
+	X|Y X 或 Y 
+	
+	(X) X，作为捕获组 
+  
+Back 引用 
+	
+	\n 任何匹配的 nth 捕获组 
+  
+引用 
+	
+	\ Nothing，但是引用以下字符 
+	
+	\Q Nothing，但是引用所有字符，直到 \E 
+	
+	\E Nothing，但是结束从 \Q 开始的引用 
+  
+特殊构造（非捕获） 
+	
+	(?:X) X，作为非捕获组 
+	
+	(?idmsux-idmsux)  Nothing，但是将匹配标志i d m s u x on - off 
+	
+	(?idmsux-idmsux:X)   X，作为带有给定标志 i d m s u x on - off 
+
+的非捕获组  (?=X) X，通过零宽度的正 lookahead 
+	
+	(?!X) X，通过零宽度的负 lookahead 
+	
+	(?<=X) X，通过零宽度的正 lookbehind 
+	
+	(?<!X) X，通过零宽度的负 lookbehind 
+	
+	(?>X) X，作为独立的非捕获组 
+
+	

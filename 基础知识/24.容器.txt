@@ -1,0 +1,193 @@
+							
+	数组： 通过索引访问速度很快，删除，插入 效率慢
+
+	面向接口 List<String>list=new LinkedList<String>();
+			
+			扩展性好，不能使用子类的特有的方法
+	
+	面向类  ArrayList<String> list=new ArrayList<String>();
+			
+			扩展性不好
+			
+						容器 （集合） Java.util
+				
+			Collection  不唯一  无序
+				
+				System.err.println("\n遍历方法1-----------------------\n");
+				for (int i = 0; i < list.size(); i++) {
+					System.out.println(list.get(i));
+				}
+
+				System.err.println("\n遍历方法2-----------------------\n");
+
+					for (Object object : list) {
+						System.out.println(object);
+					}
+				System.err.println("\n外部迭代器-----------------------\n");
+					Iterator<String> it = list.iterator();
+						while (it.hasNext()) {
+							System.out.println(it.next());
+
+						}
+			     
+				 List  不唯一 有序
+						
+						ArrayList  长度可变的数组  内存连续  数组的封装类  JDK1.2
+							
+								add  remove clear  set  底层用数组实现 
+
+							遍历很快 通过内容查找相对较慢 
+							
+							修改，添加，删除速度比较慢
+						
+						LinkedList 链表存储方式  内存不连续  头尾节点  node
+								
+								addFirst addLast  removeFirst  removeLast
+								 
+								 底层用链表实现
+								 
+								 
+								遍历很慢 
+								
+								修改，添加，删除速度比较快
+								
+
+				Set  唯一 无序
+					
+					遍历1：	
+							System.err.println("-------foreach----------------------");
+							for (Student student : set) {
+								System.out.println(student);
+							}
+					遍历2:
+							System.err.println("\n-------Iterator------------------");
+							Iterator<Student> it = set.iterator();
+							while (it.hasNext()) {
+								Student stu = it.next();
+								System.out.println(stu);
+							}
+					
+					HashSet
+						
+						底层用哈希表实现   一个顺序表加一个链表实现 
+						
+						元素唯一  增删改查快  元素无序
+						
+						添加元素：
+						
+							首先拿到对象的hash code  通过一个公式，查看该位置是否是否有元素
+						
+							没有  添加 如果有 比较 相同不添加 没有相同的元素就添加到该链表的末尾
+							
+							保证自定义类型放入set元素唯一 须要重写hashCode和equals方法
+
+							hashCode找到元素需要存储的位置，然后使用equals比较对应的位置中是否有重复的内容，然后决定是否添加
+						
+						查找元素： 和添加元素机制相同
+							
+							1. 一次找到
+							
+							2.多次找到
+							
+							3.找不到
+							
+								LinkedHashSet  元素唯一 有序
+									
+									底层哈希表加一个维护顺序的链表实现
+									
+									比hashSet效率低一些 查找删除效率相对慢了一些 但还是比List要快
+
+					TreeSet   元素唯一（实现hashCode和equals方法）  升序排列 有序
+					
+						底层用二叉树实现   遍历 递归
+								   
+									任意一个节点最多有两个子节点 左节点小 右节点 大 
+									
+									任何一个节点，除了根节点外都有一个父节点
+									
+									升序 只能对Compareable类型进行排序  必须实现Compareable接口 或者外部比较器 
+									
+									作为比较的字段，不能使用重复的，建议使用唯一标识的字段。类似ID的字段
+								
+								查找，修改 没有hashSet 快 但比List快
+						
+			Map Key--Value  键值对  映射
+					
+					key 简单的数据 是value数据的缩写的体现
+
+					value 是真正存储的数据
+					
+					遍历方式
+					
+						1.map.keySet（） 返回一个Set的key集合
+							
+							System.err.println("-----------遍历1----------------");
+							Set<Integer> set = map.keySet();
+							Iterator<Integer> it = set.iterator();
+							while (it.hasNext()) {
+								Integer key = it.next();
+								Student value = map.get(key);
+								System.out.println(value);
+							}
+						2.map.values() 返回一个Collection类型
+						
+							System.err.println("-----------遍历2----------------");
+							Collection<Student> stu = map.values();
+							for (Student student : stu) {
+								System.out.println(student);
+							}
+							
+						3.map.entrySet(); 返回一个Set<Entry<Integer,Student>>
+						
+							System.err.println("--------遍历3--------------------");
+							Set<Entry<Integer, Student>> setEntry = map.entrySet();
+							Iterator<Entry<Integer, Student>> itEntry = setEntry.iterator();
+								while(itEntry.hasNext()){
+									Entry<Integer,Student> entry=itEntry.next();
+									System.out.print(entry.getKey()+"---");
+									System.out.print(entry.getValue()+"\n");
+								}
+						
+				HashMap
+						
+						key 无序 唯一
+							
+					底层用哈希表实现   一个顺序表加一个链表实现 
+						  
+						Hashtable 是 key-value模式的早期版本 继承Dictionary类	 效率低 线程安全
+						      
+							不允许存储null	
+							 
+				TreeMap
+						key 有序 唯一
+						
+						底层用二叉树实现  
+				 
+	Iterator 接口 迭代器  专用于集合   游标   遍历一遍后 游标移动至末尾  再次迭代 需要 初始化   即 iterator()方法
+			
+		hasNext  下一个是否有值  next 返回当前指向的元素   remove 删除next方法返回的元素
+		
+		ListIterator 专门用于 List  可以修改内容
+					next  nextIndex  previous  previousIndex
+	Vector 向量 实现了List接口   线程安全  执行效率不如 ArrayList   JDK1.0出现
+	
+			ArrayList扩容时每次增加容量的50% 
+			
+			Vector是 100%  ArrayList相对比较节省内存
+	
+			
+	泛型 1.5出现的内容。可以规定容器存储元素的类型
+
+	Collections  工具类  
+		 
+		sort() 只能对list 作排序
+		
+		binarySearch() 折半查找  list要求有序
+
+		addAll()  可变参数添加			 
+				 
+		copy(目标，来源)  目标长度大于等于来源
+
+		max  min  得到集合中最大最小值
+
+		sychronizedlist （list）  将list转变成线程安全的方法

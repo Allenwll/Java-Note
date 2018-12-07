@@ -1,0 +1,13 @@
+				等号与equals的区别
+ 
+	1，"=="在java中，对比的是对象的内存地址
+		
+		只有int，short，long等数值型类型可以用。当然，判断是否为null也可以用。
+		
+		（像字符串是对象，就不能用“==”，编译也可以通过，但是结果是错误的）。
+  
+	2，CharSequence不能直接进行相等的判断，要转换成String类型。
+	
+		通过CharSequence.toString():
+
+	3，String类型的判断用equals（）方法。 String1.equals（String2）；

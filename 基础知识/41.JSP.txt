@@ -1,0 +1,753 @@
+﻿						JSP
+						
+JSP: 
+			
+	Java Server Page Java服务页面
+		
+	是基于Java语言的一种Web应用开发技术
+	
+	是一种实现普通静态HTML和动态HTML混合编码的技术
+	
+	可以搭建一个安全、跨平台的动态网站
+	
+	是在Servlet的基础上产生的，用来显示页面
+	
+	是服务器端技术,在服务器端，JSP引擎解释JSP代码,然后将结果以HTML或XML页面形式发送到客户端,在客户端的用户是看不到JSP代码的
+	
+	
+动态网页技术
+	
+	JSP
+		
+		Java  Server Page Java服务页面
+		
+	ASP
+		Active Server Page 动态服务器页面
+			
+	PHP
+		
+		Professional Hypertext Preprocessor  超文本预处理语言  服务器端编程语言
+		
+JSP与Servlet
+
+		Servlet:
+			
+			逻辑处理方便
+			
+			页面表现麻烦
+			
+		JSP:
+		
+			页面表现方便
+		
+			逻辑处理麻烦
+	
+JSP执行过程:
+	
+	1.请求JSP界面
+	
+	2.JSP容器将JSP文件转换成Servlet(java文件)
+	
+	3.用javac编译成.class文件
+	
+	4.执行.class 加载到内存 
+	
+	5.返回相应数据到客户端
+	
+	
+JSP特点:
+	 
+	把内容的生成和显示分离
+	
+	生成可重用的组件
+	
+	应用标记简化页面的开发
+	
+	具有Java的特点
+	
+	
+JSP元素:
+	
+	开始标签、结束标签、元素内容
+	
+	可分为三种不同的类型
+		
+		脚本元素(Scripting)  
+		
+			规范JSP页面所使用的Java代码
+			
+				html注释、隐藏注释、声明、表达式和脚本段
+		
+		指令元素(Directive)  
+			
+			针对JSP引擎，并不会直接产生任何看得见的输出
+			
+				include指令、page指令、taglib指令
+	
+		动作元素(Action)
+		
+			利用XML语法格式的标记来控制Servlet引擎的行为
+
+		
+JSP页面组成:
+	
+	JSP界面 
+			
+		JSP元素
+		
+			HTML标签
+
+			JS脚本
+			
+			CSS样式
+			
+				
+		模板元素
+		
+			
+			脚本元素
+			
+			动作元素
+			
+			指令元素
+			
+JSP注释:
+	
+	增加了程序的可读性与可维护性
+	
+	HTML注释
+
+		发送到客户端，但不在浏览器上显示，在客户端可通过查看源文件看到
+
+			<!--注释[<%=表达式%>]-->
+			
+	隐藏注释
+		
+		写在JSP程序代码中，不发送到客户端
+		
+			<%--注释--%>
+	
+	
+JSP变量和方法的声明
+			
+	<%!声明;[声明;]%>		
+		
+		<%! int i=6;%>
+		
+		<%! int a,b,c; double d=6.0%>
+		
+		<%! Date d=new Date();%>
+		
+	注意事项：
+		
+		声明必须以“;”结尾
+		
+		可以一次声明多个变量和方法，必须以","号分开,以";"号结尾
+			
+		声明的范围通常是JSP页面，但如果页面中使用include指令包含其他页面，范围应扩展到被包含的页面
+		
+		可以直接使用在<% @ page%>指令中包含进来已经声明了的变量和方法,不需要重新进行声明
+		
+		一个声明仅在一个页面中有效。如果想每个页面都用，需要写成一个单独的文件，通过<%@include%>或<jsp:include>动作包含进来
+
+JSP表达式
+
+	是由变量、常量组成的算式
+	
+	<%=表达式%>
+	
+	注意事项：	
+		
+		不能用分号";"来作为结束符
+		
+		"<%="是一个完整的标记，中间不能有空格
+	
+		表达式元素包含任何在Java语言规范中有效的表达式
+		
+		表达式可以成为其他JSP元素的属性值。一个表达式可以由一个或多个表达式组成，按从左到右的顺序求值
+	
+
+JSP插入文件：
+		
+	include指令
+	
+	jsp:include动作
+		
+	
+JSP指令
+	
+	针对JSP引擎，并不会直接产生任何看得见的输出，只是告诉引擎如何处理其余的JSP页面 被括在"<%@  %>"中间不能有空格
+	
+	page指令
+		
+		被称为页面指令
+		
+		语法规则:
+			
+			<%@ page language="脚本语言"
+				extends="继承的父类名称"
+				import="导入的jva包或类的名称"
+				session="true/false"
+				buffer="none/8kb/自定义缓冲区大小"
+				autoflush="true/false"
+				isThreadSafe="true/false"
+				info="页面信息"
+				errorPage="发生错误时所转向的页面相对地址"
+				isErrorPage="true/false"
+				contentType="MIME类型和字符集"
+			%>
+		
+		page指令的常用属性如下:
+			
+			import：
+				
+				用来导入将要用到的一个或多个包/类.
+				
+					<%@ page import="java.util.Date"%>
+					
+					<%@ page import="java.util.*"%>
+			
+			errorPage：
+				
+				这个属性值为一个URL路径指向的JSP网页，在指向的JSP网页中处理初始JSP网页上产生的错误;
+				
+				通常在指向的JSP网页上都会设置isErrorPage=true； 
+					
+					<%@ page contentType="text/html; charset=gb2312 errorPage="errorPageDirec.jsp"%>
+				
+			isErrorPage:
+				
+				这个属性默认值为fasle;
+				
+				用来指定目前的JSP网页是否是另一个JSP网页的错误处理页，通常与errorPage属性配合使用
+				
+					<%@ page contentType="text/html; charset=gb2312" isErrorPage="true"%>
+
+			contentType:
+				
+				用来指定JSP网页输出到客户端时所用的MIME类型和字符集。 
+				
+				默认MIME类型是text/html，默认字符集是ISO-8859-1
+				
+			注意事项:
+				
+				在一个页面中可以使用多个<%@ page%>指令，分别描述不同的属性
+				
+				每个属性只能用一次，但是import指令可以多次使用
+				
+				<%@ page%>指令区分大小写
+	
+	
+		include指令
+			
+			称为文件加载指令，可以将其他文件插入到JSP网页，被插入的文件可以是JSP文件，HTML文件或者其他文本文件，但是必须保证符合JSP页面的语法规则
+			
+			指令形式：
+				
+				<%@ include file="相对地址"%>;
+				
+					file是include指令的属性，在incl指令中只有一个属性:file
+		
+						eg：
+
+							systemTime.html
+
+								<%=(new Date()).toLocaleString()%>
+							
+							includeDirec.jsp
+								
+								<%@ include file="systemTime.html"%>
+					
+		taglib指令:
+		
+			用来定义一个标记库以及标记的前缀
+				
+			语法规则:
+				
+				<%@  taglib  uri="URIToLibrary" perfix="标记前缀"%>
+				
+JSP动作:
+	
+	用来控制JSP引擎的行为，可以动态插入文件,重用JavaBean组件和导向另一个页面等
+	
+	常见的JSP动作元素:
+		
+		jsp:include动作: 在页面得到请求时包含一个文件  
+			
+			 在即将生成的页面上动态地插入文件
+				
+			语法规则：
+					
+				1.<jsp:include page="文件相对路径" flush="true" />
+				
+				2. <jsp:include page="文件相对路径" flush="true">
+					
+					<jsp:param name="参数名1" value="参数值1"/>
+					
+					<jsp:param name="参数名2" value="参数值2"/>
+					
+					...	
+				 
+				 </jsp:include>
+				
+			与include指令的区别:
+				
+				include指令: 
+						
+					是静态的，是在JSP文件被转换成Servlet的时候引入文件，它把被插入文件插入到当前位置后再进行编译
+				
+				jsp:include动作:
+					
+					是动态的，插入文件的时间是在页面被请求的时候。
+					
+					JSP引擎不把插入文件和原JSP文件合并成一个新的JSP文件，而是在运行时把被插入文件包含进来
+				
+			如果包含页面时需要传递参数，只能使用jsp:include动作
+			
+		
+		jsp:forward动作: 引导请求者进入新的页面
+			
+			用于停止当前页面的执行,转向另一个HTML或JSP页面。
+			
+			在执行中JSP引擎不再处理当前页面剩下的内容，缓冲区被清空。
+			
+			在客户端看到的是原页面的地址，而实际显示的是另一个页面的内容。
+			
+			语法规则:
+				
+				1.<jsp:forward page="文件名"/>
+				
+				2.<jsp:forward page="文件名">
+				
+					<jsp:param name="参数名1" value="参数值1"/>
+					
+					<jsp:param name="参数名2" value="参数值2"/>
+					
+						String Name= request.getParameter("username");
+						
+						if(Name.equals("java")){
+							
+							<jsp:forward page="loginCorrect.html"/>
+						}
+						
+		jsp:plugin动作: 连接客户端的Applet或Bean插件
+			
+			将服务器端的Java小应用程序(Applet)或JavaBean组件下载到浏览器端去执行，相当于在客户端浏览器插入Java插件
+			
+			语法规则：
+				
+				<jsp:plugin
+						type="bean|applet"
+						code="保存类的文件名"
+						codebase="类路径"
+						[name="对象名"]
+						[archiv="相关文件路径"]
+						[align="bottom|top|middle|left|right"]//对齐方式
+						[hight="displayPixels"]//高度
+						[width="displayPixels"]//宽度
+						[hspace="leftRightPixels"]//水平间距
+						[vspace="topBottomPixels"]//垂直间距
+						[jreversion="Java环境版本"]
+						[nspluginurl="供NC使用的plugin加载位置"]
+						[iepluginurl="供IE使用的plugin加载位置"]>
+					<jsp:params>
+						<jsp:param name="参数1" value="参数值1"/>
+						<jsp:param name="参数2" value="参数值2"/>
+						...
+					</jsp:params>
+					[<jsp:fallback>错误信息</jsp:fallback>]
+				
+				</jsp:plugin>	
+			
+			常用属性:
+					
+				type="bean|applet":
+					
+					指定将被执行的插件对象的类型是Bean还是Applet
+					
+				code="保存的文件名":
+					
+					指定Java插件将要执行的字节码文件的名字，其后缀必须是.class。这个文件必须保存在codebase属性指定的目录里
+					
+				codebase="类路径":
+					
+					说明将要被下载的Java Class文件的目录
+					
+				name="对象名":
+				
+					bean或applet实例的名字
+					
+				[<jsp:fallback>错误信息</jsp:fallback>]:
+					
+					一段文字,当Java插件不能启动时，这段文字向用户显示
+					
+					如果插件能够启动而Applet或Bean不能执行，那么浏览器弹出一个错误信息
+			
+		jsp:useBean动作: 应用JavaBean组件
+			
+			用来装载一个将要在JSP页面中使用的JavaBean。它创建一个JavaBean实例并指定其名字和作用范围
+			
+			实际工程中常用JavaBean做组件开发，而在JSP中只需要声明并使用这个组件，这样可以较大限度地实现静态内容和动态内容的分离
+			
+			语法规则：
+				
+				1.<jsp: useBean id="bean的名称" scope="有效范围" class="包名.类名"/>
+				
+					有效范围取值有4种:
+							
+						page： 
+							
+							该JavaBean只有在当前页面以及当前页面所包含的静态页面有效
+
+						request:
+
+							该JavaBean的有效范围是当前的客户请求
+						
+						session:
+								
+							该JavaBean的有效范围是当前客户的会话期间
+						
+						applicatin: 
+								
+							该JavaBean对所有具有相同ServletContext的页面都有效
+									
+							即从创建开始，所有客户端共享该JavaBean，直至服务器关闭时才取消这个bean。
+			
+			
+				2.<jsp: useBean id="bean的名称" scope="有效范围" class="包名.类名">
+						
+						实体
+						
+				</jsp:useBean>
+
+						该实例化形式下，只有当第一次实例化bean是才执行实体部分，如果是利用现有的bean实例则不执行实体部分
+						
+			工作过程:
+				
+				JSP引擎根据useBean中id属性指定的名字，在一个同步块中，查找内置对象pageContext中是否包含该id指定的名字和scope指定的作用域的对象
+				
+				如果该对象存在，JSP引擎就把这样一个对象分配给用户，如果不存在则创建新的bean实例
+			
+		jsp:setProperty动作：设置JavaBean的属性
+				
+			用来设置已经实例化的bean对象的属性
+			
+			语法规则:
+				
+				1.直接将属性值设置为字符串或表达式
+						
+					<jsp:setProperty name="bean的名称" property="bean的属性名称" value="属性值"/>
+					
+				2.用requst的参数值来设置JavaBean的属性值,request参数的名字和JavaBean属性的名字可以不同
+					
+					<jsp:setProperty name="bean的名称"
+									
+						property="bean的属性名称"
+						
+						param="request参数的名字"/>
+			
+			jsp:setProperty用法:
+			
+				1. 在jsp:useBean元素的外面使用 jsp:setProperty
+						
+					<jsp:useBean id="myName" .../>
+						...
+						
+					<jsp:setProperty name="myName" property="someProperty".../>
+				
+					不管找到了现有的bean,还是创建了一个bean的实例,jsp:setProperty都会执行
+				
+				2.把jsp:setProperty放入jsp:useBean元素的内部
+					
+					<jsp:useBean id="myName" ...>
+					
+						...
+						
+						<jsp:setProperty name="myName" property="someProperty" .../>
+					
+					</jsp:useBean>
+						
+					只有在新建bean实例时才会执行,若果是使用现有实例则不执行jsp:setProperty
+				
+			
+		jsp:getProperty动作: 获取JavaBean的属性并输出
+			
+			用来获取beans的属性值，将其转换成字符串,然后输出
+			
+			语法规则：
+				
+				<jsp:getProperty name="bean的名称"
+						
+						property="bean的属性名称"/>
+			
+	注意：
+		
+		JSP动作元素的形式是以XML为标准的，所以大小写敏感 
+		
+		因此 jsp:useBean不等于jsp:usebean
+			
+		jsp:setProperty动作和jsp:getProperty动作必须与jsp:useBean动作一起使用，不能单独使用
+						
+
+JSP九大内置对象
+	
+	request 请求对象
+			
+		将客户端请求信息进行封装
+
+		常用方法
+		
+			getParameter() 
+			
+			getParameterValues()
+			
+	response 响应对象
+			
+		是服务端向客户端响应的信息对象	
+			
+	pageContext 页面上下文对象
+	
+		生命周期和使用范围是当前页
+		
+		封装了当前jsp页面的运行信息，它提供了返回jsp页面的其他隐式对象的方法 ：
+			
+		getRequest()、 getResponse()、 getPage()
+		
+		getServletContext() 、getApplication()、 getOut()
+		
+		getSession()、 getException()、 getServletConfig()
+	
+	session 会话对象
+	
+		客户端跟服务端的会话对象
+	
+	application 应用程序对象
+			
+		项目中唯一一个大作用域对象	
+		
+		负责提供应用程序在服务器中运行时的一些全局信息
+		
+		常用的方法有getMimeType和getRealPath等
+			
+	out 输出对象
+		
+		是一个带缓冲区的输出流对象，JSP推荐使用
+		
+		代表了向客户端发送数据的对象，与“response” 对象不同
+		
+		通过out对象发送的内容将是浏览器需要显示的内容，是文本一级的
+		
+		可以通过out”对象直接向客户端写一个由程序动态生成HTML文件
+		
+		常用的方法
+			
+			print 
+			
+			println
+			
+			clear
+			
+			clearBuffer
+			
+			flush
+			
+			getBufferSize
+			
+			getRemaining
+		
+	config 配置对象
+			
+		提供一些配置信息
+		
+		常用的方法
+		
+			getInitParameter
+			
+			getInitParameterName
+				
+				以获得Servlet初始化时的参数。
+	
+			
+	page 页面对象
+	
+		代表了正在运行的由JSP文件产生的类对象，一般不建议使用。
+	
+	exception 例外对象
+	
+		代表了JSP文件运行时所产生的例外对象
+			
+		此对象不能在一般JSP文件中直接使用
+		
+		而只能在使用了“<%@ page isErrorPage="true "%>”的JSP文件中使用 
+		
+
+**************************************************************************************************
+
+			EL和 JSTL表达式
+	
+	EL表达式是Expression Language的缩写
+	
+	语法格式
+		
+		${表达式}
+
+	作用
+		
+		El表达式一般支持作用域（application、session、request、pagecontext）中的属性
+		
+		EL变量只支持某一作用域中的属性
+
+		EL表达式不能操作局部变量
+	
+	优点
+	
+		表达式内容为对象时不需要导包
+		
+		可以实现变量类型的自动转换
+		
+		表达式可以被Jsp注释注释掉
+		
+		属性值读取不到时不会出错
+		
+	取值顺序
+		
+		对不同作用域的同名属性进行取值时，顺序是从小到大的顺序
+
+	
+	跨作用域取值
+		
+		${作用域.属性名}
+			
+			作用域包含：pageScope、requestScope、sessionScope、applicationScope
+
+		注意：如果指定了作用域，就只能从特定的作用域进行取值
+	
+	获取请求参数
+		
+		${param.参数名}
+		
+		${paramValues.参数名[索引下标] }
+
+		注意：如果不使用param将从作用域中取值
+
+	
+	访问javaBean的属性
+		
+		${对象名.属性名}
+
+	
+	运算符
+	
+		.和[]	 访问一个bean属性或者map entry
+		
+		Empty	 判断一个属性的值是否为null
+		
+		+	 算数运算符（EL中没连接运算符）
+		
+		Func(args)	 调用一个方法，func是方法名，args是参数	
+		
+	
+JSTL（ jsp standard tag library） Jsp标准标签库
+		
+	常用子标签库
+		
+		核心标签库
+			
+			http://java.sun.com/jsp/jstl/core 包含web常见工作，比如：循环、表达式复制、基本输入输出等
+		
+		格式化标签库
+			
+			http://java.sun.com/jsp/jstl/fmt  用来格式化、显示数据的工作。比如：对不同区域的日期格式化等
+		
+		Xml标签库
+			
+			http://java.sun.com/jsp/jstl/xml   用来访问xml文件的工作，这是jstl标签库的一个特点	
+		
+		函数标签库
+			
+			http://java.sun.com/jsp/jstl/functions   用来读取已经定义的某个函数
+		
+		数据库标签库 
+			
+			http://java.sun.com/jsp/jstl/sql    可以做访问数据库的工作
+	
+	基本标签
+	
+		<c:out>标签
+		
+			作用
+			
+				用来显示数据对象（字符串、表达式）的内容或结果
+		
+			属性描述
+				
+				value		：待输出的属性值
+				
+				default		：属性值无效时输出的默认值
+				
+				escapexml	：忽略文档格式（不忽略将作为文本处理）
+		
+		<c:set>标签
+		
+			作用
+			
+				设置作用域内对象的值
+		
+			属性描述
+				
+				Value	：对象的值
+				
+				Var		：对象名字
+				
+				Scope	：对象所属范围
+	
+		<c:remove>标签
+		
+			作用
+				
+				移除作用域对象的值
+		
+			属性描述
+				
+				var		：待移除元素的名称
+			
+				scope	：移除作用域对象所属范围
+
+	逻辑判断标签
+		
+		<c:if>标签
+			
+			作用
+				
+				进行逻辑判断
+			
+			属性描述
+					
+				test	：设置逻辑判断表达式
+				
+				var		：存储表达式结果的变量名
+		
+		<c:choose>标签
+			
+			作用
+				
+				实现多分支条件语句（相当于switch语句）
+			
+			属性描述
+				
+				test	：设置逻辑判断表达式
+		
+		<c:foreach>标签
+				
+			作用
+				
+				实现循环语句
+			
+			属性描述
+				
+				items	：指定需要进行遍历的集合名
+					
+				var		：存储从集合中取出的元素
+
+				
+				

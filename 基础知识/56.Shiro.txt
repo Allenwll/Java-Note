@@ -1,0 +1,167 @@
+			Shiro
+
+1.Shiro是Apache下的一个基于Java的开源的安全管理框架,可以完成认证，授权,会话管理,加密,缓存等功能
+
+2.在java中,安全管理框架有Spring Security 和Shiro .
+	
+	a)Spring Security要依赖于Spring,并且比较复杂,学习曲线比较高。
+	
+	b)Shiro比较简单,而且Shiro比较独立,即可以在JavaSE中使用,也可以在JavaEE中使用，并且在分布式的集群环境中也可以使用
+
+
+3.Shiro的结构体系:
+	
+	
+	四大基石
+	
+		a)Authentication认证 
+		
+			验证用户是否合法,也就是登录
+		
+		b)Authorization 授权
+		
+			授予谁具有访问某些资源的权限
+	
+		c)Session Management 会话管理
+		
+			用户登录后用户信息通过Session Management来进行管理,不管是在什么应用中 
+		
+		d)Cryptography 加密
+		
+			提供了常见的一些加密算法,使得在应用中可以很方便的实现数据安全，并且使用很便捷
+		
+			e)Web Support:web应用程序支持
+			
+				Shiro可以很方便的集成到Web应用程序中
+			
+			f)Caching：缓存
+				
+				Shiro提供了对缓存的支持，支持多种缓存架构如: ehcache 还支持缓存数据库:Redis
+
+			g) Concurrency 并发支持
+					
+				支持多线程并发访问
+					
+			h)Testing ：测试
+			
+			i)Run as 
+				
+				支持一个用户在允许的前提下使用另一个身份进行登录
+
+			j)Remember me: 记住我
+			
+4.Shiro架构
+	
+	a)Subject 主体
+	
+		可以是用户,第三方服务等，Subject用于获取主体信息,Principals(身份)和Credentials(凭证)
+		
+		Principals用户的身份信息，是Subject的标识属性,能够唯一标识Subject eg: 电话，邮箱等
+		
+		Credentials凭证:密码, 是只被Subject知道的秘密值。 可以是密码,也可以使数字证书
+		
+		Principals和Credentials最常见的组合是用户名和密码,在Shiro中通常使用UsernamePasswordToken来指定身份和凭证信息
+			
+	b)Security Manager 安全管理器
+		
+		安全管理器是Shiro架构的核心,由其来协调管理Shiro各个组件之间的工作
+		
+	c)Authenticator 认证器  
+		
+		负责验证用户的身份
+				
+	d)Authorizer授权器
+
+		负责为合法用户授予访问哪些资源的权限
+		
+	e)Realms 域
+	
+		用户通过Shiro来完成相关的安全工作,Shiro是不会去维护数据信息的，
+		
+		在Shiro的工作过程中,数据的查询和获取工作是通过Realm从不同的数据源中得到的
+		
+		Realm可以获取数据库信息，文本信息等,在Shiro中可以有一个Realm也可以有多个
+	
+5.认证执行流程
+			
+	a)通过shiro相关api，创建securityManager及获取Subject实例
+	
+	b)封装token信息
+	
+	c)通过subject.login(token)进行用户认证
+		
+		i.Subject接收token，通过其实现类DelegatingSubject将token委托给SecurityManager来完成认证。
+	
+		ii.SecurityManager是接口通过DefaultSecurityManager来完成相关的功能。由DefaultSecurityManager中login来完成认证过程。
+			
+			在login中调用了该类authenticate()来完成认证。该方法是由AuthenticatingSecurityManager来完成的。在该类的authenticate()中，通过调用authenticator（认证器）来完成认证工作。
+		
+		iii.Authenticator是由其默认实现类ModularRealmAuthenticator来完成认证。通过ModularRealmAuthenticator中的doAuthenticate来获取Realms信息。
+		
+		iv.如果是单realm直接将token和realm中的数据进行比较，判断是否认证成功。如果是多realm那么需要通过Authentication Strategy来完成对应的认证工作。如果认证失败会抛出指定的异常信息。
+	
+	d)	通过subject.isAuthenticated()来判断是否认证成功。	
+		
+
+6.Authentication Strategy：认证策略,在shiro中有3种认证策略；
+	
+	a)AtLeastOneSuccessfulStrategy:如果一个（或更多）Realm 验证成功，则整体的尝试被认为是成功的。如果没有一个验证成功，则整体尝试失败。
+		
+	b)FirstSuccessfulStrategy:只要有一个成功地验证的Realm返回的信息将被使用。所有进一步的Realm 将被忽略。如果没有一个验证成功，则整体尝试失败。
+	
+	c)AllSucessfulStrategy:为了整体的尝试成功，所有配置的Realm 必须验证成功。如果没一个验证成功，则整体尝试失败。	
+	
+	默认的策略是：AtLeastOneSuccessfulStrategy	
+	
+7.自定义Realm
+
+	AuthenticatingRealm实现了获取身份信息的功能
+	
+	AuthorizingRealm实现了获取权限信息的功能。
+	
+	通常自定义Realm需要继承AuthorizingRealm，既这样可以提供了身份认证的自定义方法也可以实现授权的自定义方法。
+
+8:散列算法
+
+	在身份认证过程中往往会涉及加密。如果不加密那么数据信息不安全。
+	
+	Shiro内容实现比较多的散列算法。如MD5,SHA等。并且提供了加盐功能。	
+	
+9.授权:给身份认证通过的人,授予其可以访问某些资源的权限
+
+10.权限粒度: 分为粗粒度和细粒度
+	
+	a)粗粒度: 对表的操作
+	
+	b)细粒度:对记录的操作
+	
+	Shiro一般管理的是粗粒度的权限,比如menu、按钮、url; 细粒度的权限是通过业务控制的
+ 	
+11.角色是权限的集合
+
+12.权限表示规则
+	
+	资源:操作：实例.可以用通配符表示 
+		
+		eg: user:add  表示对user具有添加的权限   user:* 表示对user具有所有操作的权限
+
+			user:delete:100 表示对user标识为100的记录有删除的权限	
+				
+13.授权流程
+				
+	a)获取subject主体
+	
+	b)判断主体是否通过认证
+	
+	c)调用subject.isPermitted*/hasRole*来进行权限的判断
+	
+		i.Subject是由其实现类DelegatingSubject来调用方法的，该类将处理交给了securityManager
+		
+		ii.securityManager是由其实现类DefaultSecurityManager来进行处理，该类的isPermitted来处理，其本质父类AuthorizingSecurityManager来处理的。该类将处理交给了authorizer（授权器）
+		
+		iii.Authorizer由其实现类ModularRealmAuthorizer来处理该类可以调用对应的Realm来获取数据，
+		
+			在该类有PermissionResolver对权限字符串进行解析，在对应的Realm中也有对应的PermissionResolver交给WildcardPermissionResolver该类调用WildcardPermission来进行权限字符串的解析。
+	
+		iv.返回处理结果	
+		

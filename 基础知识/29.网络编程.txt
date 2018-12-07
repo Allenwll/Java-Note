@@ -1,0 +1,381 @@
+﻿				网络编程  java.net
+	
+	网络:
+	
+		一组相互连接的计算机 多台计算机组成   使用物理线路进行连接
+	
+	作用：
+		
+		交换数据
+		
+		共享资源
+	
+	OSI Open System Interconnect  开放系统互连模式
+	
+		应用层           根据应用层的特点，将数据封装
+		
+		表示层               加了个标识
+		
+		会话层（数据的封装）  加了个标识
+		
+		传输层（UDP，TCP）    将数据打包完毕
+		
+		网络层(IP地址协议)    给数据IP地址，告诉数据的去向
+		
+		数据链路层         通过什么样的方式去 (火车，飞机)
+		
+		物理层(网线)         通过物理层传输出去
+		
+				接收  将以上七层 反过来
+		
+
+
+		1、物理层（Physical Layer）
+		2、数据链路层（Data Link Layer）
+		3、网络层（Network Layer）网络层协议的代表包括：IP、IPX、RIP、OSPF等 
+		4、传输层（Transport Layer）传输层协议的代表包括：TCP、UDP、SPX等。 
+		5、会话层（Session Layer）NetBIOS、ZIP（AppleTalk区域信息协议）等。
+		6、表示层（Presentation Layer） ASCII、ASN.1、JPEG、MPEG等。
+		7、应用层（Application Layer）   Telnet、FTP、HTTP、SNMP等。 
+		
+	HTTP协议 超文本传输协议   Hypertext transfer protocol
+		
+			是一个单向性协议，必须先有请求后有回应
+			
+			协议发送过程   比较麻烦，所以在http协议版本1.1就有了引出了长连接(1次连接，多次请求)的概念
+				
+				建立连接 3次握手   		
+								
+					发送请求 			
+								
+					响应请求  
+				
+				
+				断开连接 4次挥手				
+
+			
+			3次握手
+					
+				为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误	
+						
+					（1）第一次握手：
+					
+								Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。
+
+					（2）第二次握手：
+								
+								Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，
+								
+								ack (number )=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。
+					
+					（3）第三次握手：
+								
+								Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server
+								
+								Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，
+								
+								完成三次握手，随后Client与Server之间可以开始传输数据了。	
+						
+				4次挥手	
+				
+						终止TCP连接，就是指断开一个TCP连接时，需要客户端和服务端总共发送4个包以确认连接的断开。在socket编程中，这一过程由客户端或服务端任一方执行close来触发
+								
+							（1）第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态。
+
+							（2）第二次挥手：Server收到FIN后，发送一个ACK给Client，确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态。
+
+							（3）第三次挥手：Server发送一个FIN，用来关闭Server到Client的数据传送，Server进入LAST_ACK状态。
+
+							（4）第四次挥手：Client收到FIN后，Client进入TIME_WAIT状态，接着发送一个ACK给Server，确认序号为收到序号+1，Server进入CLOSED状态，完成四次挥手。	
+								
+			是一个无状态协议
+				
+				指没有任何的记忆的处理能力
+				
+					解决无记忆的缺点
+						
+						客户端：Cookie
+						
+						服务器:Session
+			
+		协议约束对象：
+			
+			请求信息:
+					
+				请求行：
+					
+					是一个ASCII文本行，由请求的HTTP方法、请求的URL和HTTP版本组成
+						
+				请求头:
+						
+					HTTP协议使用HTTP头来传递请求的元信息
+						
+				空行:
+						
+					发送回车符和退行，通知服务器以下不再有请求头
+						
+				消息体:
+					
+					HTTP请求中带有查询字符串时，如果是GET方法，查询字符串或表单数据附加在请求行中，那么消息体就没有内容,如果是POST方法，查询字符串或表单数据就添加在消息体中
+		
+					
+			响应信息:
+				
+				状态行:
+						
+					每个HTTP响应以一个状态行开头，它由HTTP协议版本、响应状态码和响应描述组成
+						
+				响应头:
+						
+					响应头与请求头一样，也是一个用冒号分隔的名称/值对，冒号前面时候HTTP头的名称，后面是HTTP头的值
+				
+				空行:
+						
+					发送回车符和退行，通知服务器以下不再有响应头
+						
+				消息体
+						
+					要发送回客户端的HTTP文档或其他要显示的内容等，Web服务器把要发送给客户端的文档信息放在消息体中
+		
+	TCP/IP 传输控制/网络协议  Transfer Controln Protocol/Internet Protocol/Internet
+	
+	    应用层(应用层，表示层，会话层)  HTTP协议，FTP
+		
+		传输层     常见的UDP，TCP
+		
+		网际层       IP地址协议
+		
+		网络接口（链路层，物理层）
+		
+		
+	域名: 
+		
+		网络上真实存在的某一个计算机的地址   Eg: www.bjsxt.com
+		
+	DNS: 域名服务器, 是一台将IP地址和域名进行映射关系的一台计算机
+	
+	
+	IP地址 
+
+			IPV4：
+				
+				32位 由4个八位二进制数组成    点分十进制
+				
+			
+			IPV6:
+				
+				128位，16个字节 8段，用16进制表示，冒号分隔
+				
+			特殊地址:
+			
+				127.0.0.1  本机测试地址  域名： localhost
+		
+
+		可分为2大部分
+			
+			公网  
+			
+			
+			内网
+		
+					私有的IP： 192.168.0.0至192.168.255.255
+			
+		A 类：政府机构
+
+		B 类：中等规模的公司
+
+		C 类：任何需要的人
+
+		D 类：用于组播
+
+		E 类：用于实验
+			
+		IP地址=网络ID+主机ID
+			
+				网络ID：标识计算机或网络设备所在的网段
+				
+				主机ID：标识特定主机或网络设备
+	
+	
+	端口： Port   
+	
+				0-65536
+		
+		0-1023 系统使用
+		
+		80,、8080 是Http 20,21 是ftp 的服务
+			
+			
+		端口是虚拟的概念 
+		
+			通过端口，可以在一个主机上运行多个网络应用程序。
+			
+		网络服务是通过 IP地址+端口号实现 
+	
+
+	UDP： 
+		相当于发短信（有字数限制），
+    
+		不需要建立连接，数据包的大小限制在64k内,
+		
+		效率较高,不安全，容易丢包
+
+	TCP：	面向连接
+	
+		相当于打电话，需要建立连接，
+      
+		效率相对比较低，数据传输安全,
+       
+	   三次握手完成。 (点名—答到—确认)     Syn Flood洪水攻击。
+	
+	Socket： “请求-响应”模式：
+		
+		Socket类：发送TCP消息
+		
+		ServerSocket类：创建服务器
+		
+	    网络上的两个程序通过一个双向的通信连接实现数据的交换，
+		
+		这个连接的一端称为一个socket
+		
+		Java中使用Socket完成TCP程序的开发，使用此类可以方便的建立可靠的、双向的、持续性的、点对点的通讯连接
+		
+		服务器端使用ServerSocket等待客户端的连接，  每一个客户端都使用一个Socket对象表示
+		
+	
+	TCP: Socket
+		
+		客户端
+			
+			建立连接
+		
+				Socket socket = new Socket("localhost",8800);
+		
+			打开Socket关联的输入输出流
+				
+				OutputStream os=socket.getOutputStream();
+			
+			数据流中读写信息
+				
+				String info="用户名：Tom；用户密码:123456"；
+				
+				os.write(info.getBytes());
+				
+				socket.shundownOutput();
+				
+			关闭所有的数据流和Socket
+					
+				os.close();
+				
+				socket.close();
+			
+		服务器端 
+		
+			建立数据，处理发送到指定端口的数据
+			
+				ServerSocket server=new ServerSocket(8800);
+				
+			获取客户端对象
+			
+				Socket socket=server.accept();
+		
+			数据流中读写信息
+			
+				InputStream is=socket.getInputStream();
+				
+				byte[] buf=new byte[1024];
+				
+				int len=is.read(buf);
+				
+				syso(new String(buf,0,len));
+				
+				socket.shutdownInputStream();
+			
+			关闭所有数据流和Socket
+			
+				is.close();
+				
+				socket.close();
+				
+				server.close();
+				
+	UDP: Socket    
+			
+			服务器端
+				
+				创建接收数据的对象  
+				
+					DatagramSocket ds = new DatagramSocket(8080);
+			
+				定义字节数组存放数据
+			
+					byte[] buf = new byte[1024];
+				
+				得到封包对象数据
+			
+					DatagramPacket dp = new DatagramPacket(buf, buf.length);
+
+				接收
+
+					ds.receive(dp);
+			
+				解包 拆包
+			
+					String str = new String(dp.getData(), 0, dp.getLength());
+			
+				关闭
+			
+					ds.close();
+			
+			客户端
+				
+				创建一个发送数据的对象,相当于邮递员
+				
+					DatagramSocket ds = new DatagramSocket();
+					
+				发送内容
+				
+					byte[] buf = "逆风如解意，容易莫摧残".getBytes();
+			
+				创建数据包，相当于信件
+		
+					DatagramPacket dp = new DatagramPacket(buf, buf.length, InetAddress.getByName("127.0.0.1"), 8080);
+						
+				发送数据
+			
+					ds.send(dp);
+
+				关闭
+					
+					ds.close();
+			
+			
+			
+			
+			
+			
+			
+			
+	InetAddress 封装了域名和IP地址
+	
+			getLocalHost（） 获得主机名和IP地址
+	
+			getHostAddress（） 获得IP地址
+	
+			getHostName（） 获取主机名
+	
+			getByName（） 根据主机名获得IP地址
+			
+	InetSocketAddress 封装了IP地址和端口号
+			
+			InetSocketAddress socketAddress = new InetSocketAddress("www.baidu.com", 8080);
+			
+					InetAddress address = socketAddress.getAddress();
+			
+				System.out.println("得到主机名字:" + socketAddress.getHostName());
+			
+				System.out.println("得到端口号:" + socketAddress.getPort());
+				
+				System.out.println("得到HostString:" + socketAddress.getHostString());
+	
+	

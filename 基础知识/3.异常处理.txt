@@ -1,0 +1,88 @@
+﻿			异常处理
+	
+	异常	
+	
+		异常是导致程序中断运行的一种指令流
+	
+	异常格式	
+	
+		try
+			{ 
+				异常语句
+			}
+			
+		catch(Exception e)
+			{
+				e.printstackTrace(); 
+			
+				在命令行打印异常信息在程序中出错的位置及原因。
+			}
+			
+		finally
+			{
+				最终执行
+
+				不执行finally的情况是 遇到了 System.exit()结束应用程序时、finally内发生了异常、程序所在线程死亡、关闭CPU
+				
+				try 内有return关键字时 先执行finally后执行return
+			}	
+
+	常见异常
+
+		数组越界异常 ArrayIndexOutOfBoundsException
+		
+		数字格式化异常 NumberFormatException
+		
+		算术异常 ArithmeticException
+		
+		空指针异常 NullPointerException
+		
+		类不存在异常 ClassNotFoundException
+		
+		方法参数错误异常 IllegalArgumentException
+		
+		无访问权限异常 IllegalAccessException
+		
+		类定义不兼容异常 IncompatibleClassChangeError
+		
+		实例化错误异常 InstantiationError
+		
+		链接错误异常  LinkageError
+		 
+		堆栈溢出错误异常 StackOverflowError
+		 
+	throws关键字
+	
+		定义方法时可用该关键字声明，表示此方法不处理异常，抛给方法的调用者处理
+		
+			void tell() throws Exception{
+			
+			}
+			
+	throw关键字
+		
+		抛出一个异常，抛出时直接抛出异常类的实例化对象即可
+		
+		try{
+		 throw new Exception("实例化异常");
+
+		 }
+		
+	自定义异常
+			
+		直接继承Exception类 
+	
+	运行时异常 可以不用进行处理  由JVM处理  eg： NullPointerException
+	
+	编译期异常 Checked异常 必须进行处理 否则编译不通过  eg： ClassNotFoundException
+
+	Error 和 Exception    区别
+	
+		Throwable 是 两者的父类
+		
+		Error 是程序本身是出现严重错误 不可修复
+		
+		Exception 是由于某些原因导致程序中断的指令流 可以修复
+		
+		
+	

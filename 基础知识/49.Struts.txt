@@ -1,0 +1,612 @@
+						Struts
+	
+1.JavaWeb两种开发模式
+		
+		Model 1: JSP+JavaBean
+			
+			优点:
+				
+				程序可读性高，可重复利用性高，代码比较少，执行效率高，适合小型项目
+							
+			缺点:
+					
+				不好维护，扩展麻烦，展示代码和java混合导致整体比较混乱，缺乏流程控制
+		
+		Model 2: JSP+JavaBean+Servlet  MVC 
+		
+				优点:
+				
+					降低耦合度,开发流程更为明确，核心的程序管控，维护容易，扩展方便,适合大型项目
+				
+				缺点:
+										
+					开发效率低，学习时间长，执行效率比model1低, 开发时间较长
+	
+	
+2.Strut2s是Apache基金Jakarta项目的一个子项目,在2001年发布Struts 1.0
+	
+	Struts 1 是全世界第一个发布的MVC框架，由Craig R.McClanahan在2001年发布
+	
+3.框架定义:
+		
+	Ralph Johnson 对框架Framework的定义如下:
+			
+		框架是整个系统或系统的一部分的可重用设计，由一组抽象的类及其实例间的相互作用方式组成
+			
+		使本来没有规则的章法的类和实例通过相互作用而变得成熟稳定、可重复使用
+			
+
+	框架:提高开发效率，是模板，是可重用的半成品，具有即插即用的可重用性,成熟的稳定以及良好的团队协作性
+		
+4.Struts分成两个框架: 
+				
+		第一个: 传统的Struts 1 和WebWork结合后的Struts 2框架
+			
+		第二个: Shale框架
+			
+	
+5.MVC框架掌握知识:
+		
+	a)将请求映射到一个java类的方法上
+			
+		<action method="xx"></action>
+			
+	b)如何将页面中的数据提交到java类中
+				
+		I)属性驱动方式
+				
+			页面表单中表单域的名称和action的属性名一致，并且在action中提供get/set方法
+				
+			那么struts2 会自动将数据设置到action的属性上，在处理方法中可以直接获取表单值(属性值)
+			
+			为action的属性值设置了get方法，在jsp中可以直接使用el表达式获取属性值
+				
+		II)对象驱动方式
+				
+			在action类中，将对象设置为属性，并提供get/set方法 
+				
+			在页面中表单域名称是action类中对象的属性名.属性
+				
+			在对象的类中提供对应属性的get/set方法即可
+				
+			在action的处理类中获取的将会是对象
+				
+			对象驱动的好处在于不用在处理类中 再封装对象。
+				
+			缺点是在jsp中表单域名称有重复的地方。
+				
+		III)模型驱动方式
+				
+				由于对象驱动在页面中有重复的代码，当类的属性比较多时，开发效率比较低。
+				
+				Struts2中提供了一种模型驱动，使得在页面的表单域名称和类的属性名一致，action处理类需要实现ModelDriven接口即可。
+								
+	c)如何将处理结果展示到页面上
+		
+	d)如何进行页面跳转
+	
+
+6.Action的创建方式
+					
+		Struts2是一个轻量级框架。提供了无侵入性的实现方式。
+				
+		Struts2也提供了接口和类来实现action。
+				
+	通过实现接口或者继承类来实现action可以使用struts2提供的相关功能
+					
+		第一种 通过实现Action接口来实现action
+							
+			好处: 
+								
+				限制了处理类必须有execute，
+
+				在配置action时可以减少相关配置
+						
+		第二种: 通过继承struts2提供的ActionSupport类来实现处理类
+						
+				可以使用到struts2提供的相关功能:验证、国际化等
+						
+						
+		第三种: 无侵入性的实现。 无侵入性实现比较轻量级
+								
+7.Action优化
+							
+	a)动态方法调用
+					
+					
+		只用配置一个action  
+					
+		调用action规则ActionName!methodName.action
+					
+		调用方式: eg: http：//localhost:8080/action_cfg/userAction!delete.action
+					
+			注意:
+						
+				需要注意不同的处理方法返回值的问题，不同处理方法的返回值应该不一致
+					
+				除非处理后跳转到同一个页面。动态方法调用不安全，不推荐使用
+					
+	b)通配符配置
+					
+		<action name="*" class="cn.allen.action.UserAction" method="{1}"></action>	
+					
+		注意事项相同，先匹配*，没有再匹配具体的action
+					
+	c)注解
+		
+		导入struts2-convention-plugin-2.3.4.jar
+					
+		在action类上配置注解	
+	
+	
+8.ThreadLocal: 该类提供了线程局部变量，线程安全
+		
+9.ActionContext 
+	
+	a)是一个容器，是struts2的上下文对象 是一个Map结构的对象，线程安全的对象
+		
+	b)在struts2的执行过程中始终贯穿action的整个执行流程
+		
+	c)每次请求都会新创建ActionContext并将servletAPI中的数据装入actionContext
+			
+	d)在执行完成后将数据重新装入servletAPI。所以struts的执行效率相比于servlet更低，但是线程安全
+	
+	e)内有6大对象
+				
+		1)request
+					
+			存放请求域中的数据
+					
+		2)session
+					
+			存放会话域中的数据
+					
+		3)application 
+					
+			存放全局域中的数据
+					
+		4)parameters
+					
+			存放请求数据
+					
+		5)attr
+					
+			存放以上3个域中的数据
+					
+		6)ValueStack
+					
+			值栈
+												
+	f)Struts2中相比servlet做很多处理。比如：获取数据, 数据封装，类型转换等
+	
+		这些功能都是通过struts2的拦截器实现的。并且在这个过程中都是对数据进行处理。
+		
+	g)在Struts2中，数据的迁移(从request中到struts2中---actionContext)工作是通过ActionContext来完成的
+		
+		Struts2中所有处理数据的工作都是从actionContext获取的
+	
+
+	
+11)ServletAPI
+		
+	两种方式使用ServletAPI
+		
+		a)解耦方式
+				
+			使用ActionContext实现  （在应用中可以完全解耦ServletAPI）
+				
+				a)  //获取session
+				Map<String,Object> session=ActionContext.getContext().getSession();
+				
+				b)	//获取全局域
+				ActionContext.getContext().getApplication();
+			
+				c)	//获取请求域
+				ActionContext.getContext().get("request");
+				
+		b)耦合方式
+		
+				即ServletAPI本身的对象
+					
+					
+				a)通过ActionContext实现耦合
+					
+					HttpServletRequest req=(HttpServletRequest)ActionContext.getContext().get(StrutsStatics.HTTP_REQUEST);
+				
+				b)通过ServletActionContext来获取
+				
+					HttpServletRequest req = ServletActionContext.getRequest();
+						
+				c)通过实现ServletRequestAware接口来实现
+	
+	
+			
+12)Struts 2 	Struts 1 不支持新的表示层技术
+	
+	1.是一个轻量级的MVC框架，基于请求的MVC框架     <Filter>实现了面向方面编程AOP概念
+	
+	2.虽然是Struts 1 的基础上发展起来的,但是 实质上是以WebWork为核心
+		
+	3.Struts 2 为传统Struts 1 注入了WebWork的设计理念，统一了 Struts 1和WebWork两个框架
+		
+	4.允许Struts 1 和WebWork开发者同时使用Struts 2 框架。
+		
+	5.Struts 2 是WebWork的升级，不是一个全新的框架，不是Struts 1 衍生了Struts 2
+		
+		
+12)轻量级框架一般占用资源较少，使用比较方便，不具有侵入性
+		
+	没有侵入性指使用一个框架，不去继承或者实现框架提供的类或接口
+		
+13)Struts与Shale的区别	
+	
+	1)Struts与JSF集成，而Shale则是建立在JSF之上
+		
+	2)Struts实质上是一个巨大的、复杂的请求处理器，而Shale则是一组能以任何方式进行组合的服务，Shale是一种SOA面向服务架构
+			
+14)Struts 1.x框架由5个部分组成
+		
+	1.核心控制器ActionServlet
+		
+	2.封装信息的组件ActionForm
+		
+	3.业务控制器Action
+		
+	4.业务逻辑模型和配置文件 struts-config.xml
+		
+15)Struts 2.x 由3个部分组成  
+		
+	1.核心控制器FilterDispatcher
+			
+		起中央控制器作用的过滤器
+		
+	2.业务控制器Action
+			
+		处于Model层的Action，调用JavaBean实现业务逻辑
+		
+	3.业务逻辑组件(用户自己实现)
+		
+		Struts.xml 核心配置文件
+		
+		result 转发的目的地，支持多种视图技术
+	
+16)Struts 2 执行流程
+		
+	浏览器发起请求---->服务器接收并处理请求----->项目的web.xml匹配过滤器------>匹配是否有对应的Action--- 
+	
+	------>生成对应的Action对象---->调用Action对象的处理方法----->返回结果                                        
+	
+	
+17)OGNL表达式：
+		
+	object graph navigation language  对象导航图语言
+		
+	使用需导入jar包
+			
+		ognl-3.0.5.jar
+			
+		javassist-3.11.0.GA.jar
+		
+	作用:
+				
+		表达式语言和类型转换
+		
+	ognl表达式思想：把数据分为两类: 常用的和不常用的 常用的数据一般都是小数据，不常用的数据一般都是大数据		
+			
+		// 第一个参数是Ognl表达式 第二个参数是Ognl上下文(不常用的),第三个参数是Ognl根数据(常用的)
+
+		// 表达式写法: 常用的数据直接获取，不常用的数据加#获取
+	
+		Object result = Ognl.getValue("age", map, user);
+		
+	在struts2中使用ognl表达式来完成数据的设置和获取，并且使用ognl来完成类型转换工作
+			
+	在struts2中ActionContext对象是ognl的上下文对象，ValueStack是ognl的根对象
+		
+	VauleStack放的是Action对象的属性
+		
+	在struts2使用ognl表达式来获取值，需要使用struts2的标签库	
+		
+		<s:property value="xxx"/> 获取值
+		
+	Struts2标签注意项
+		
+		使用struts2标签必须要经过核心过滤器
+		
+		struts标签虽然比较全面，但是不灵活，很少用
+	
+18)类型转换
+		
+	在struts2中 相比于servlet来说，获取数据时，程序员没有进行手动的类型转换，类型转换工作由struts2来完成
+	
+	但对于自定义类型数据，struts2不会帮助我们转换， 需要自定义类型转换转换器
+		
+		a)定义一个类型转换器，该类继承StrutsTypeConverter
+		
+		b)添加全局配置文件xwork-conversion.properties 放于src下	
+
+19)数据校验 
+	
+	一般分为两类 前端校验(JS校验)和后端校验(Java 代码) 
+	
+	在对数据安全要求较高的情况下可能会采用后端验证
+	
+	
+	Struts2提供了后端验证机制  有两种方式来实现  一种是通过硬编码来实现，另一种是通过校验框架来实现
+	
+		想要实现后端验证必须继承ActionSupport类，该类中有一个validate方法 在处理的action中重写该方法即可
+		
+		在validate方法中添加校验规则  如果在action中添加了validate方法 那么在执行所有的处理方法时,会先执行validate方法。
+
+		validate方法执行通过后再执行处理方法  FieldError和ActionError表示validate方法不通过
+		
+		如果要验证特定的方法，那么需要为特定的方法执行其验证方法  
+			
+			验证方法规则: 处理方法为xxx  那么验证方法为validateXxx方法 
+			
+			执行顺序为先执行validateXxx 再执行validate 再执行xxx方法
+		
+			1.硬编码
+			
+				实现步骤:
+				
+					1.在处理类中添加校验方法
+				
+					2.在页面中添加struts标签库 并且将错误信息显示在<s:fielderror>或者</s:actionerror>
+			
+					3.在action配置中一定要配置result name="input" 并指定跳转页面
+			
+			2.校验框架
+				
+				实现步骤
+					
+					1.在action所在包下添加校验规则文件：ActionClassName-validation.xml
+					
+					2.在页面中添加struts标签库 并且将错误信息显示在<s:fielderror>或者</s:actionerror>
+			
+					3.在action配置中一定要配置result name="input" 并指定跳转页面
+					
+19)拦截器
+
+	1.Struts2的核心,Struts2的所有功能都是由拦截器来实现的
+	
+	2.在Struts2中所有功能都是可以自由装配，可插拔实现的      Osgi模块化编程
+	
+	3.拦截器有点类似于过滤器 只不过拦截器只拦截action 
+	
+	4.在Struts2可以自定义拦截器来实现某些功能，自定义拦截器有两种实现方式
+	
+			实现Interceptor接口
+					
+			继承AbstractInterceptor类
+	
+	步骤:
+	
+		1.在struts.xml中配置拦截器， 拦截器需要配置在package下
+				
+		2.在指定action中引用拦截器
+				
+		3.拦截器在第一次执行时被创建，以后执行直接用即可,也就是拦截器是单例的singleton
+				
+		4.如果使用了自定义拦截器，那么Struts2拦截器不工作，需要重新引用
+					
+	5.拦截器栈是一个容器，可以存放多个拦截器  再在action下配置引用即可  
+		
+	6.引用拦截器栈与引用拦截器是一样的  一个拦截器可以被多个拦截器栈引用
+	
+	7.在之前的action中没有引用拦截器，原因是struts2中设置了默认的拦截器
+		
+		
+20)表单重复提交:
+		
+		浏览器原因或者计算机本身导致
+		
+		两种解决方案
+			
+			前端
+			
+				JS解决表单重复提交
+
+				function checkSubmit(){
+
+					if(checkSubmitFlg ==true){
+
+							return false; //当表单被提交过一次后checkSubmitFlg将变为true,根据判断将无法进行提交。
+
+					}
+
+					checkSubmitFlg ==true;
+	
+					return true;
+
+				}
+			
+			后端
+			
+				token拦截器
+				
+					
+	token拦截器的实现步骤
+	
+		1.在action配置中引用token拦截器
+		
+		2.配置invalid.token结果应该跳转的页面
+		
+		3.在表单中引用struts标签<s:token>
+				
+21)struts2中拦截器与过滤器的区别
+
+	1、拦截器是基于java反射机制的，而过滤器是基于函数回调的。
+
+	2、过滤器依赖于servlet容器，而拦截器不依赖于servlet容器。
+
+	3、拦截器只能对Action请求起作用，而过滤器则可以对几乎所有请求起作用。
+
+	4、拦截器可以访问Action上下文、值栈里的对象，而过滤器不能。 
+	
+	5、在Action的生命周期中，拦截器可以多次调用，而过滤器只能在容器初始化时被调用一次。
+	
+	6.过滤器和拦截器，其实两者没有什么区别，最大的一点就是，过滤！是一个正面的东西，过滤 留下你想要的东西
+	
+		而拦截是一个反面的东西！ 拦截，针对你不需要的东西进行...
+		
+		
+22.ajax异步操作
+	
+	1.在struts2中也可以像servlet一样来实现ajax----通过HttpServletResponse来实现。
+	
+	
+	有两种方式   一种 自己写
+	
+	一种通过struts2的插件来实现异步操作：
+	
+						
+23.使用struts 2 开发一个helloworld项目
+	
+		1.新建web项目
+		
+		2.添加index.jsp页面
+		
+		3.添加struts 2需要的jar包
+		
+			asm-x.x.jar
+			
+			asm-commons-x.x.jar
+			
+			asm-tree-x.x.jar
+			
+			commons-fileupload-X.X.X.jar
+			
+			commons-io-X.X.X.jar
+			
+			commons-lang-X.X.jar
+			
+			commons-lang3-3.1.jar
+			
+			freemarker-X.X.X.jar
+			
+			javassist-X.X.X.jar
+			
+			ognl-X.X.X.jar
+			
+			struts2-core-X.X.X.X.jar
+			
+			xwork-core-X.X.X.jar
+			
+		4.添加核心过滤器
+				
+			<filter>
+			
+				<filter-name>struts2</filter-name>
+				
+				<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		
+			</filter>
+		
+			<filter-mapping>
+			
+				<filter-name>struts2</filter-name>
+			
+				<url-pattern>/*</url-pattern>
+		
+			</filter-mapping>
+		
+		5.新建一个Action类，该类用于处理请求
+		
+			public class HelloAction {
+	
+				public String execute(){
+					
+					System.out.println("处理action的请求");
+					
+					return "index";
+				}
+			}
+			
+		6.在src下创建struts.xml文件
+		
+			<?xml version="1.0" encoding="UTF-8"?>
+			
+				<!DOCTYPE struts PUBLIC
+					"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+				"http://struts.apache.org/dtds/struts-2.3.dtd">
+			
+			<struts>
+				
+				<!-- constant 常量配置 struts.devMode 开发模式 -->
+				<constant name="struts.devMode" value="true" />
+			
+				<!--设置编码格式 i18n 是 internationalization的首末字符i和n，18为中间的字符数 -->
+				<constant name="struts.i18n.encoding" value="utf-8" />
+			
+				<!-- 设置action的扩展名 -->
+				<constant name="struts.action.extension" value="action,,do"></constant>
+			
+				<!--package表示一个包 每个包下可以配置多个action 包的作用主要用来区分不同模块的配置
+		
+					不同模块配置在不同的包下
+	
+					name 表示包名  在项目下唯一    通常使用模块名为包名
+		 
+					extends 表示继承  必须直接或者间接继承struts-default 
+	
+					namespace 表示命名空间和请求名直接相关
+			
+					请求名=项目发布路径名+namespace名+action名
+	
+					namespace名称通常也和模块名相关
+				-->
+			
+				<package name="default" extends="struts-default">
+					
+					<!-- action 配置请求名  一个action表示对一个请求的处理
+			
+						name在同一个包下唯一 会作为请求名称 该名称会自动将请求的扩展名去掉 所以不同配置扩展名
+		 	
+						class 配置处理请求的类的完全限定名=包名+类名 如果不配置class 默认由 ActionSupport来处理
+				
+						method 配置处理方法 默认由execute方法处理
+		 	
+						在struts2中处理方法必须是public 返回值必须是String
+					-->
+				
+					<action name="hello" class="cn.allen.action.HelloAction" method="hello">
+			
+						<!-- result 配置的结果集处理  每个action中可以配置多个result
+				
+							name 表示结果集名称 和处理方法的返回值进行匹配  默认是success
+				
+							type 表示结果集类型
+				
+							dispatcher 转发--默认
+							
+							redirect 重定向
+							
+							redirectAction 重定向到另外一个action 
+							
+							stream 流
+							
+							chain 表示action链
+							
+							result 中填写要跳转的前端页面的路径
+						-->
+						
+							<result name="index">/index.jsp</result>
+					
+						</action>
+				
+				</package>
+			
+				<!-- include 用于添加其他配置文件，在团队开发中使用
+						
+					不同模块一般使用不同的配置文件，在总的配置文件中加入即可
+					
+					即在总的struts.xml中加入<include file="user.xml"></include>即可
+					<struts>
+							<include file="user.xml"></include>
+					</struts>
+					
+				<include file="user.xml"></include>
+				-->
+			</struts>
+		

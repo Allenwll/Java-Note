@@ -1,0 +1,284 @@
+					输入输出(I/O)系统   java.io
+			
+		数据源 Data Source  提供原始数据的原始媒介。
+			
+			常见的：数据库、文件、其他程序、内存、网络连接、IO设备。
+		
+		流 Stream
+		
+			数据源就像水箱，流就像水管中流着的水流，程序就是我们最终的用户。
+				
+			流是一个抽象、动态的概念，是一连串连续动态的数据集合。
+			
+			当程序需要读取数据源的数据时 就会通过IO流对象开启一个通向数据源的流  通过这个IO流对象相关方法可以顺序读取流中的数据。
+			
+			流的方向：
+					
+					输入流：数据源到程序(InputStream、Reader读进来)
+					
+					输出流：程序到目的地(OutPutStream、Writer写出去)
+			处理数据单元：
+			
+					字节流：按照字节读取数据(InputStream、OutputStream) 用于所有数据
+				
+					字符流：按照字符读取数据(Reader、Writer)   FileReader FileWriter  局限于文本的读写
+			功能不同：
+					
+					节点流：可以直接从数据源或目的地读写数据。
+					
+					处理流，包装流：不直接连接到数据源或目的地，是处理流的流。通过对其他流的处理提高程序的性能。
+		
+			节点流和处理流的关系：
+					
+					节点流处于io操作的第一线，所有操作必须通过他们进行；
+					
+					处理流可以对节点流[也可以对其他处理流]进行包装，提高性能或提高程序的灵活性。
+		
+		InputStream
+					
+			 此抽象类是表示字节输入流的所有类的超类。InputSteam是一个抽象类，它不可以实例化。
+			 
+			 数据的读取需要由它的子类来实现。根据节点的不同，它派生了不同的节点流子类 。
+				
+			继承自InputSteam的流都是用于向程序中输入数据，且数据的单位为字节（8 bit）；
+			
+		OutputStream
+					
+			此抽象类是表示输出字节流的所有类的超类。
+			
+			输出流接受输出字节并将这些字节发送到某个接收器。
+			
+		Reader
+				用于读取字符流的抽象类，数据单位为字符。
+				
+				FileReader 节点流
+				
+				FileWriter 节点流
+				
+							
+				BufferedReader 
+			
+					字符缓冲输入流
+				
+				BufferedWrite
+					
+					字符缓冲输出流
+		Writer
+				写入字符流的抽象类，数据单位为字符。		
+		
+		File类
+				文件和目录路径名的抽象表示形式。
+				
+				一个File对象可以代表一个文件或目录，但是不是完全对应的。
+				
+				建立File对象不会对文件系统产生影响。
+	
+			
+
+		常用IO流类：
+		
+			FileInputStream  输入流：数据源到程序(InputStream、Reader读进来)
+					
+					用于读取本地文件中的字节数据，继承自InputStream类
+					
+					FileInputStream(File file) 
+							
+							通过打开一个到实际文件的连接来创建一个FileInputStream，该文件通过文件系统中的 File 对象 file 指定。
+					
+					FileInputStream(String name) 
+							
+							通过打开一个到实际文件的连接来创建一个FileInputStream，该文件通过文件系统中的路径名 name 指定
+					
+					FileInputStream(FileDescriptor fdObj) 
+							
+							通过使用文件描述符 fdObj 创建一个FileInputStream，该文件描述符表示到文件系统中某个实际文件的现有连接。
+					 	available() 
+								
+								返回下一次对此输入流调用的方法可以不受阻塞地从此输入流读取（或跳过）的估计剩余字节数。
+						
+						close() 
+								
+								关闭此文件输入流并释放与此流有关的所有系统资源。
+										
+								
+						read() 
+								从此输入流中读取一个数据字节或字节数组
+						
+						read(byte[] b, int off, int len) 
+								
+								从此输入流中将最多 len 个字节的数据读入一个 byte 数组中。
+								
+									
+						finalize() 
+								
+								确保在不再引用文件输入流时调用其close 方法。		
+						
+						skip(long n) 
+								
+								从输入流中跳过并丢弃 n 个字节的数据。		
+						
+						getChannel() 
+								
+								返回与此文件输入流有关的唯一FileChannel 对象。
+												
+						
+						getFD() 
+								
+								返回表示到文件系统中实际文件的连接的 FileDescriptor 对象，该文件系统正被此FileInputStream 使用。
+						
+			FileOutputStream 输出流：程序到目的地(OutPutStream、Writer写出去)
+			
+					用于将字节数据写出到文件。继承自OutputStream类
+					
+					FileOutputStream(File file) 
+							
+							创建一个向指定 File 对象表示的文件中写入数据的文件输出流。
+					
+					FileOutputStream(FileDescriptor fdObj) 
+					
+							创建一个向指定文件描述符处写入数据的输出文件流，该文件描述符表示一个到文件系统中的某个实际文件的现有连接。
+							
+					FileOutputStream(String name) 
+						
+							创建一个向具有指定名称的文件中写入数据的输出文件流。
+					
+					close() 
+							
+						关闭此文件输出流并释放与此流有关的所有系统资源。
+					
+					finalize() 
+						
+						清理到文件的连接，并确保在不再引用此文件输出流时调用此流的 close 方法
+						
+					getChannel() 
+						
+						返回与此文件输出流有关的唯一FileChannel 对象。
+					
+					getFD() 
+						
+						返回与此流有关的文件描述符。
+						
+					 flush()：
+					 
+							刷新缓冲区，流对象还可以继续使用； close 不可以 继续使用
+						
+					write(int b) 
+					
+						将指定字节写入此文件输出流。
+					
+					write(byte[] b) 
+						
+						将 b.length 个字节从指定 byte 数组写入此文件输出流中。
+					
+					write(byte[] b, int off, int len) 
+							
+						将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此文件输出流。
+					
+					EG 文件复制
+							
+					try  {  
+						//使用FileInputStream和FileOutputStream进行文件复制  
+						FileInputStream fis=new FileInputStream("a.txt");  
+						FileOutputStream fos=new FileOutputStream("b.txt");  
+						int read;  
+						//read=fis.read();  
+						byte b[]=new byte[1024];  
+						//读取文件，存入字节数组b，返回读取到的字符数，存入read,默认每次将b数组装满  
+						read=fis.read(b);  
+							while(read!=-1)  {  
+								fos.write(b,0,read);  
+								read=fis.read(b);  
+								//read=fis.read();  
+							}  
+						fis.close();  
+						fos.close();  
+					}  catch (IOException e)  {  
+							e.printStackTrace();  
+					}
+		ByteArrayInputStream  
+		
+			包含一个内部缓冲区，该缓冲区包含从流中读取的字节。
+		
+			内部计数器跟踪 read 方法要提供的下一个字节。
+		
+				FileInputStream是把文件当做数据源。
+		
+				ByteArrayInputStream则是把内存中的某个数组当做数据源  		
+				
+				字节数组和各个类型相转换
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					ObjectOutputStream oos = new ObjectOutputStream(baos);
+					oos.writeByte(1);
+					byte[] temp = baos.toByteArray();
+		
+					ByteArrayInputStream bais=new ByteArrayInputStream(temp);
+					ObjectInputStream ois = new ObjectInputStream(bais);
+					ois.readByte();
+			
+		ByteArrayOutputStream
+		
+			实现了一个输出流，其中的数据被写入一个 byte 数组。
+			
+			缓冲区会随着数据的不断写入而自动增长
+			
+			可使用 toByteArray() 和 toString() 获取数据。 
+			
+			ByteArrayOutputStream将一个输出流指向一个Byte数组，
+			
+			但这个Byte数组是ByteArrayOutputStream内部内置的，不需要我们来定义。
+			
+		DataInputStream和DataOutputStream
+						
+				怎么写的顺序 dos.writeInt(77)  dos.writeUTF("and")   怎么读 dis.readInt()  dis.readUTF（） 
+				
+				数据流通常在流中写入或读取一个结果时使用，如网络数据传递。
+					
+		DataInputStream和DataOutputStream提供了可以存取与机器无关的所有Java基础类型数据（如：int，double 等）和String的方法。
+					
+					字节流是二进制流,与平台无关
+					
+		PrintStream 字节流  只有输出流 一直打开
+		
+		PrintWriter 字符流  只有输出流  没有关闭流并自动刷新时换行刷新
+		
+			通过打印流，可以很方便的输出内容。可以输出到：文件、控制台、甚至网络等。我们常用的
+			
+				System.out就是一个PrintStream。
+				
+				System.in 是一个字节流 InputStream  指的是计算机标准输入设备 即键盘
+		
+		BufferedInputStream   
+				
+				字节缓冲输入流  一次读8192字节到缓冲区
+				
+		BufferedOutputStream
+					
+				字节缓冲输出流
+				
+		BufferedReader 
+			
+				字符缓冲输入流
+				
+		BufferedWrite
+				
+				字符缓冲输出流
+		 
+		对象流   ObjectInputStream   ObjectOutputStream 	
+		
+			所有需要写入到文件或者网络中的对象通过对象流，都需要进行序列化
+				
+			序列化的数据是字节数据，与平台无关  详见29.序列化和反序列化
+		
+		转换流
+			
+		InputStreamReader isr=new InputStreamReader(new FileInputStream("1.txt"));
+			
+			字节到字符
+			
+			BufferedReader br=new BufferedReader(isr);
+			
+			BufferedWrite bw=new BufferedWrite(new OutputStreamWriter(new FileOutputStream("5.txt")));
+			
+		
+					
+		

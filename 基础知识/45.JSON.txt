@@ -1,0 +1,168 @@
+﻿												JSON
+	
+	JSON : JavaScript 对象表示法(JavaScript Object Notation)
+		
+		
+		JSON 是存储和交换文本信息的语法。
+		
+		JSON 是轻量级的文本数据交换格式
+		
+		JSON 独立于语言和平台
+		
+		JSON 具有自我描述性，更易理解
+	
+	JSON 与XML 的区别
+		
+		类似XML，比之更小、更快、更易解析
+		
+		没有结束标签
+		
+		更短
+		
+		读写的速度更快
+		
+		使用数组
+		
+		不使用保留字
+ 
+ JSON语法是JavaScript对象表示法语法的子集.
+	
+	数据在名称/值对中
+	
+	数据由逗号分隔
+	
+	花括号保存对象
+	
+	方括号保存数组
+ 
+ JSON 值可以是
+	
+	 数字(整数或浮点数)
+   
+    字符串(在双引号中)
+	
+	逻辑值(true or false)
+    
+	数组(在方括号中)
+   
+    对象(在花括号中)
+	
+	null
+	
+	Ex:{"firstName":"John","lastName":"Doe"}
+	
+	Ex:{
+		
+		"employees":[
+			
+			{"firstName":"John","lastName":"Doe"},
+			
+			{"firstName":"Anna","lastName":"Smith"}
+		]
+	}
+ 
+ 实例：
+  
+  .在assets下创建*.json文件输入对象值
+  
+  .在MianActity.java OnCreate方法中
+  
+  .代码如下
+  
+  onCreate(){
+	
+	try{
+		
+		InputStreamReader is=new InputStreamReader(getAssets().open("*.json"),"UTF-8");
+		
+		BufferReader br=new BufferReader(is);
+		
+		String line;
+		
+		StringBuilder builder=new StringBuilder();
+		
+		while((line=br.readLine())!=null){
+			
+			builder.append(line);
+		}
+		
+		br.close();
+		
+		is.close();
+	
+		JSONObject root=new JSONObject(builder.toString());
+		
+		System.out.printIn("cat="+root.getString("cat"));
+		
+		JSONArray array=root.getJSONArray("language");
+		
+		for(int i=0;i<array.length();i++){
+				
+			JSONObject lan=array.getJSONObject(i);
+			
+			System.out.printIn("--------------------");
+			
+			System.out.printIn("id="+lan.getInt("id"));
+			
+			System.out.printIn("name="+lan.getString("name"));
+			
+			System.out.printIn("ide="+lan.getString("ide"));
+		}
+	}catch(UnsupportedEncodingException e){
+		
+		e.printStackTrace();
+	}catch(IOException e){
+		
+		e.printStackTrace();
+	}
+	
+	//创建
+	
+	try{
+  
+		JSONObject root=new JSONObject();
+		
+		root.put("cat",it);
+		
+		JSONObject lan1=new JSONObject();
+		
+		lan1.put("id",1);
+		
+		lan1.put("ide","Eclipse");
+		
+		lan1.put("name","Java");
+  
+		JSONObject lan2=new JSONObject();
+		
+		lan1.put("id",2);
+		
+		lan1.put("ide","Xcode");
+		
+		lan1.put("name","Swift");
+  
+		JSONObject lan3=new JSONObject();
+		
+		lan1.put("id",3);
+		
+		lan1.put("ide","Visual Studio");
+		
+		lan1.put("name","C#");
+  
+		JSONArray array=new JSONArray();
+		
+		array.put(lan1);
+		
+		array.put(lan2);
+		
+		array.put(lan3);
+		
+		root.put("language",array);
+  
+	}catch(JSONException e){
+		
+		e.printStackTrace();
+	}
+
+}
+  
+			
